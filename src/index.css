@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+body{
+    background: rgb(29, 27, 27);
+    color: white;
+    /* overflow-y: hidden; */
+}
+
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+.scrollbar-hide {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+nav button{
+    font-size: 12px;
+}
+
+lord-icon{
+    height: 22px;
+}
+
+
+.icon lord-icon{
+    margin: 50px;
+    transform: scale(5);
+}
+
+
+@keyframes breathing {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.2;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.breathing {
+    animation: breathing 1s infinite;
+}
+
+
+@media (max-width: 640px) { 
+    body{
+        overflow-y: hidden;
+    }
+}
