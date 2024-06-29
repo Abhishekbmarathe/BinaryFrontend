@@ -12,8 +12,8 @@ const Login = () => {
         setLoading(true);
         try {
             console.log(data);
-            // const response = await axios.post('https://binarysystems.onrender.com/api/login', data);
-            const response = await axios.post('http://localhost:3000/api/login', data);
+            const response = await axios.post('https://binarysystems.onrender.com/api/login', data);
+            // const response = await axios.post('http://localhost:3000/api/login', data);
             if (response.status === 200) {
                 console.log(response.data);
                 localStorage.setItem("userDet", JSON.stringify(response.data))
