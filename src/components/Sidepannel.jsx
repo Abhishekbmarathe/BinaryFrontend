@@ -17,21 +17,22 @@ function Sidepannel() {
 
     useEffect(() => {
         const userDet = JSON.parse(localStorage.getItem('userDet'));
-
+        const user = userDet.user || userDet;
+        console.log("alluserssssss : ",userDet)
         const permissions = {
-            createTicket: userDet.createTicket,
-            assignTicket: userDet.assignTicket,
-            createClient: userDet.createClient,
-            createAsset: userDet.createAsset,
-            manageFinance: userDet.manageFinance,
-            manageUser: userDet.manageUser,
-            role: userDet.role
+            createTicket: user.createTicket,
+            assignTicket: user.assignTicket,
+            createClient: user.createClient,
+            createAsset: user.createAsset,
+            manageFinance: user.manageFinance,
+            manageUser: user.manageUser,
+            role: user.role
         };
 
         // Filter card data based on permissions and role
         const filteredData = cardData.filter(card => {
-            if (userDet.role === 'mAdmin') {
-                return userDet.role;
+            if (user.role === 'mAdmin') {
+                return user.role;
             }
             return permissions[card.permission];
         });

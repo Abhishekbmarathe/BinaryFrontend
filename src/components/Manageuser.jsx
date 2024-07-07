@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
+import Alluser from './Alluser';
 
 function Manageuser() {
     const [mUser, setUser] = useState({});
@@ -8,8 +9,9 @@ function Manageuser() {
 
     useEffect(() => {
         const userDetails = localStorage.getItem("userDet");
-        if (userDetails) {
-            setUser(JSON.parse(userDetails));
+        const userDetail = userDetails.allUsers || userDetails;
+        if (userDetail) {
+            setUser(JSON.parse(userDetail));
         }
     }, []);
 
@@ -18,8 +20,8 @@ function Manageuser() {
 
     const onSubmit = data => {
         console.log(data);
-        axios.post('https://binarysystems.onrender.com/api/addUser', data)
-        // axios.post('http://localhost:3000/api/addUser', data)
+        // axios.post('https://binarysystems.onrender.com/api/addUser', data)
+            axios.post('http://localhost:3000/api/addUser', data)
             .then(response => {
                 console.log(response);
                 alert('User added successfully!');
@@ -33,35 +35,7 @@ function Manageuser() {
 
     return (
         <div className='flex flex-col justify-center items-center  ' >
-            <h1 className='my-6 font-bold text-3xl'>Manage <span className='text-cyan-400'> User</span></h1>
-            {/* <div>
-                <table className='border'>
-                    <thead>
-                        <tr className='border-b-2'>
-                            <th className='text-red-400 p-4'>Name</th>
-                            <th className='text-red-400 p-4'>Phone Number</th>
-                            <th className='text-red-400 p-4'>Role</th>
-                            <th className='text-red-400 p-4'>Create Ticket</th>
-                            <th className='text-red-400 p-4'>Assign Ticket</th>
-                            <th className='text-red-400 p-4'>Manage Finance</th>
-                            <th className='text-red-400 p-4'>Create Asset</th>
-                            <th className='text-red-400 p-4'>Create Client</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td className='p-4'>{mUser.name}</td>
-                            <td className='p-4'>{mUser.phoneNum}</td>
-                            <td className='p-4'>{mUser.role}</td>
-                            <td className='p-4'>{mUser.createTicket ? 'Yes' : 'No'}</td>
-                            <td className='p-4'>{mUser.assignTicket ? 'Yes' : 'No'}</td>
-                            <td className='p-4'>{mUser.manageFinance ? 'Yes' : 'No'}</td>
-                            <td className='p-4'>{mUser.createAsset ? 'Yes' : 'No'}</td>
-                            <td className='p-4'>{mUser.createClient ? 'Yes' : 'No'}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div> */}
+            <h1 className='my-6 font-bold text-3xl'>Manage <span className='text-cyan-400'> Users</span></h1>
             <button className='bg-neutral-500    py-2 px-3 rounded-xl my-9 absolute bottom-0 right-3 flex justify-between w-20 items-center ' onClick={() => setShowForm(true)}><span className=''>+</span> New</button>
             {showForm && (
                 <div className=" mx-auto p-4 w-full text-white shadow-md rounded-lg">
@@ -201,7 +175,10 @@ function Manageuser() {
                     </form>
                 </div>
             )}
+            <Alluser />
+
         </div>
+
     );
 }
 
