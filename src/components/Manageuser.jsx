@@ -62,7 +62,7 @@ function Manageuser() {
                     </tbody>
                 </table>
             </div> */}
-            <button className='bg-neutral-500    py-2 px-3 rounded-xl my-9 absolute bottom-0 right-3 flex justify-between w-20 items-center ' onClick={() => setShowForm(true)}><span className='text-3xl '>+</span> New</button>
+            <button className='bg-neutral-500    py-2 px-3 rounded-xl my-9 absolute bottom-0 right-3 flex justify-between w-20 items-center ' onClick={() => setShowForm(true)}><span className=''>+</span> New</button>
             {showForm && (
                 <div className=" mx-auto p-4 w-full text-white shadow-md rounded-lg">
                     <form onSubmit={handleSubmit(onSubmit)}>
