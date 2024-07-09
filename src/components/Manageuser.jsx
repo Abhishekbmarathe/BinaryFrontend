@@ -27,7 +27,9 @@ function Manageuser() {
     return (
         <div className='flex flex-col justify-center items-center'>
             <h1 className='my-6 font-bold text-3xl'>Manage <span className='text-cyan-400'> Users</span></h1>
-            <button className='bg-neutral-500 py-2 px-3 rounded-xl my-9 fixed bottom-0 right-8 flex justify-between w-20 items-center ' onClick={() => setShowForm(true)}><span className=''>+</span> New</button>
+            {!showForm ? (
+                <button className='bg-neutral-500 py-2 px-3 rounded-xl my-9 fixed bottom-0 right-8 flex justify-between w-20 items-center ' onClick={() => setShowForm(true)}><span className=''>+</span> New</button>
+            ) : null}
             {showForm && (
                 <div className="mx-auto p-4 w-full text-white shadow-md rounded-lg">
                     <form onSubmit={handleSubmit(onSubmit)}>
@@ -173,7 +175,7 @@ function Manageuser() {
                     </form>
                 </div>
             )}
-            <Alluser />
+            {!showForm && <Alluser />}
         </div>
     );
 }
