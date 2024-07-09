@@ -22,7 +22,7 @@ function Userdetails() {
     const [email, setEmail] = useState(0);
     const [userName, setUsername] = useState(0);
     const [role, setRole] = useState(0);
-    useEffect(()=>{
+    useEffect(() => {
         const currentUserdet = JSON.parse(localStorage.getItem("userDet"));
         setCurrentuser(currentUserdet.name)
         setPhone(currentUserdet.phoneNum)
@@ -60,40 +60,45 @@ function Userdetails() {
 
 
             <hr className='border-2 w-3/5 m-auto rounded-full my-8 ' />
-            <div className='rounded-xl border-2 border-green-400 w-[98vw] m-auto  px-3 my-3 '>
 
-                <h2 className='font-bold mt-1'>User Details</h2>
-                <div className='flex justify-around py-2 '>
-                    <div className='flex flex-col items-center justify-center '>
-                        <h1 className='text-5xl font-bold '>{userCount}</h1>
-                        <span className='text-sm'>Total users</span>
-                    </div>
-                    <div className='flex flex-col items-center justify-center '>
-                        <h1 className='text-5xl font-bold '>{adminUsersCount}</h1>
-                        <span className='text-sm'>Admins</span>
-                    </div>
-                    <div className='flex flex-col items-center justify-center '>
-                        <h1 className='text-5xl font-bold '>{technicianUsersCount}</h1>
-                        <span className='text-sm'>Technicians</span>
-                    </div>
-                </div>
-            </div>
-            <div className='rounded-xl border-2 border-yellow-400 w-[98vw] m-auto  px-3 my-3'>
-                <h1 className='font-bold mt-1'>Ticket Details</h1>
-                <div className='flex justify-around list-none'>
-                    <div className=''>
-                        <li>lorem</li>
-                        <li>lorem</li>
-                        <li>lorem</li>
-                    </div>
-                    <div>
-                        <li>lorem</li>
-                        <li>lorem</li>
-                        <li>lorem</li>
-                    </div>
-                </div>
+            {userName === "Master" && (
+                <>
+                    <div className='rounded-xl border-2 border-green-400 w-[98vw] m-auto  px-3 my-3 '>
 
-            </div>
+                        <h2 className='font-bold mt-1'>User Details</h2>
+                        <div className='flex justify-around py-2 '>
+                            <div className='flex flex-col items-center justify-center '>
+                                <h1 className='text-5xl font-bold '>{userCount}</h1>
+                                <span className='text-sm'>Total users</span>
+                            </div>
+                            <div className='flex flex-col items-center justify-center '>
+                                <h1 className='text-5xl font-bold '>{adminUsersCount}</h1>
+                                <span className='text-sm'>Admins</span>
+                            </div>
+                            <div className='flex flex-col items-center justify-center '>
+                                <h1 className='text-5xl font-bold '>{technicianUsersCount}</h1>
+                                <span className='text-sm'>Technicians</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div className='rounded-xl border-2 border-yellow-400 w-[98vw] m-auto  px-3 my-3'>
+                        <h1 className='font-bold mt-1'>Ticket Details</h1>
+                        <div className='flex justify-around list-none'>
+                            <div className=''>
+                                <li>lorem</li>
+                                <li>lorem</li>
+                                <li>lorem</li>
+                            </div>
+                            <div>
+                                <li>lorem</li>
+                                <li>lorem</li>
+                                <li>lorem</li>
+                            </div>
+                        </div>
+
+                    </div>
+                </>
+            )}
         </div>
 
     )
