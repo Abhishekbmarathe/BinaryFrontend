@@ -17,7 +17,7 @@ const Login = () => {
             if (response.status === 200) {
                 console.log(response.data);
                 localStorage.removeItem("allUsers");
-                if (data.username === "Master") {
+                if (data.username.trim() === "Master") {
                     await axios.get("https://binarysystemsbackend-mtt8.onrender.com/api/getallusers")
                         .then((response) => {
                             console.log("All Users:", response.data);

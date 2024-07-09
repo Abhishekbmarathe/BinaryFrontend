@@ -55,6 +55,7 @@ const BottomNavbar = () => {
     };
 
     const logout = () => {
+        localStorage.clear()
         navigate('/');
     };
 

@@ -28,12 +28,16 @@ lord-icon{
     height: 22px;
 }
 
+.user lord-icon{
+    width: 160px;
+    height: 160px;
+}
+
 
 .icon lord-icon{
     margin: 50px;
     transform: scale(5);
 }
-
 
 @keyframes breathing {
     0% {

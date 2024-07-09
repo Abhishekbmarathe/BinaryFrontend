@@ -2,7 +2,7 @@ import React from 'react'
 import Nav from './bottomNavbar'
 import TopNav from './TopNav'
 import Sidepannel from './Sidepannel'
-import Alluser from './Alluser'
+import Userdetails from './Userdetails'
 
 function Home() {
     return (
@@ -10,6 +10,7 @@ function Home() {
             <TopNav />
             <Nav />
             <Sidepannel />
+            <Userdetails />
         </div>
     )
 }
