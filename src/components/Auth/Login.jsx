@@ -8,15 +8,27 @@ const Login = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
 
+
     const onSubmit = async (data) => {
         setLoading(true);
         try {
             console.log(data);
-            // const response = await axios.post('https://binarysystems.onrender.com/api/login', data);
-            const response = await axios.post('http://localhost:3000/api/login', data);
+            const response = await axios.post('https://binarysystemsbackend-mtt8.onrender.com/api/login', data);
             if (response.status === 200) {
                 console.log(response.data);
-                localStorage.setItem("userDet", JSON.stringify(response.data))
+                localStorage.removeItem("allUsers");
+                if (data.username === "Master") {
+                    await axios.get("https://binarysystemsbackend-mtt8.onrender.com/api/getallusers")
+                        .then((response) => {
+                            console.log("All Users:", response.data);
+                            localStorage.setItem("allUsers", JSON.stringify(response.data));
+                        })
+                        .catch((error) => {
+                            console.error("Error fetching all users:", error);
+                            alert("Something went wrong fetching all users.");
+                        });
+                }
+                localStorage.setItem("userDet", JSON.stringify(response.data));
                 navigate('/server/Home');
             } else {
                 alert("Invalid login Credentials");

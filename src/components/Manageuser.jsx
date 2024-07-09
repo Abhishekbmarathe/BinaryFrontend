@@ -20,8 +20,8 @@ function Manageuser() {
 
     const onSubmit = data => {
         console.log(data);
-        // axios.post('https://binarysystems.onrender.com/api/addUser', data)
-            axios.post('http://localhost:3000/api/addUser', data)
+        axios.post('https://binarysystemsbackend-mtt8.onrender.com/api/addUser', data)
+            // axios.post('http://localhost:3000/api/addUser', data)
             .then(response => {
                 console.log(response);
                 alert('User added successfully!');
@@ -36,7 +36,7 @@ function Manageuser() {
     return (
         <div className='flex flex-col justify-center items-center  ' >
             <h1 className='my-6 font-bold text-3xl'>Manage <span className='text-cyan-400'> Users</span></h1>
-            <button className='bg-neutral-500    py-2 px-3 rounded-xl my-9 absolute bottom-0 right-3 flex justify-between w-20 items-center ' onClick={() => setShowForm(true)}><span className=''>+</span> New</button>
+            <button className='bg-neutral-500    py-2 px-3 rounded-xl my-9 fixed bottom-0 right-8 flex justify-between w-20 items-center ' onClick={() => setShowForm(true)}><span className=''>+</span> New</button>
             {showForm && (
                 <div className=" mx-auto p-4 w-full text-white shadow-md rounded-lg">
                     <form onSubmit={handleSubmit(onSubmit)}>
