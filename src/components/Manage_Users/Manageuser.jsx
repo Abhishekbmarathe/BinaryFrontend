@@ -25,7 +25,7 @@ function Manageuser() {
     };
 
     return (
-        <div className='flex flex-col justify-center items-center'>
+        <div className='flex flex-col justify-center items-center sm:w-1/2 sm:m-auto'>
             <h1 className='my-6 font-bold text-3xl'>Manage <span className='text-cyan-400'> Users</span></h1>
             {!showForm ? (
                 <button className='bg-neutral-500 py-2 px-3 rounded-xl my-9 fixed bottom-0 right-8 flex justify-between w-20 items-center ' onClick={() => setShowForm(true)}><span className=''>+</span> New</button>
@@ -92,7 +92,7 @@ function Manageuser() {
                                         {...register('role')}
                                         checked={userType === 'technician'}
                                         onChange={() => setUserType('technician')}
-                                        className="form-radio bg-transparent outline-none"
+                                        className="form-radio bg-transparent outline-none w-6 h-6"
                                     />
                                     <span className="ml-2">Technician</span>
                                 </label>
@@ -103,7 +103,7 @@ function Manageuser() {
                                         {...register('role')}
                                         checked={userType === 'admin'}
                                         onChange={() => setUserType('admin')}
-                                        className="form-radio bg-transparent outline-none"
+                                        className="form-radio bg-transparent outline-none w-6 h-6"
                                     />
                                     <span className="ml-2">Admin</span>
                                 </label>
@@ -114,43 +114,43 @@ function Manageuser() {
                             <div className="mb-4">
                                 <label className="block text-cyan-400">Rights</label>
                                 <div className="mt-2">
-                                    <label className="block">
+                                    <label className="flex items-center ">
                                         <input
                                             type="checkbox"
                                             {...register('createTicket')}
-                                            className="form-checkbox bg-transparent outline-none"
+                                            className="form-checkbox bg-transparent outline-none w-6 h-6 cursor-pointer"
                                         />
                                         <span className="ml-2">Ticket Creation</span>
                                     </label>
-                                    <label className="block mt-2">
+                                    <label className="flex items-center  mt-2">
                                         <input
                                             type="checkbox"
                                             {...register('assignTicket')}
-                                            className="form-checkbox bg-transparent outline-none"
+                                            className="form-checkbox bg-transparent outline-none w-6 h-6 cursor-pointer"
                                         />
                                         <span className="ml-2">Ticket Management</span>
                                     </label>
-                                    <label className="block mt-2">
+                                    <label className="flex items-center  mt-2">
                                         <input
                                             type="checkbox"
                                             {...register('createClient')}
-                                            className="form-checkbox bg-transparent outline-none"
+                                            className="form-checkbox bg-transparent outline-none w-6 h-6 cursor-pointer"
                                         />
                                         <span className="ml-2">Customer Database</span>
                                     </label>
-                                    <label className="block mt-2">
+                                    <label className="flex items-center  mt-2">
                                         <input
                                             type="checkbox"
                                             {...register('createAsset')}
-                                            className="form-checkbox bg-transparent outline-none"
+                                            className="form-checkbox bg-transparent outline-none w-6 h-6 cursor-pointer"
                                         />
                                         <span className="ml-2">Asset Database</span>
                                     </label>
-                                    <label className="block mt-2">
+                                    <label className="flex items-center  mt-2">
                                         <input
                                             type="checkbox"
                                             {...register('manageFinance')}
-                                            className="form-checkbox bg-transparent outline-none"
+                                            className="form-checkbox bg-transparent outline-none w-6 h-6 cursor-pointer"
                                         />
                                         <span className="ml-2">Finance Management</span>
                                     </label>

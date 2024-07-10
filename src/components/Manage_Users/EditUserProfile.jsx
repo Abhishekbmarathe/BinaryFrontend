@@ -53,7 +53,7 @@ function UserDetail() {
     }
 
     return (
-        <div className="max-w-md mx-auto mt-10">
+        <div className="max-w-md mx-auto mt-10 sm:max-w-[50vw]">
             <div className="shadow-md rounded-lg overflow-hidden mb-4">
                 <div className="p-4">
                     {isLoading &&
@@ -70,7 +70,7 @@ function UserDetail() {
                                         {typeof user[key] === 'boolean' ? (
                                             <div className="flex items-center">
                                                 <input
-                                                    className="mr-2 leading-tight"
+                                                    className="mr-2 leading-tight w-6 h-6 cursor-pointer"
                                                     type="checkbox"
                                                     id={`${key}-${idx}`}
                                                     name={key}
@@ -85,7 +85,7 @@ function UserDetail() {
                                                     {key.charAt(0).toUpperCase() + key.slice(1)}
                                                 </label>
                                                 <input
-                                                    className="shadow appearance-none border rounded w-full py-2 px-3 bg-transparent text-white leading-tight focus:outline-none focus:shadow-outline"
+                                                    className="shadow appearance-none border rounded w-full py-2  px-3 bg-transparent text-white leading-tight focus:outline-none focus:shadow-outline sm:py-4 sm:rounded-xl"
                                                     type="text"
                                                     id={`${key}-${idx}`}
                                                     name={key}

@@ -32,11 +32,11 @@ function UserProfile() {
     };
 
     return (
-        <div className="max-w-md mx-auto mt-10">
+        <div className="max-w-md mx-auto mt-10 sm:max-w-[50vw]">
             {allUsers.map((user, index) => (
                 <div key={index} className="shadow-md rounded-lg overflow-hidden mb-4">
                     <div
-                        className="border-cyan-500 border-2 w-[90vw] rounded-xl p-4 cursor-pointer flex gap-4 items-center"
+                        className="border-cyan-500 border-2 w-[90vw] sm:max-w-full rounded-xl p-4 cursor-pointer flex gap-4 items-center"
                         onClick={() => handleExpand(user._id)}
                     >
                         <span>{user.role}</span>
