@@ -70,7 +70,7 @@ function Userdetails() {
             {userName === "Master" && (
                 <div className='sm:flex sm:gap-3 sm:flex-wrap items-center  m-auto w-fit'>
                     <div className='rounded-xl border-2 border-green-400 w-[94vw] m-auto  px-3 my-3 sm:max-w-96'>
-                        <h2 className='font-bold mt-1'>User Details</h2>
+                        <h2 className=' mt-1 italic'>User Details</h2>
                         <div className='flex justify-around py-2 '>
                             <div className='flex flex-col items-center justify-center'>
                                 <h1 className='text-5xl font-bold '>{userCount}</h1>
@@ -87,129 +87,67 @@ function Userdetails() {
                         </div>
                     </div>
                     <div className='rounded-xl border-2 border-yellow-400 w-[94vw] m-auto  px-3 my-3 sm:max-w-96'>
-                        <h1 className='font-bold mt-1'>Ticket Details</h1>
+                        <h1 className=' mt-1 italic'>Ticket Details</h1>
                         <div className='flex justify-around list-none'>
-                            <div className=''>
-                                <li>lorem</li>
-                                <li>lorem</li>
-                                <li>lorem</li>
+                            <div className='flex flex-col items-center justify-center'>
+                                <h1 className='text-5xl font-bold '>{adminUsersCount}</h1>
+                                <span className='text-sm'>Total Ticket</span>
                             </div>
-                            <div>
-                                <li>lorem</li>
-                                <li>lorem</li>
-                                <li>lorem</li>
+                            <div className='flex flex-col items-center justify-center'>
+                                <h1 className='text-5xl font-bold '>{technicianUsersCount}</h1>
+                                <span className='text-sm'>Open Tickets</span>
                             </div>
                         </div>
 
                     </div>
                     <div className='rounded-xl border-2 border-green-600 w-[94vw] m-auto  px-3 my-3 sm:max-w-96'>
-                        <h1 className='font-bold mt-1'>Ticket Details</h1>
+                        <h1 className=' mt-1 italic'>Finance Details</h1>
                         <div className='flex justify-around list-none'>
-                            <div className=''>
-                                <li>lorem</li>
-                                <li>lorem</li>
-                                <li>lorem</li>
+                            <div className='flex flex-col items-center justify-center'>
+                                <h1 className='text-5xl font-bold '>{adminUsersCount}</h1>
+                                <span className='text-sm'>Settled Tickets</span>
                             </div>
-                            <div>
-                                <li>lorem</li>
-                                <li>lorem</li>
-                                <li>lorem</li>
+                            <div className='flex flex-col items-center justify-center'>
+                                <h1 className='text-5xl font-bold '>{technicianUsersCount}</h1>
+                                <span className='text-sm'>Un-Settled Tickets</span>
                             </div>
                         </div>
 
                     </div>
                     <div className='rounded-xl border-2 border-gray-400 w-[94vw] m-auto  px-3 my-3 sm:max-w-96'>
-                        <h1 className='font-bold mt-1'>Ticket Details</h1>
+                        <h1 className=' mt-1 italic'>Customer Details</h1>
                         <div className='flex justify-around list-none'>
-                            <div className=''>
-                                <li>lorem</li>
-                                <li>lorem</li>
-                                <li>lorem</li>
-                            </div>
-                            <div>
-                                <li>lorem</li>
-                                <li>lorem</li>
-                                <li>lorem</li>
+                            <div className='flex flex-col items-center justify-center'>
+                                <h1 className='text-5xl font-bold '>{adminUsersCount}</h1>
+                                <span className='text-sm'>Total Customers</span>
                             </div>
                         </div>
 
                     </div>
                     <div className='rounded-xl border-2  w-[94vw] m-auto  px-3 my-3 sm:max-w-96'>
-                        <h1 className='font-bold mt-1'>Ticket Details</h1>
+                        <h1 className=' mt-1 italic'>Ticket Details</h1>
                         <div className='flex justify-around list-none'>
-                            <div className=''>
-                                <li>lorem</li>
-                                <li>lorem</li>
-                                <li>lorem</li>
+                            <div className='flex flex-col items-center justify-center'>
+                                <h1 className='text-5xl font-bold '>{adminUsersCount}</h1>
+                                <span className='text-sm'>Admins</span>
                             </div>
-                            <div>
-                                <li>lorem</li>
-                                <li>lorem</li>
-                                <li>lorem</li>
+                            <div className='flex flex-col items-center justify-center'>
+                                <h1 className='text-5xl font-bold '>{technicianUsersCount}</h1>
+                                <span className='text-sm'>Technicians</span>
                             </div>
                         </div>
 
                     </div>
-                    <div className='rounded-xl border-2 border-purple-400 w-[94vw] m-auto  px-3 my-3 sm:max-w-96'>
-                        <h1 className='font-bold mt-1'>Ticket Details</h1>
+                    <div className='rounded-xl border-2 border-purple-400 w-[94vw] m-auto  px-3 my-3 sm:max-w-96 mb-28 sm:mb-3'>
+                        <h1 className=' mt-1 italic'>Asset Details</h1>
                         <div className='flex justify-around list-none'>
-                            <div className=''>
-                                <li>lorem</li>
-                                <li>lorem</li>
-                                <li>lorem</li>
+                            <div className='flex flex-col items-center justify-center'>
+                                <h1 className='text-5xl font-bold '>{adminUsersCount}</h1>
+                                <span className='text-sm'>Categories Created</span>
                             </div>
-                            <div>
-                                <li>lorem</li>
-                                <li>lorem</li>
-                                <li>lorem</li>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div className='rounded-xl border-2 border-pink-400 w-[94vw] m-auto  px-3 my-3 sm:max-w-96'>
-                        <h1 className='font-bold mt-1'>Ticket Details</h1>
-                        <div className='flex justify-around list-none'>
-                            <div className=''>
-                                <li>lorem</li>
-                                <li>lorem</li>
-                                <li>lorem</li>
-                            </div>
-                            <div>
-                                <li>lorem</li>
-                                <li>lorem</li>
-                                <li>lorem</li>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div className='rounded-xl border-2 border-blue-400 w-[94vw] m-auto  px-3 my-3 sm:max-w-96'>
-                        <h1 className='font-bold mt-1'>Ticket Details</h1>
-                        <div className='flex justify-around list-none'>
-                            <div className=''>
-                                <li>lorem</li>
-                                <li>lorem</li>
-                                <li>lorem</li>
-                            </div>
-                            <div>
-                                <li>lorem</li>
-                                <li>lorem</li>
-                                <li>lorem</li>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div className='rounded-xl border-2 border-red-400 w-[94vw] m-auto  px-3 my-3 sm:max-w-96'>
-                        <h1 className='font-bold mt-1'>Ticket Details</h1>
-                        <div className='flex justify-around list-none'>
-                            <div className=''>
-                                <li>lorem</li>
-                                <li>lorem</li>
-                                <li>lorem</li>
-                            </div>
-                            <div>
-                                <li>lorem</li>
-                                <li>lorem</li>
-                                <li>lorem</li>
+                            <div className='flex flex-col items-center justify-center'>
+                                <h1 className='text-5xl font-bold '>{technicianUsersCount}</h1>
+                                <span className='text-sm'>Products Created</span>
                             </div>
                         </div>
 

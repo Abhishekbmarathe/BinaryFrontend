@@ -26,7 +26,7 @@ function UserDetail() {
         try {
             const response = await axios.post('https://binarysystemsbackend-mtt8.onrender.com/api/updateUser', user);
             console.log('Saved user details:', response.data);
-            localStorage.setItem("userDet", JSON.stringify(user));
+            // localStorage.setItem("userDet", JSON.stringify(user));
             alert("Saved successfully...")
         } catch (error) {
             console.error('Error saving user details:', error);

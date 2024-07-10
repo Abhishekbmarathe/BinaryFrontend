@@ -12,7 +12,7 @@ function TopNav() {
     };
 
     return (
-        <div className='hidden sm:flex text-white justify-between px-9 items-center bg-slate-500 py-5 sticky top-0 z-30'>
+        <div className='hidden sm:flex text-white justify-between px-9 items-center bg-slate-800 py-5 sticky top-0 z-30'>
             <div>
                 <h1 className='text-3xl font-bold'>Binary systems...</h1>
             </div>
