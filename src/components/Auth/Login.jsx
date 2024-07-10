@@ -8,6 +8,12 @@ const Login = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
 
+    const [passwordVisible, setPasswordVisible] = useState(false);
+
+    const togglePasswordVisibility = () => {
+        setPasswordVisible(!passwordVisible);
+    };
+
 
     const onSubmit = async (data) => {
         setLoading(true);
@@ -73,15 +79,22 @@ const Login = () => {
                             />
                             {errors.username && <p className="text-red-500 text-sm mt-1">{errors.username.message}</p>}
                         </div>
-                        <div className="mb-4">
+                        <div className="mb-4 relative">
                             <input
                                 className="w-full px-3 py-2 my-3 bg-transparent rounded-lg border-2 focus:outline-none focus:border-blue-500 h-14"
-                                type="password"
+                                type={passwordVisible ? "text" : "password"}
                                 id="password"
                                 placeholder='Password'
                                 {...register('password', { required: 'Password is required' })}
                                 autoComplete="off"
                             />
+                            <button
+                                type="button"
+                                onClick={togglePasswordVisibility}
+                                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-300"
+                            >
+                                {passwordVisible ? 'Hide' : 'Show'}
+                            </button>
                             {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
                         </div>
                         <button

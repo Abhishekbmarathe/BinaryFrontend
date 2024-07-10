@@ -22,6 +22,13 @@ function Manageuser() {
             alert('Failed to add user');
             setIsLoading(false); // Set loading state to false on error
         }
+
+
+    };
+    const [passwordVisible, setPasswordVisible] = useState(false);
+
+    const togglePasswordVisibility = () => {
+        setPasswordVisible(!passwordVisible);
     };
 
     return (
@@ -74,14 +81,22 @@ function Manageuser() {
 
                         <div className="mb-4">
                             <label className="block text-white">Password</label>
-                            <input
-                                type="password"
-                                {...register('password', { required: true })}
-                                className="mt-1 bg-transparent outline-none p-2 w-full border rounded-md"
-                            />
+                            <div className="relative">
+                                <input
+                                    type={passwordVisible ? "text" : "password"}
+                                    {...register('password', { required: true })}
+                                    className="mt-1 bg-transparent outline-none p-2 w-full border rounded-md"
+                                />
+                                <button
+                                    type="button"
+                                    onClick={togglePasswordVisibility}
+                                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-300"
+                                >
+                                    {passwordVisible ? 'Hide' : 'Show'}
+                                </button>
+                            </div>
                             {errors.password && <span className="text-red-500">Password is required</span>}
                         </div>
-
                         <div className="mb-4">
                             <label className="block text-cyan-400">User Type</label>
                             <div className="mt-2">
