@@ -32,7 +32,7 @@ function Userdetails() {
     })
 
     return (
-        <div className='text-gray-300'>
+        <div className='text-gray-300 sm:mx-[25%] sm:w-[70%]'>
             <div className='flex gap-3 w-fit px-6 items-center mt-8'>
                 <div className='user'>
                     <lord-icon
@@ -45,12 +45,18 @@ function Userdetails() {
 
                 </div>
                 <div>
-                    <label className='text-red-400'>Name:</label><br />
-                    <span className='mx-3 mb-40'>{currentUser}</span><br />
-                    <label className='text-red-400'>Phone no:</label><br />
-                    <span className='mx-3 mb-40'>{phone}</span><br />
-                    <label className='text-red-400'>Email:</label><br />
-                    <span className='mx-3 mb-40'>{email}@gmail.com  </span><br />
+                    <div className='flex flex-col sm:flex-row sm:text-2xl sm:my-4'>
+                        <label className='text-red-400'>Name:</label>
+                        <span className='mx-3'>{currentUser}</span>
+                    </div>
+                    <div className='flex flex-col sm:flex-row sm:text-2xl sm:my-4'>
+                        <label className='text-red-400'>Phone no:</label>
+                        <span className='mx-3 '>{phone}</span>
+                    </div>
+                    <div className='flex flex-col sm:flex-row sm:text-2xl sm:my-4'>
+                        <label className='text-red-400'>Email:</label>
+                        <span className='mx-3 '>{email}@gmail.com  </span>
+                    </div>
                 </div>
             </div>
             <div className='px-8'>
@@ -59,29 +65,28 @@ function Userdetails() {
             </div>
 
 
-            <hr className='border-2 w-3/5 m-auto rounded-full my-8 ' />
+            <hr className='border-2 w-3/5 m-auto rounded-full my-8 sm:w-[100%]' />
 
             {userName === "Master" && (
-                <>
-                    <div className='rounded-xl border-2 border-green-400 w-[98vw] m-auto  px-3 my-3 '>
-
+                <div className='sm:flex sm:gap-3 sm:flex-wrap items-center  m-auto w-fit'>
+                    <div className='rounded-xl border-2 border-green-400 w-[94vw] m-auto  px-3 my-3 sm:max-w-96'>
                         <h2 className='font-bold mt-1'>User Details</h2>
                         <div className='flex justify-around py-2 '>
-                            <div className='flex flex-col items-center justify-center '>
+                            <div className='flex flex-col items-center justify-center'>
                                 <h1 className='text-5xl font-bold '>{userCount}</h1>
                                 <span className='text-sm'>Total users</span>
                             </div>
-                            <div className='flex flex-col items-center justify-center '>
+                            <div className='flex flex-col items-center justify-center'>
                                 <h1 className='text-5xl font-bold '>{adminUsersCount}</h1>
                                 <span className='text-sm'>Admins</span>
                             </div>
-                            <div className='flex flex-col items-center justify-center '>
+                            <div className='flex flex-col items-center justify-center'>
                                 <h1 className='text-5xl font-bold '>{technicianUsersCount}</h1>
                                 <span className='text-sm'>Technicians</span>
                             </div>
                         </div>
                     </div>
-                    <div className='rounded-xl border-2 border-yellow-400 w-[98vw] m-auto  px-3 my-3'>
+                    <div className='rounded-xl border-2 border-yellow-400 w-[94vw] m-auto  px-3 my-3 sm:max-w-96'>
                         <h1 className='font-bold mt-1'>Ticket Details</h1>
                         <div className='flex justify-around list-none'>
                             <div className=''>
@@ -97,7 +102,119 @@ function Userdetails() {
                         </div>
 
                     </div>
-                </>
+                    <div className='rounded-xl border-2 border-green-600 w-[94vw] m-auto  px-3 my-3 sm:max-w-96'>
+                        <h1 className='font-bold mt-1'>Ticket Details</h1>
+                        <div className='flex justify-around list-none'>
+                            <div className=''>
+                                <li>lorem</li>
+                                <li>lorem</li>
+                                <li>lorem</li>
+                            </div>
+                            <div>
+                                <li>lorem</li>
+                                <li>lorem</li>
+                                <li>lorem</li>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div className='rounded-xl border-2 border-gray-400 w-[94vw] m-auto  px-3 my-3 sm:max-w-96'>
+                        <h1 className='font-bold mt-1'>Ticket Details</h1>
+                        <div className='flex justify-around list-none'>
+                            <div className=''>
+                                <li>lorem</li>
+                                <li>lorem</li>
+                                <li>lorem</li>
+                            </div>
+                            <div>
+                                <li>lorem</li>
+                                <li>lorem</li>
+                                <li>lorem</li>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div className='rounded-xl border-2  w-[94vw] m-auto  px-3 my-3 sm:max-w-96'>
+                        <h1 className='font-bold mt-1'>Ticket Details</h1>
+                        <div className='flex justify-around list-none'>
+                            <div className=''>
+                                <li>lorem</li>
+                                <li>lorem</li>
+                                <li>lorem</li>
+                            </div>
+                            <div>
+                                <li>lorem</li>
+                                <li>lorem</li>
+                                <li>lorem</li>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div className='rounded-xl border-2 border-purple-400 w-[94vw] m-auto  px-3 my-3 sm:max-w-96'>
+                        <h1 className='font-bold mt-1'>Ticket Details</h1>
+                        <div className='flex justify-around list-none'>
+                            <div className=''>
+                                <li>lorem</li>
+                                <li>lorem</li>
+                                <li>lorem</li>
+                            </div>
+                            <div>
+                                <li>lorem</li>
+                                <li>lorem</li>
+                                <li>lorem</li>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div className='rounded-xl border-2 border-pink-400 w-[94vw] m-auto  px-3 my-3 sm:max-w-96'>
+                        <h1 className='font-bold mt-1'>Ticket Details</h1>
+                        <div className='flex justify-around list-none'>
+                            <div className=''>
+                                <li>lorem</li>
+                                <li>lorem</li>
+                                <li>lorem</li>
+                            </div>
+                            <div>
+                                <li>lorem</li>
+                                <li>lorem</li>
+                                <li>lorem</li>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div className='rounded-xl border-2 border-blue-400 w-[94vw] m-auto  px-3 my-3 sm:max-w-96'>
+                        <h1 className='font-bold mt-1'>Ticket Details</h1>
+                        <div className='flex justify-around list-none'>
+                            <div className=''>
+                                <li>lorem</li>
+                                <li>lorem</li>
+                                <li>lorem</li>
+                            </div>
+                            <div>
+                                <li>lorem</li>
+                                <li>lorem</li>
+                                <li>lorem</li>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div className='rounded-xl border-2 border-red-400 w-[94vw] m-auto  px-3 my-3 sm:max-w-96'>
+                        <h1 className='font-bold mt-1'>Ticket Details</h1>
+                        <div className='flex justify-around list-none'>
+                            <div className=''>
+                                <li>lorem</li>
+                                <li>lorem</li>
+                                <li>lorem</li>
+                            </div>
+                            <div>
+                                <li>lorem</li>
+                                <li>lorem</li>
+                                <li>lorem</li>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
             )}
         </div>
 
