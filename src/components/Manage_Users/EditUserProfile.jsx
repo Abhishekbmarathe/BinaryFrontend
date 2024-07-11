@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import fetchAndStoreUsers from '../modules/fetchAllusers'
 
 function UserDetail() {
     const { userId } = useParams();
@@ -27,6 +28,7 @@ function UserDetail() {
             const response = await axios.post('https://binarysystemsbackend-mtt8.onrender.com/api/updateUser', user);
             console.log('Saved user details:', response.data);
             // localStorage.setItem("userDet", JSON.stringify(user));
+            fetchAndStoreUsers();
             alert("Saved successfully...")
         } catch (error) {
             console.error('Error saving user details:', error);

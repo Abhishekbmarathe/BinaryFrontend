@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import Alluser from './Alluser';
+import fetchAndStoreUsers from '../modules/fetchAllusers'
+
 
 function Manageuser() {
     const { register, handleSubmit, formState: { errors } } = useForm();
@@ -14,7 +16,9 @@ function Manageuser() {
         try {
             const response = await axios.post('https://binarysystemsbackend-mtt8.onrender.com/api/addUser', data);
             console.log(response);
+            fetchAndStoreUsers();
             alert('User added successfully!');
+            window.location.reload();
             setIsLoading(false); // Set loading state to false after successful submission
             setShowForm(false); // Hide the form after successful submission
         } catch (error) {
