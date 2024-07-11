@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './components/Home'
 import Login from './components/Auth/Login'
 import Manageuser from './components/Manage_Users/Manageuser';
 import EditUserdetails from './components/Manage_Users/EditUserProfile';
 import AssetDb from './components/Asset_DB/AssetDb';
+import fetchAndStoreUsers from './components/modules/fetchAllusers'
 
 function App() {
+  useState(() => {
+    window.onload = fetchAndStoreUsers();
+  })
   return (
     <Router>
       <Routes>

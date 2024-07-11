@@ -1,12 +1,13 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import fetchAndStoreUsers from '../modules/fetchAllusers'
+import { useParams, useNavigate } from 'react-router-dom';
+import fetchAndStoreUsers from '../modules/fetchAllusers';
 
 function UserDetail() {
     const { userId } = useParams();
     const [user, setUser] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const userDetails = JSON.parse(localStorage.getItem("allUsers"));
@@ -25,11 +26,16 @@ function UserDetail() {
     const handleSave = async () => {
         setIsLoading(true);
         try {
-            const response = await axios.post('https://binarysystemsbackend-mtt8.onrender.com/api/updateUser', user);
-            console.log('Saved user details:', response.data);
-            // localStorage.setItem("userDet", JSON.stringify(user));
-            fetchAndStoreUsers();
-            alert("Saved successfully...")
+            const conf = confirm("Are you sure to save the changes ?")
+            if (conf) {
+                const response = await axios.post('https://binarysystemsbackend-mtt8.onrender.com/api/updateUser', user);
+                console.log('Saved user details:', response.data);
+                fetchAndStoreUsers();
+                alert("Saved successfully...");
+                navigate('/manage-user');
+                window.location.reload();
+
+            }
         } catch (error) {
             console.error('Error saving user details:', error);
         } finally {
@@ -40,9 +46,16 @@ function UserDetail() {
     const handleDelete = async () => {
         setIsLoading(true);
         try {
-            await axios.delete(`https://binarysystemsbackend-mtt8.onrender.com/api/deleteUser/${user._id}`);
-            console.log('User deleted:', user._id);
-            // history.push('/'); // Redirect to the main page after deletion
+            const conf = confirm("Are you sure to delete this user")
+            if (conf) {
+
+                await axios.post('https://binarysystemsbackend-mtt8.onrender.com/api/deleteUser', { username: user.username });
+                console.log('User deleted:', user.username);
+                fetchAndStoreUsers();
+                alert("User Deleted successfully...");
+                navigate('/manage-user');
+                window.location.reload();
+            }
         } catch (error) {
             console.error('Error deleting user:', error);
         } finally {
@@ -62,10 +75,10 @@ function UserDetail() {
                         <div className="flex justify-center items-center gap-3">
                             <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 border-dotted rounded-full" role="status">
                             </div>
-                            <span className="breathing">Saving...</span>
+                            <span className="breathing">Loading...</span>
                         </div>}
                     {!isLoading && (
-                        <form onSubmit={handleSave}>
+                        <form onSubmit={(e) => e.preventDefault()}>
                             {Object.keys(user).map((key, idx) => (
                                 !['createdAt', 'updatedAt', '__v', '_id', 'role'].includes(key) && (
                                     <div key={idx} className="mb-4">
@@ -87,7 +100,7 @@ function UserDetail() {
                                                     {key.charAt(0).toUpperCase() + key.slice(1)}
                                                 </label>
                                                 <input
-                                                    className="shadow appearance-none border rounded w-full py-2  px-3 bg-transparent text-white leading-tight focus:outline-none focus:shadow-outline sm:py-4 sm:rounded-xl"
+                                                    className="shadow appearance-none border rounded w-full py-2 px-3 bg-transparent text-white leading-tight focus:outline-none focus:shadow-outline sm:py-4 sm:rounded-xl"
                                                     type="text"
                                                     id={`${key}-${idx}`}
                                                     name={key}
