@@ -33,6 +33,15 @@ const Login = () => {
                             console.error("Error fetching all users:", error);
                             alert("Something went wrong fetching all users.");
                         });
+                    await axios.get("https://binarysystemsbackend-mtt8.onrender.com/api/getAllAsset")
+                        .then((response) => {
+                            console.log("All Assets:", response.data);
+                            localStorage.setItem("getAllAssets", JSON.stringify(response.data));
+                        })
+                        .catch((error) => {
+                            console.error("Error fetching all assets:", error);
+                            alert("Something went wrong fetching all assets.");
+                        });
                 }
                 localStorage.setItem("userDet", JSON.stringify(response.data));
                 navigate('/server/Home');

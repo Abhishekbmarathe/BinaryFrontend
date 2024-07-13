@@ -60,8 +60,8 @@ const BottomNavbar = () => {
     };
 
     return (
-        <div className='sm:hidden'>
-            <div className='fixed bg-neutral-800 bottom-0 py-2 overflow-y-auto w-full'>
+        <div className=' sm:hidden'>
+            <div className='fixed bg-neutral-800 bottom-0 py-2 overflow-y-auto w-full z-50'>
                 <nav className='w-screen flex items-center justify-between px-16 py-2 '>
                     <button onClick={danger}>
                         <lord-icon
