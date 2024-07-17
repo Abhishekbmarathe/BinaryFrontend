@@ -5,18 +5,24 @@ import Login from './components/Auth/Login'
 import Manageuser from './components/Manage_Users/Manageuser';
 import EditUserdetails from './components/Manage_Users/EditUserProfile';
 import AssetDb from './components/Asset_DB/AssetDb';
+
 import fetchAndStoreUsers from './components/modules/fetchAllusers'
 import getAllAsset from './components/modules/getAllAssets'
+import getAllcustomers from './components/modules/getAllcustomers';
+
 import Editassets from './components/Asset_DB/Editallassets'
-import CustomerDb from './components/Customer_DB/Allcustomers'
+import CustomerDb from './components/Customer_DB/CustomerDb'
+import EditCustomer from './components/Customer_DB/Editcustomers'
 
 function App() {
   useState(() => {
     window.onload = () => {
       fetchAndStoreUsers();
       getAllAsset();
+      getAllcustomers();
     }
   })
+  
   return (
     <Router>
       <Routes>
@@ -25,8 +31,10 @@ function App() {
         <Route path="/manage-user" element={<Manageuser />} />
         <Route path="/asset-db" element={<AssetDb />} />
         <Route path="/customer-db" element={<CustomerDb />} />
+
         <Route path="/user/:userId" element={<EditUserdetails />} />
         <Route path="/asset/:assetId" element={<Editassets />} />
+        <Route path="/customer/:customerId" element={<EditCustomer />} />
       </Routes>
     </Router>
   );

@@ -1,92 +1,58 @@
-import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import axios from 'axios';
-import fetchAndStoreUsers from '../modules/fetchAllusers';
-// import getAllAsset from '../modules/getAllAssets';
-// import Allassets from './Allassets'
-import Nav from '../TopNav'
-
-function AssetDb() {
-  const { register, handleSubmit, formState: { errors } } = useForm();
-  const [isLoading, setIsLoading] = useState(false); // Loading state
-  const [showForm, setShowForm] = useState(false); // Form visibility state
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 
-  const onSubmit = async (data) => {
-    setIsLoading(true);
-    try {
+function customerProfile() {
+    const [allcustomers, setAllcustomers] = useState([]);
+    const [editablecustomer, setEditablecustomer] = useState({});
+    const navigate = useNavigate();
 
-      const response = await axios.post('https://binarysystemsbackend-mtt8.onrender.com/api/addAsset', data)
-      // const response = await axios.post('http://localhost:3000/api/addAsset', data)
-      console.log(response.data)
-      getAllAsset();
-      setIsLoading(false);
-      setShowForm(false);
-    } catch (error) {
-      console.log(error)
-      setIsLoading(false);
+    useEffect(() => {
+        const customerDetails = JSON.parse(localStorage.getItem("AllClients"));
+        if (customerDetails) {
+            setAllcustomers(customerDetails);
+            setEditablecustomer(customerDetails[0] || {});
+        }
+    }, []);
+
+    const handleChange = (e) => {
+        const { name, value, type, checked } = e.target;
+        setEditablecustomer({
+            ...editablecustomer,
+            [name]: type === 'checkbox' ? checked : value,
+        });
+    };
+
+    const handleSave = () => {
+        const updatedcustomers = allcustomers.map(customer =>
+            customer._id === editablecustomer._id ? editablecustomer : customer
+        );
+        localStorage.setItem("getAllcustomers", JSON.stringify(updatedcustomers));
+        console.log('Saved customer details:', editablecustomer);
+    };
+
+    const handleExpand = (customerId) => {
+        navigate(`/customer/${customerId}`);
+    };
+
+    if (!allcustomers.length) {
+        return <div>Loading...</div>;
     }
-  };
 
-  return (
-    <>
-      <Nav />
-      <div className='w-[90vw] sm:w-1/2 m-auto'>
-        <h1 className='my-6 font-bold text-3xl mx-auto w-fit'>Customer <span className='text-cyan-400'>DB</span></h1>
-        {!showForm ? (
-          <button
-            className='bg-neutral-500 py-2 px-3 rounded-xl my-9 fixed bottom-0 right-8 flex justify-between w-20 items-center'
-            onClick={() => setShowForm(true)}
-          >
-            <span>+</span> New
-          </button>
-        ) : null}
-        {showForm && (
-          <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-6'>
-            <div>
-              <label className='block'>Company Name</label>
-              <input
-                {...register('companyName', { required: true })}
-                className='border rounded p-2 w-full bg-transparent'
-              />
-              {errors.brandName && <span className='text-red-500'>Brand Name is required</span>}
+    return (
+            <div className="max-w-md mx-auto mt-10 sm:max-w-[50vw]">
+                {allcustomers.map((customer, index) => (
+                    <div key={index} className="shadow-md rounded-lg overflow-hidden mb-4">
+                        <div
+                            className="border-cyan-500 border-2 w-[90vw] sm:max-w-full rounded-xl p-4 cursor-pointer flex gap-4 items-center"
+                            onClick={() => handleExpand(customer._id)}
+                        >
+                            <span>{customer.companyName}</span>
+                        </div>
+                    </div>
+                ))}
             </div>
-            <div>
-              <label className='block '>Web Address</label>
-              <input
-                {...register('web', { required: true })}
-                className='border rounded p-2 w-full bg-transparent'
-              />
-              {errors.productName && <span className='text-red-500'>Product Name is required</span>}
-            </div>
-            <div>
-              <label className='block '>Email Address</label>
-              <input
-                {...register('email', { required: true })}
-                className='border rounded p-2 w-full bg-transparent'
-              />
-              {errors.category && <span className='text-red-500'>Category is required</span>}
-            </div>
-            <button
-              type="submit"
-              className="w-2/3 m-auto p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-              disabled={isLoading} // Disable button when loading
-            >
-              {isLoading ? (
-                <div className="flex justify-center items-center gap-3">
-                  <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 border-dotted rounded-full" role="status"></div>
-                  <span className="breathing">Loading...</span>
-                </div>
-              ) : (
-                'Add '
-              )}
-            </button>
-          </form>
-        )}
-        {!showForm && <div>Loading...</div>}
-      </div>
-    </> 
-  );
+    );
 }
 
-export default AssetDb;
+export default customerProfile;
