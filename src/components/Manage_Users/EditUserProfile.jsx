@@ -113,18 +113,18 @@ function UserDetail() {
                                 )
                             ))}
                             <button
-                                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                className="bg-slate-300 w-full hover:bg-slate-200 text-purple-500 sm:font-bold  py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                                 type="button"
                                 onClick={handleSave}
                             >
-                                Save
-                            </button>
+                                UPDATE
+                            </button><br /><br />
                             <button
-                                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-4"
+                                className="bg-slate-300 text-red-400 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline block"
                                 type="button"
                                 onClick={handleDelete}
                             >
-                                Delete
+                                DELETE
                             </button>
                         </form>
                     )}

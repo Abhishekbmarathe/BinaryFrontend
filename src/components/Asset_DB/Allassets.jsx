@@ -44,7 +44,7 @@ function AssetProfile() {
                 {allassets.map((asset, index) => (
                     <div key={index} className="shadow-md rounded-lg overflow-hidden mb-4">
                         <div
-                            className="border-cyan-500 border-2 w-[90vw] sm:max-w-full rounded-xl p-4 cursor-pointer flex gap-4 items-center"
+                            className="border-slate-300 border-2 w-[90vw] sm:max-w-full rounded-[8px] p-4 cursor-pointer flex gap-4 items-center"
                             onClick={() => handleExpand(asset._id)}
                         >
                             <span>{asset.category}</span>

@@ -106,7 +106,7 @@ function AssetDetail() {
                                                         {key.charAt(0).toUpperCase() + key.slice(1)}
                                                     </label>
                                                     <input
-                                                        className="shadow appearance-none border rounded w-full py-2 px-3 bg-transparent text-white leading-tight focus:outline-none focus:shadow-outline sm:py-4 sm:rounded-xl"
+                                                        className="shadow appearance-none border-2  rounded w-full py-4 px-3 bg-transparent text-white leading-tight focus:outline-none focus:shadow-outline sm:py-4 sm:rounded-xl"
                                                         type="text"
                                                         id={`${key}-${idx}`}
                                                         name={key}
@@ -119,18 +119,18 @@ function AssetDetail() {
                                     )
                                 ))}
                                 <button
-                                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                    className="w-full block bg-slate-200 hover:bg-slate-100 text-purple-600 py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                                     type="button"
                                     onClick={handleSave}
                                 >
-                                    Save
-                                </button>
+                                    UPDATE
+                                </button><br />
                                 <button
-                                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-4"
+                                    className="block bg-slate-200 hover:bg-slate-100 text-red-400 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                                     type="button"
                                     onClick={handleDelete}
                                 >
-                                    Delete
+                                    DELETE
                                 </button>
                             </form>
                         )}

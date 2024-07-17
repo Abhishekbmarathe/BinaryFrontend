@@ -33,13 +33,13 @@ function AssetDb() {
     <>
       <Nav />
       <div className='w-[90vw] sm:w-1/2 m-auto'>
-        <h1 className='my-6 font-bold text-3xl mx-auto w-fit'>Customer <span className='text-cyan-400'>DB</span></h1>
+        <h1 className='my-6 font-bold text-3xl mx-auto w-fit'>Customer <span className='text-red-400'>DB</span></h1>
         {!showForm ? (
           <button
             className='bg-neutral-500 py-2 px-3 rounded-xl my-9 fixed bottom-0 right-8 flex justify-between w-20 items-center'
             onClick={() => setShowForm(true)}
           >
-            <span>+</span> New
+            <span className='text-red-400 font-bold text-xl'>+</span> New
           </button>
         ) : null}
         {showForm && (
@@ -48,7 +48,7 @@ function AssetDb() {
               <label className='block'>Company Name</label>
               <input
                 {...register('companyName', { required: true })}
-                className='border rounded p-2 w-full bg-transparent'
+                className='border-2 rounded p-3 w-full bg-transparent'
               />
               {errors.companyName && <span className='text-red-500'>Company Name is required</span>}
             </div>
@@ -56,7 +56,7 @@ function AssetDb() {
               <label className='block '>Web Address</label>
               <input
                 {...register('web', { required: true })}
-                className='border rounded p-2 w-full bg-transparent'
+                className='border-2 rounded p-3 w-full bg-transparent'
               />
               {errors.web && <span className='text-red-500'>Web Address is required</span>}
             </div>
@@ -64,27 +64,29 @@ function AssetDb() {
               <label className='block '>Email Address</label>
               <input
                 {...register('email', { required: true })}
-                className='border rounded p-2 w-full bg-transparent'
+                className='border-2 rounded p-3 w-full bg-transparent'
               />
               {errors.email && <span className='text-red-500'>Email Address is required</span>}
             </div>
             <div>
               <label className='block font-bold text-2xl my-2'>Contact Information</label>
               {fields.map((item, index) => (
-                <div key={item.id} className='flex gap-4'>
+                <div key={item.id} className=''>
                   <div>
-                    <label className='block'>Contact Name</label>
-                    <input
-                      {...register(`contacts.${index}.name`, { required: true })}
-                      className='border rounded p-2 w-full bg-transparent'
+                    {/* <label className='block'>Contact Name</label> */}
+                    <input  
+                      {...register(`contacts.${index}.name`)}
+                      className=' border-b-2  pt-4 pl-2 pb-1 w-full bg-transparent outline-none'
+                      placeholder={`Name${index+1}`}
                     />
                     {errors.contacts && errors.contacts[index] && errors.contacts[index].name && <span className='text-red-500'>Contact Name is required</span>}
                   </div>
                   <div>
-                    <label className='block'>Contact Number</label>
+                    {/* <label className='block'>Contact Number</label> */}
                     <input
-                      {...register(`contacts.${index}.number`, { required: true })}
-                      className='border rounded p-2 w-full bg-transparent'
+                      {...register(`contacts.${index}.number`)}
+                      className='border-b-2  pt-4 pl-2 pb-1 w-full bg-transparent outline-none'
+                      placeholder={`Number${index+1}`}
                     />
                     {errors.contacts && errors.contacts[index] && errors.contacts[index].number && <span className='text-red-500'>Contact Number is required</span>}
                   </div>
@@ -92,10 +94,10 @@ function AssetDb() {
               ))}
               <button
                 type='button'
-                className='bg-blue-500 text-white p-2 rounded mt-2'
+                className=' text-red-400 p-2 rounded mt-2'
                 onClick={() => append({ name: '', number: '' })}
               >
-                Add Contact
+                + Add Contact
               </button>
             </div>
             <button

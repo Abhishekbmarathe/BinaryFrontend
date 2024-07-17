@@ -32,13 +32,13 @@ function AssetDb() {
     <>
       <Nav />
       <div className='w-[90vw] sm:w-1/2 m-auto'>
-        <h1 className='my-6 font-bold text-3xl mx-auto w-fit'>Asset <span className='text-cyan-400'>DB</span></h1>
+        <h1 className='my-6 font-bold text-3xl mx-auto w-fit'>Asset <span className='text-red-400'>DB</span></h1>
         {!showForm ? (
           <button
             className='bg-neutral-500 py-2 px-3 rounded-xl my-9 fixed bottom-0 right-8 flex justify-between w-20 items-center'
             onClick={() => setShowForm(true)}
           >
-            <span>+</span> New
+            <span className='text-red-400 text-xl font-bold' >+</span> New
           </button>
         ) : null}
         {showForm && (
@@ -47,7 +47,7 @@ function AssetDb() {
               <label className='block'>Brand Name</label>
               <input
                 {...register('brandName', { required: true })}
-                className='border rounded p-2 w-full bg-transparent'
+                className='border-2 rounded p-3 w-full bg-transparent'
               />
               {errors.brandName && <span className='text-red-500'>Brand Name is required</span>}
             </div>
@@ -55,7 +55,7 @@ function AssetDb() {
               <label className='block '>Product Name</label>
               <input
                 {...register('productName', { required: true })}
-                className='border rounded p-2 w-full bg-transparent'
+                className='border-2 rounded p-3 w-full bg-transparent'
               />
               {errors.productName && <span className='text-red-500'>Product Name is required</span>}
             </div>
@@ -63,13 +63,13 @@ function AssetDb() {
               <label className='block '>Category</label>
               <input
                 {...register('category', { required: true })}
-                className='border rounded p-2 w-full bg-transparent'
+                className='border-2 rounded p-3 w-full bg-transparent'
               />
               {errors.category && <span className='text-red-500'>Category is required</span>}
             </div>
             <button
               type="submit"
-              className="w-full p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+              className="w-full p-2 bg-slate-200 text-purple-500 rounded-md hover:bg-slate-100"
               disabled={isLoading} // Disable button when loading
             >
               {isLoading ? (
@@ -78,7 +78,7 @@ function AssetDb() {
                   <span className="breathing">Loading...</span>
                 </div>
               ) : (
-                'Submit'
+                'CREATE '
               )}
             </button>
           </form>
