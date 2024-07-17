@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import fetchAndStoreUsers from '../modules/fetchAllusers';
-import getAllAsset from '../modules/getAllAssets';
-import Allassets from './Allassets'
+// import getAllAsset from '../modules/getAllAssets';
+// import Allassets from './Allassets'
 import Nav from '../TopNav'
 
 function AssetDb() {
@@ -32,7 +32,7 @@ function AssetDb() {
     <>
       <Nav />
       <div className='w-[90vw] sm:w-1/2 m-auto'>
-        <h1 className='my-6 font-bold text-3xl mx-auto w-fit'>Asset <span className='text-cyan-400'>DB</span></h1>
+        <h1 className='my-6 font-bold text-3xl mx-auto w-fit'>Customer <span className='text-cyan-400'>DB</span></h1>
         {!showForm ? (
           <button
             className='bg-neutral-500 py-2 px-3 rounded-xl my-9 fixed bottom-0 right-8 flex justify-between w-20 items-center'
@@ -44,32 +44,32 @@ function AssetDb() {
         {showForm && (
           <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-6'>
             <div>
-              <label className='block'>Brand Name</label>
+              <label className='block'>Company Name</label>
               <input
-                {...register('brandName', { required: true })}
+                {...register('companyName', { required: true })}
                 className='border rounded p-2 w-full bg-transparent'
               />
               {errors.brandName && <span className='text-red-500'>Brand Name is required</span>}
             </div>
             <div>
-              <label className='block '>Product Name</label>
+              <label className='block '>Web Address</label>
               <input
-                {...register('productName', { required: true })}
+                {...register('web', { required: true })}
                 className='border rounded p-2 w-full bg-transparent'
               />
               {errors.productName && <span className='text-red-500'>Product Name is required</span>}
             </div>
             <div>
-              <label className='block '>Category</label>
+              <label className='block '>Email Address</label>
               <input
-                {...register('category', { required: true })}
+                {...register('email', { required: true })}
                 className='border rounded p-2 w-full bg-transparent'
               />
               {errors.category && <span className='text-red-500'>Category is required</span>}
             </div>
             <button
               type="submit"
-              className="w-full p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+              className="w-2/3 m-auto p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
               disabled={isLoading} // Disable button when loading
             >
               {isLoading ? (
@@ -78,12 +78,12 @@ function AssetDb() {
                   <span className="breathing">Loading...</span>
                 </div>
               ) : (
-                'Submit'
+                'Add '
               )}
             </button>
           </form>
         )}
-        {!showForm && <Allassets />}
+        {!showForm && <div>Loading...</div>}
       </div>
     </> 
   );

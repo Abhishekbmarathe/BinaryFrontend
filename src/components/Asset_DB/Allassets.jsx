@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+
 function AssetProfile() {
     const [allassets, setAllassets] = useState([]);
     const [editableasset, setEditableasset] = useState({});
@@ -39,18 +40,18 @@ function AssetProfile() {
     }
 
     return (
-        <div className="max-w-md mx-auto mt-10 sm:max-w-[50vw]">
-            {allassets.map((asset, index) => (
-                <div key={index} className="shadow-md rounded-lg overflow-hidden mb-4">
-                    <div
-                        className="border-cyan-500 border-2 w-[90vw] sm:max-w-full rounded-xl p-4 cursor-pointer flex gap-4 items-center"
-                        onClick={() => handleExpand(asset._id)}
-                    >
-                        <span>{asset.category}</span>
+            <div className="max-w-md mx-auto mt-10 sm:max-w-[50vw]">
+                {allassets.map((asset, index) => (
+                    <div key={index} className="shadow-md rounded-lg overflow-hidden mb-4">
+                        <div
+                            className="border-cyan-500 border-2 w-[90vw] sm:max-w-full rounded-xl p-4 cursor-pointer flex gap-4 items-center"
+                            onClick={() => handleExpand(asset._id)}
+                        >
+                            <span>{asset.category}</span>
+                        </div>
                     </div>
-                </div>
-            ))}
-        </div>
+                ))}
+            </div>
     );
 }
 

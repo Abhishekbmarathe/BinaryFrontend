@@ -20,11 +20,13 @@ const Login = () => {
         try {
             console.log(data);
             const response = await axios.post('https://binarysystemsbackend-mtt8.onrender.com/api/login', data);
+            // const response = await axios.post('http://localhost:3000/api/login', data);
             if (response.status === 200) {
                 console.log(response.data);
                 localStorage.removeItem("allUsers");
                 if (data.username.trim() === "Master") {
                     await axios.get("https://binarysystemsbackend-mtt8.onrender.com/api/getallusers")
+                    // await axios.get("http://localhost:3000/api/getallusers")
                         .then((response) => {
                             console.log("All Users:", response.data);
                             localStorage.setItem("allUsers", JSON.stringify(response.data));
@@ -34,6 +36,7 @@ const Login = () => {
                             alert("Something went wrong fetching all users.");
                         });
                     await axios.get("https://binarysystemsbackend-mtt8.onrender.com/api/getAllAsset")
+                    // await axios.get("http://localhost:3000/api/getAllAsset")
                         .then((response) => {
                             console.log("All Assets:", response.data);
                             localStorage.setItem("getAllAssets", JSON.stringify(response.data));

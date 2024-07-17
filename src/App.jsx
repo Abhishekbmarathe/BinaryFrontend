@@ -8,6 +8,7 @@ import AssetDb from './components/Asset_DB/AssetDb';
 import fetchAndStoreUsers from './components/modules/fetchAllusers'
 import getAllAsset from './components/modules/getAllAssets'
 import Editassets from './components/Asset_DB/Editallassets'
+import CustomerDb from './components/Customer_DB/Allcustomers'
 
 function App() {
   useState(() => {
@@ -23,6 +24,7 @@ function App() {
         <Route path="/server/Home" element={<Home />} />
         <Route path="/manage-user" element={<Manageuser />} />
         <Route path="/asset-db" element={<AssetDb />} />
+        <Route path="/customer-db" element={<CustomerDb />} />
         <Route path="/user/:userId" element={<EditUserdetails />} />
         <Route path="/asset/:assetId" element={<Editassets />} />
       </Routes>

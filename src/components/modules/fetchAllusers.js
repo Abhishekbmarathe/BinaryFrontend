@@ -2,6 +2,7 @@
 
 function fetchAndStoreUsers() {
     const apiUrl = 'https://binarysystemsbackend-mtt8.onrender.com/api/getallusers';
+    // const apiUrl = 'http://localhost:3000/api/getallusers';
 
     fetch(apiUrl)
         .then(response => {
