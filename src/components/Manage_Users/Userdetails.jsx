@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import User from '../../assets/User'
+
 
 function Userdetails() {
     // Total number of Users Admins and Technicians
@@ -34,7 +36,7 @@ function Userdetails() {
     const renderCard = (title, count1, label1, count2, label2, count3, label3) => (
         <div className="relative w-[90vw] sm:w-72">
             <div className="w-full  bg-gray-800 /shadow-custom-red rounded-lg transition-transform duration-300 transform rotate-0 z-30">
-                    <h2 className='mt-1 italic font-extrabold'>{title}</h2>
+                <h2 className='mt-1 italic font-extrabold'>{title}</h2>
                 <div className="p-5 text-center flex ">
                     <div className='flex flex-col items-center justify-center shadow-lg w-[80px] rounded mx-auto'>
                         <h1 className='text-5xl font-bold'>{count1}</h1>
@@ -53,8 +55,9 @@ function Userdetails() {
                         </div>
                     )}
                 </div>
+
             </div>
-           
+
         </div>
     );
 
@@ -62,13 +65,11 @@ function Userdetails() {
         <div className='text-gray-300 sm:mx-[25%] sm:w-[70%]'>
             <div className='flex gap-3 w-fit px-6 items-center mt-8'>
                 <div className='user'>
-                    <lord-icon
-                        className="user"
-                        src="https://cdn.lordicon.com/hrjifpbq.json"
-                        trigger="hover"
-                        colors="primary:#d7d7d7ba"
-                    >
-                    </lord-icon>
+                    <User />
+                    <div className='px-8'>
+                        <h1 className='text-2xl'>{userName}</h1>
+                        <h4 className='text-red-400'>{role}</h4>
+                    </div>
                 </div>
                 <div>
                     <div className='flex flex-col sm:flex-row sm:text-2xl sm:my-4'>
@@ -85,10 +86,7 @@ function Userdetails() {
                     </div>
                 </div>
             </div>
-            <div className='px-8'>
-                <h1 className='text-2xl'>{userName}</h1>
-                <h4 className='text-red-400'>{role}</h4>
-            </div>
+
 
             <hr className='border-2 w-3/5 m-auto rounded-full my-8 sm:w-[100%] ' />
 

@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Ticket from '../assets/Ticket.jsx'
+import Assign from '../assets/Assignticket'
 
 function Sidepannel() {
     const [cardData, setCardData] = useState([
         { content: 'Manage User', endpoint: '/manage-user', permission: 'manageUser' },
-        { content: 'Create Ticket', endpoint: '/create-ticket', permission: 'createTicket' },
+        { content: 'Create Ticket', endpoint: '/create-ticket', permission: 'createTicket'},
         { content: 'Manage Ticket', endpoint: '/manage-ticket', permission: 'assignTicket' },
         { content: 'Manage Finance', endpoint: '/report', permission: 'manageFinance' },
         { content: 'Customer DB', endpoint: '/customer-db', permission: 'createClient' },
@@ -53,8 +55,10 @@ function Sidepannel() {
                                 onClick={() => navigate(card.endpoint)}
                             >
                                 <p className="text-[14px] text-left">{card.content}</p>
+                                
                             </button>
                         ))}
+                        
                     </div>
                 </div>
             </div>

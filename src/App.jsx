@@ -13,6 +13,7 @@ import getAllcustomers from './components/modules/getAllcustomers';
 import Editassets from './components/Asset_DB/Editallassets'
 import CustomerDb from './components/Customer_DB/CustomerDb'
 import EditCustomer from './components/Customer_DB/Editcustomers'
+import CustomerDetail from './components/Customer_DB/Customerdetails'
 
 function App() {
   useState(() => {
@@ -34,7 +35,9 @@ function App() {
 
         <Route path="/user/:userId" element={<EditUserdetails />} />
         <Route path="/asset/:assetId" element={<Editassets />} />
-        <Route path="/customer/:customerId" element={<EditCustomer />} />
+
+        <Route path="/customer/:customerId" element={<CustomerDetail />} />
+        <Route path="/customer/edit/:customerId" element={<EditCustomer />} />
       </Routes>
     </Router>
   );

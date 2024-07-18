@@ -15,14 +15,6 @@ function customerProfile() {
         }
     }, []);
 
-    const handleChange = (e) => {
-        const { name, value, type, checked } = e.target;
-        setEditablecustomer({
-            ...editablecustomer,
-            [name]: type === 'checkbox' ? checked : value,
-        });
-    };
-
     const handleSave = () => {
         const updatedcustomers = allcustomers.map(customer =>
             customer._id === editablecustomer._id ? editablecustomer : customer
