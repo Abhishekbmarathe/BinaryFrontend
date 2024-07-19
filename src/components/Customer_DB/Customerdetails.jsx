@@ -1,5 +1,10 @@
+// CustomerDetail.jsx
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import Edit from '../../assets/Edit'
+import Company from '../../assets/Companyicon'
+import Link from '../../assets/Link'
+import Email from '../../assets/Email'
 
 function CustomerDetail() {
     const { customerId } = useParams();
@@ -18,30 +23,47 @@ function CustomerDetail() {
         navigate(`/customer/edit/${customerId}`);
     };
 
+    const handleNewCustomer = () => {
+        navigate('/customer/new');
+    };
+
     if (!customer) {
         return <div>Loading...</div>;
     }
 
     return (
-        <div className="max-w-md mx-auto mt-10 sm:max-w-[50vw]">
+        <div className="max-w-md mx-auto mt-0 sm:max-w-[50vw]">
             <div className="shadow-md rounded-lg overflow-hidden mb-4 p-4">
-                <h2 className="text-xl mb-4">Customer Details</h2>
-                <div className="mb-4">
-                    <label className="block mb-2">Company Name</label>
-                    <p className="w-full border p-2 bg-transparent">{customer.companyName}</p>
+                <div className='flex justify-between'>
+                    <h2 className="text-2xl mb-4 items-center w-fit font-bold ">Customer <span className='text-red-400'>Details</span></h2>
+                    <button onClick={handleEdit} className="scale-[1.5]">
+                        <Edit />
+                    </button>
                 </div>
-                <div className="mb-4">
-                    <label className="block mb-2">Email</label>
-                    <p className="w-full border p-2 bg-transparent">{customer.email}</p>
+                <div className='w-fit scale-[3.5] my-8 m-auto'>
+                    <Company />
                 </div>
-                <div className="mb-4">
-                    <label className="block mb-2">Website</label>
-                    <p className="w-full border p-2 bg-transparent">{customer.web}</p>
+
+                <div className="mb-4 flex flex-col items-center">
+                    <p className="">{customer.companyName}</p>
+                    <div className='flex'>
+                        <Link />
+                        <p className="">{customer.email}</p>
+                    </div>
+                    <div className='flex'>
+                        <Email />
+                        <p className="">{customer.web}</p>
+                    </div>
                 </div>
-                <button onClick={handleEdit} className="bg-blue-500 text-white px-4 py-2 rounded">
-                    Edit
-                </button>
+                <h1 className='text-red-400'>Assets</h1>
             </div>
+
+            <button
+                className='bg-neutral-500 py-2 px-3 rounded-xl my-9 fixed bottom-0 right-8 flex justify-between w-20 items-center'
+                onClick={handleNewCustomer}
+            >
+                <span className='text-red-400 text-xl font-bold'>+</span> New
+            </button>
         </div>
     );
 }
