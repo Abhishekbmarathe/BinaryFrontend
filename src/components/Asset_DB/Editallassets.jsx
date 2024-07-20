@@ -29,13 +29,9 @@ function AssetDetail() {
         try {
             const conf = confirm("Are you sure to save the changes ?");
             if (conf) {
-                console.log(asset);
                 const payload = { ...asset, id: asset._id };
-                console.log(payload); // Check if `id` is included
-
                 const response = await axios.post('https://binarysystemsbackend-mtt8.onrender.com/api/updateAsset', payload);
                 // const response = await axios.post('http://localhost:3000/api/updateAsset', payload);
-                console.log('Saved asset details:', response.data);
                 fetchAndStoreassets();
                 alert("Saved successfully...");
                 navigate('/asset-db');
@@ -54,7 +50,6 @@ function AssetDetail() {
             const conf = confirm("Are you sure to delete this asset ?");
             if (conf) {
                 await axios.post('https://binarysystemsbackend-mtt8.onrender.com/api/deleteAsset', { id: asset._id });
-                console.log('Asset deleted');
                 fetchAndStoreassets();
                 alert("Asset deleted successfully...");
                 navigate('/asset-db');
@@ -74,7 +69,7 @@ function AssetDetail() {
     return (
         <>
             <div className="max-w-md mx-auto mt-10 sm:max-w-[50vw]">
-            <nav />
+                <nav />
                 <div className="shadow-md rounded-lg overflow-hidden mb-4">
                     <div className="p-4">
                         {isLoading && (

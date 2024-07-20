@@ -20,7 +20,6 @@ function Sidepannel() {
     useEffect(() => {
         const userDet = JSON.parse(localStorage.getItem('userDet'));
         const user = userDet.user || userDet;
-        console.log("alluserssssss : ",userDet)
         const permissions = {
             createTicket: user.createTicket,
             assignTicket: user.assignTicket,

@@ -18,13 +18,13 @@ function AssetDb() {
     setIsLoading(true);
     try {
       const response = await axios.post('https://binarysystemsbackend-mtt8.onrender.com/api/addClient', data);
-      console.log(response.data);
       getAllcustomers();
       alert("Customer added successfully...")
       setIsLoading(false);
       setShowForm(false);
     } catch (error) {
-      console.log(error);
+      alert(error);
+
       setIsLoading(false);
     }
   };
@@ -74,10 +74,10 @@ function AssetDb() {
                 <div key={item.id} className=''>
                   <div>
                     {/* <label className='block'>Contact Name</label> */}
-                    <input  
+                    <input
                       {...register(`contacts.${index}.name`)}
                       className=' border-b-2  pt-4 pl-2 pb-1 w-full bg-transparent outline-none'
-                      placeholder={`Name${index+1}`}
+                      placeholder={`Name${index + 1}`}
                     />
                     {errors.contacts && errors.contacts[index] && errors.contacts[index].name && <span className='text-red-500'>Contact Name is required</span>}
                   </div>
@@ -86,7 +86,7 @@ function AssetDb() {
                     <input
                       {...register(`contacts.${index}.number`)}
                       className='border-b-2  pt-4 pl-2 pb-1 w-full bg-transparent outline-none'
-                      placeholder={`Number${index+1}`}
+                      placeholder={`Number${index + 1}`}
                     />
                     {errors.contacts && errors.contacts[index] && errors.contacts[index].number && <span className='text-red-500'>Contact Number is required</span>}
                   </div>
