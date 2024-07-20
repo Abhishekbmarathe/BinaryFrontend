@@ -9,8 +9,12 @@ export default {
       boxShadow: {
         'custom-red': 'red 0px 0px 4px 3px',
       },
+      colors: {
+        'customColor': 'rgb(0 197 255)', // Green color
+      },
     },
   },
   plugins: [],
 }
 
+  

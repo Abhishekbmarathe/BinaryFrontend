@@ -35,7 +35,7 @@ function CustomerDetail() {
         <div className="max-w-md mx-auto mt-0 sm:max-w-[50vw]">
             <div className="shadow-md rounded-lg overflow-hidden mb-4 p-4">
                 <div className='flex justify-between'>
-                    <h2 className="text-2xl mb-4 items-center w-fit font-bold ">Customer <span className='text-red-400'>Details</span></h2>
+                    <h2 className="text-2xl mb-4 items-center w-fit font-bold ">Customer <span className='text-customColor'>Details</span></h2>
                     <button onClick={handleEdit} className="scale-[1.5]">
                         <Edit />
                     </button>
@@ -55,14 +55,14 @@ function CustomerDetail() {
                         <p className="">{customer.web}</p>
                     </div>
                 </div>
-                <h1 className='text-red-400'>Assets</h1>
+                <h1 className='text-customColor'>Assets</h1>
             </div>
 
             <button
                 className='bg-neutral-500 py-2 px-3 rounded-xl my-9 fixed bottom-0 right-8 flex justify-between w-20 items-center'
                 onClick={handleNewCustomer}
             >
-                <span className='text-red-400 text-xl font-bold'>+</span> New
+                <span className='text-customColor text-xl font-bold'>+</span> New
             </button>
         </div>
     );

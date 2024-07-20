@@ -68,20 +68,20 @@ function Userdetails() {
                     <User />
                     <div className='px-8'>
                         <h1 className='text-2xl'>{userName}</h1>
-                        <h4 className='text-red-400'>{role}</h4>
+                        <h4 className='text-customColor'>{role}</h4>
                     </div>
                 </div>
                 <div>
                     <div className='flex flex-col sm:flex-row sm:text-2xl sm:my-4'>
-                        <label className='text-red-400'>Name:</label>
+                        <label className='text-customColor'>Name:</label>
                         <span className='mx-3'>{currentUser}</span>
                     </div>
                     <div className='flex flex-col sm:flex-row sm:text-2xl sm:my-4'>
-                        <label className='text-red-400'>Phone no:</label>
+                        <label className='text-customColor'>Phone no:</label>
                         <span className='mx-3 '>{phone}</span>
                     </div>
                     <div className='flex flex-col sm:flex-row sm:text-2xl sm:my-4'>
-                        <label className='text-red-400'>Email:</label>
+                        <label className='text-customColor'>Email:</label>
                         <span className='mx-3 '>{email}@gmail.com</span>
                     </div>
                 </div>

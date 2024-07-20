@@ -38,9 +38,9 @@ function Manageuser() {
     return (
         <><Nav />
             <div className='flex flex-col justify-center items-center sm:w-1/2 sm:m-auto'>
-                <h1 className='my-6 font-bold text-3xl'>Manage <span className='text-red-400'> Users</span></h1>
+                <h1 className='my-6 font-bold text-3xl'>Manage <span className='text-customColor'> Users</span></h1>
                 {!showForm ? (
-                    <button className='bg-neutral-500 py-2 px-3 rounded-xl my-9 fixed bottom-0 right-8 flex justify-between w-20 items-center ' onClick={() => setShowForm(true)}><span className='text-red-400 font-bold text-xl'>+</span> New</button>
+                    <button className='bg-neutral-500 py-2 px-3 rounded-xl my-9 fixed bottom-0 right-8 flex justify-between w-20 items-center ' onClick={() => setShowForm(true)}><span className='text-customColor font-bold text-xl'>+</span> New</button>
                 ) : null}
                 {showForm && (
                     <div className="mx-auto p-4 w-full text-white shadow-md rounded-lg">
@@ -103,7 +103,7 @@ function Manageuser() {
                                 {errors.password && <span className="text-red-500">Password is required</span>}
                             </div>
                             <div className="mb-4">
-                                <label className="block text-red-400">User Type</label>
+                                <label className="block text-customColor">User Type</label>
                                 <div className="mt-2">
                                     <label className="inline-flex items-center">
                                         <input
@@ -132,7 +132,7 @@ function Manageuser() {
 
                             {userType === 'admin' && (
                                 <div className="mb-4">
-                                    <label className="block text-red-400">Rights</label>
+                                    <label className="block text-customColor">Rights</label>
                                     <div className="mt-2">
                                         <label className="flex items-center ">
                                             <input

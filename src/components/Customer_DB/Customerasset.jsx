@@ -2,20 +2,23 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 function NewCustomerForm() {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const navigate = useNavigate();
 
-    const onSubmit = (data) => {
-        const allCustomers = JSON.parse(localStorage.getItem("AllClients")) || [];
-        const newCustomer = {
-            _id: new Date().getTime().toString(),
-            ...data
-        };
-        allCustomers.push(newCustomer);
-        localStorage.setItem("AllClients", JSON.stringify(allCustomers));
-        navigate('/customers'); // Navigate back to the customer list after creating the new customer
+    const onSubmit = async (data) => {
+        try {
+            const response = await axios.post('https://binarysystemsbackend-mtt8.onrender.com/api/createClientAsset', data);
+            console.log(response.data);
+            alert("Asset created successfullyc")
+            navigate('/customers'); // Navigate back to the customer list after creating the new customer
+        } catch (error) {
+            console.error('There was an error creating the client asset!', error);
+            alert('There was an error creating the client asset!', error)
+            
+        }
     };
 
     return (
@@ -50,7 +53,7 @@ function NewCustomerForm() {
                         />
                         {errors.productName && <span className="text-red-500">Product Name is required</span>}
                     </div>
-                    <button type="submit"  className="bg-slate-200 text-purple-600 font-bold w-full mt-16 px-4 py-2 rounded">
+                    <button type="submit" className="bg-slate-200 text-purple-600 font-bold w-full mt-16 px-4 py-2 rounded">
                         CREATE
                     </button>
                 </form>

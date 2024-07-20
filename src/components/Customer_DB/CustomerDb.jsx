@@ -33,13 +33,13 @@ function AssetDb() {
     <>
       <Nav />
       <div className='w-[90vw] sm:w-1/2 m-auto'>
-        <h1 className='my-6 font-bold text-3xl mx-auto w-fit'>Customer <span className='text-red-400'>DB</span></h1>
+        <h1 className='my-6 font-bold text-3xl mx-auto w-fit'>Customer <span className='text-customColor'>DB</span></h1>
         {!showForm ? (
           <button
             className='bg-neutral-500 py-2 px-3 rounded-xl my-9 fixed bottom-0 right-8 flex justify-between w-20 items-center'
             onClick={() => setShowForm(true)}
           >
-            <span className='text-red-400 font-bold text-xl'>+</span> New
+            <span className='text-customColor font-bold text-xl'>+</span> New
           </button>
         ) : null}
         {showForm && (
@@ -94,7 +94,7 @@ function AssetDb() {
               ))}
               <button
                 type='button'
-                className=' text-red-400 p-2 rounded mt-2'
+                className=' text-customColor p-2 rounded mt-2'
                 onClick={() => append({ name: '', number: '' })}
               >
                 + Add Contact
