@@ -14,11 +14,13 @@
     "axios": "^1.7.2",
     "cors": "^2.8.5",
     "http-proxy-middleware": "^3.0.0",
+    "jsbarcode": "^3.11.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.52.0",
     "react-responsive": "^10.0.0",
-    "react-router-dom": "^6.23.1"
+    "react-router-dom": "^6.23.1",
+    "react-webcam": "^7.2.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",

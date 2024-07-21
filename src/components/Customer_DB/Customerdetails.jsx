@@ -1,6 +1,7 @@
 // CustomerDetail.jsx
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import Allassets from './Allassets'
 import Edit from '../../assets/Edit'
 import Company from '../../assets/Companyicon'
 import Link from '../../assets/Link'
@@ -24,7 +25,7 @@ function CustomerDetail() {
     };
 
     const handleNewCustomer = () => {
-        navigate('/customer/new');
+        navigate('/customer/new', { state: { companyName: customer?.companyName, customerId: customerId } });
     };
 
     if (!customer) {
@@ -55,8 +56,9 @@ function CustomerDetail() {
                         <p className="">{customer.web}</p>
                     </div>
                 </div>
-                <h1 className='text-customColor'>Assets</h1>
+                <h1 className='text-customColor text-xl'>Assets</h1>
             </div>
+                <Allassets companyName={customer?.companyName}/>
 
             <button
                 className='bg-neutral-500 py-2 px-3 rounded-xl my-9 fixed bottom-0 right-8 flex justify-between w-20 items-center'
