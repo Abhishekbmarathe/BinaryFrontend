@@ -16,7 +16,8 @@ function AssetDetails() {
             productName,
             brand,
             category,
-            serialNo
+            serialNo,
+            _id
         }
     });
 
@@ -26,6 +27,7 @@ function AssetDetails() {
     });
 
     const [scanningIndex, setScanningIndex] = useState(null);
+    const [confirmDelete, setConfirmDelete] = useState(false);
     const scannerRef = useRef(null);
 
     useEffect(() => {
@@ -49,17 +51,35 @@ function AssetDetails() {
     }, [scanningIndex]);
 
     const handleUpdate = async (data) => {
-        console.log(data);
+        // Rename _id to id and convert serialNo to an array of values
+        const updatedData = {
+            ...data,
+            id: _id,
+            serialNo: data.serialNo.map(item => item.value) // Convert serialNo to an array of values
+        };
+        delete updatedData._id; // Remove _id if present
+
         try {
-            await axios.post('https://binarysystemsbackend-mtt8.onrender.com/api/updateClientAsset', {
-                _id,
-                ...data
-            });
+            await axios.post('https://binarysystemsbackend-mtt8.onrender.com/api/updateClientAsset', updatedData);
             alert('Asset updated successfully');
             navigate(-1);
         } catch (error) {
             console.error('There was an error updating the asset!', error);
             alert('There was an error updating the asset!');
+        }
+    };
+
+    const handleDelete = async (data) => {
+        if (confirm("Are you sure you want to delete this asset?")) {
+            try {
+                // Sending the id in the request body as per backend requirements
+                await axios.post('https://binarysystemsbackend-mtt8.onrender.com/api/deleteClientAsset', { id: data.id });
+                alert('Asset deleted successfully');
+                navigate(-1);
+            } catch (error) {
+                console.error('There was an error deleting the asset!', error);
+                alert('There was an error deleting the asset!');
+            }
         }
     };
     
@@ -79,7 +99,6 @@ function AssetDetails() {
 
     const handleError = (error) => {
         console.error("Error scanning barcode: ", error);
-        // alert("Error scanning barcode. Please ensure the barcode is clearly visible and try again.");
     };
 
     if (!productName || !brand || !category) {
@@ -92,6 +111,8 @@ function AssetDetails() {
             <div className="shadow-md rounded-lg overflow-hidden mb-4 p-4">
                 <h2 className="text-3xl mb-4 font-bold m-auto w-fit">Update <span className='text-customColor'>Asset</span></h2>
                 <form onSubmit={handleSubmit(handleUpdate)}>
+                    <input type="hidden" {...register("id")} value={_id} /> {/* Hidden field for ID */}
+
                     <div className="mb-4">
                         <label className="block mb-1">Category</label>
                         <input
@@ -155,6 +176,13 @@ function AssetDetails() {
 
                     <button type="submit" className="bg-slate-200 text-purple-600 font-bold w-full mt-16 px-4 py-2 rounded">
                         UPDATE
+                    </button>
+                    <button
+                        type="button"
+                        className="bg-red-500 text-white font-bold w-full mt-3 px-4 py-2 rounded"
+                        onClick={handleSubmit(handleDelete)}
+                    >
+                        DELETE
                     </button>
                 </form>
 

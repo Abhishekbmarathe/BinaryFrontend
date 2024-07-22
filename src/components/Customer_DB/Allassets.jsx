@@ -23,10 +23,11 @@ function Allassets({ companyName }) {
         }
     }, [companyName]);
 
-    const handleBrandClick = (productName, brand, category) => {
-        navigate(`/productName/${productName}`, { state: { productName, brand, category } });
+    const handleBrandClick = (productName, brand, category, _id) => {
+        console.log({ productName, brand, category, _id }); // Debugging line
+        navigate(`/productName/${productName}`, { state: { productName, brand, category, _id } });
     };
-
+    
     return (
         <div className="w-[95vw] mx-auto mt-10 sm:max-w-[50vw]">
             <div className="shadow-md rounded-lg overflow-hidden mb-4">
@@ -38,7 +39,7 @@ function Allassets({ companyName }) {
                             <li key={asset._id} className="mb-2">
                                 <p
                                     className="cursor-pointer border rounded m-auto p-3"
-                                    onClick={() => handleBrandClick(asset.productName, asset.brand, asset.category)}
+                                    onClick={() => handleBrandClick(asset.productName, asset.brand, asset.category,asset._id)}
                                 >
                                     {asset.productName}
                                 </p>
