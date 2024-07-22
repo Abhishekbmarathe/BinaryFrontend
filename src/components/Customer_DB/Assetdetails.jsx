@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useForm, useFieldArray } from 'react-hook-form';
 import axios from 'axios';
+import { Html5QrcodeScanner, Html5QrcodeSupportedFormats } from 'html5-qrcode';
 import BottomMenu from './BottomMenu';
 import Camera from '../../assets/camera';
 
 function AssetDetails() {
     const { state } = useLocation();
-    const { productName, brand, category, _id, serialNo = [] } = state || {}; // Ensure _id and serialNo are passed to the state
+    const { productName, brand, category, _id, serialNo = [] } = state || {};
     const navigate = useNavigate();
 
-    const { register, handleSubmit, control, formState: { errors }, reset } = useForm({
+    const { register, handleSubmit, control, formState: { errors }, reset, getValues } = useForm({
         defaultValues: {
             productName,
             brand,
@@ -24,22 +25,61 @@ function AssetDetails() {
         name: "serialNo"
     });
 
+    const [scanningIndex, setScanningIndex] = useState(null);
+    const scannerRef = useRef(null);
+
+    useEffect(() => {
+        if (scanningIndex !== null) {
+            scannerRef.current = new Html5QrcodeScanner(
+                "reader",
+                {
+                    fps: 10,
+                    qrbox: 250,
+                    formatsToSupport: [Html5QrcodeSupportedFormats.QR_CODE, Html5QrcodeSupportedFormats.EAN_13, Html5QrcodeSupportedFormats.CODE_39]
+                },
+                false
+            );
+            scannerRef.current.render(handleBarcodeScan, handleError);
+        }
+        return () => {
+            if (scannerRef.current) {
+                scannerRef.current.clear();
+            }
+        };
+    }, [scanningIndex]);
+
     const handleUpdate = async (data) => {
+        console.log(data);
         try {
             await axios.post('https://binarysystemsbackend-mtt8.onrender.com/api/updateClientAsset', {
                 _id,
                 ...data
             });
             alert('Asset updated successfully');
-            navigate(-1); // Navigate back to the previous page
+            navigate(-1);
         } catch (error) {
             console.error('There was an error updating the asset!', error);
             alert('There was an error updating the asset!');
         }
     };
+    
 
     const handleBack = () => {
-        navigate(-1); // Navigate back to the previous page
+        navigate(-1);
+    };
+
+    const handleBarcodeScan = (decodedText, decodedResult) => {
+        if (decodedText) {
+            const updatedFields = [...fields];
+            updatedFields[scanningIndex].value = decodedText;
+            reset({ ...getValues(), serialNo: updatedFields });
+            setScanningIndex(null);
+        }
+    };
+
+    const handleError = (error) => {
+        console.error("Error scanning barcode: ", error);
+        // alert("Error scanning barcode. Please ensure the barcode is clearly visible and try again.");
     };
 
     if (!productName || !brand || !category) {
@@ -103,7 +143,7 @@ function AssetDetails() {
                                     <button
                                         type="button"
                                         className="absolute right-0 text-customColor text-xs"
-                                        // onClick={() => remove(index)}
+                                        onClick={() => setScanningIndex(index)}
                                     >
                                         <Camera />
                                         <span>Scan</span>
@@ -125,6 +165,20 @@ function AssetDetails() {
                     BACK
                 </button>
             </div>
+
+            {scanningIndex !== null && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+                    <div className="bg-white text-black p-4 rounded-lg">
+                        <div id="reader" style={{ width: "300px" }}></div>
+                        <button
+                            className="bg-red-500 text-white mt-4 px-4 py-2 rounded"
+                            onClick={() => setScanningIndex(null)}
+                        >
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
