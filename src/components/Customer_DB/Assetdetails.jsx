@@ -174,24 +174,24 @@ function AssetDetails() {
                         </ul>
                     </div>
 
-                    <button type="submit" className="bg-slate-200 text-purple-600 font-bold w-full mt-16 px-4 py-2 rounded">
+                    <button type="submit" className="bg-slate-200 text-purple-600 font-bold w-full mt-16 px-4 py-2 rounded-xl">
                         UPDATE
                     </button>
                     <button
                         type="button"
-                        className="bg-red-500 text-white font-bold w-full mt-3 px-4 py-2 rounded"
+                        className="bg-slate-200 text-red-500 font-bold mt-3 px-4 py-2 rounded-xl"
                         onClick={handleSubmit(handleDelete)}
                     >
                         DELETE
                     </button>
                 </form>
 
-                <button
+                {/* <button
                     className="bg-gray-300 text-gray-700 font-bold w-full mt-4 px-4 py-2 rounded mb-16"
                     onClick={handleBack}
                 >
                     BACK
-                </button>
+                </button> */}
             </div>
 
             {scanningIndex !== null && (

@@ -16,6 +16,9 @@ import EditCustomer from './components/Customer_DB/Editcustomers'
 import CustomerDetail from './components/Customer_DB/Customerdetails'
 import CustomerAsset from './components/Customer_DB/Customerasset'
 import Assetdetails from './components/Customer_DB/Assetdetails'
+import CapturePhoto from './components/Customer_DB/CapturePhoto';
+import Addrecord from './components/Customer_DB/Addrecord';
+
 
 
 function App() {
@@ -26,7 +29,7 @@ function App() {
       getAllcustomers();
     }
   })
-  
+
   return (
     <Router>
       <Routes>
@@ -43,7 +46,8 @@ function App() {
         <Route path="/customer/edit/:customerId" element={<EditCustomer />} />
         <Route path="/customer/new" element={<CustomerAsset />} />
         <Route path="/productName/:productName" element={<Assetdetails />} />
-        
+        <Route path="/capturePhoto" element={<CapturePhoto />} />
+        <Route path="/add-record" element={<Addrecord />} />
       </Routes>
     </Router>
   );

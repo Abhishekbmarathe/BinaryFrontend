@@ -3,8 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import Imag from '../../assets/img'
 import Info from '../../assets/info'
 import Serial from '../../assets/serial'
+// import { useNavigate } from 'react-router-dom';
 
 const BottomNavbar = () => {
+
+    const navigate = useNavigate();
+    const capturePhoto =()=>{
+        navigate('/capturePhoto')
+
+    }
+
 
     return (
         <div className=' sm:hidden'>
@@ -14,7 +22,9 @@ const BottomNavbar = () => {
                         <Serial />
                         <span>Serial No.</span>
                     </button>
-                    <button className='flex flex-col items-center'>
+                    <button className='flex flex-col items-center'
+                        onClick={capturePhoto}
+                    >
                         <Imag />
                         <span>Image</span>
                     </button>
