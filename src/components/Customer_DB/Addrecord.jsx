@@ -28,7 +28,7 @@ function NewPage() {
     };
 
     return (
-        <div className='w-screen h-[85vh] flex flex-col'>
+        <div className='w-screen h-[85vh] flex flex-col sm:h-auto'>
             <h1 className="w-fit m-auto font-bold text-2xl my-8">
                 Add <span className="text-customColor">Record</span>
             </h1>
@@ -39,7 +39,7 @@ function NewPage() {
                     </div>
                 )}
             </div>
-            <form onSubmit={handleSubmit(onSubmit)} className='w-[95vw] m-auto'>
+            <form onSubmit={handleSubmit(onSubmit)} className='w-[95vw] sm:w-[50%] m-auto'>
                 <div className='flex flex-wrap items-center gap-14 m-auto mb-5'>
                     <div>
                         <input
