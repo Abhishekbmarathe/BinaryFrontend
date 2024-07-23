@@ -32,7 +32,7 @@ function NewPage() {
         }
 
         try {
-            const response = await axios.post('https://binarysystemsbackend-mtt8.onrender.com/api/assetPhoto', formData, {
+            const response = await axios.post('http://localhost:3000/assetPhoto', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
