@@ -7,7 +7,7 @@ function DisplayAssets() {
     useEffect(() => {
         const fetchAssets = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/assets');
+                const response = await axios.get('https://binarysystemsbackend-mtt8.onrender.com/api/assets');
                 setAssets(response.data);
             } catch (error) {
                 console.error('Error fetching assets:', error);
