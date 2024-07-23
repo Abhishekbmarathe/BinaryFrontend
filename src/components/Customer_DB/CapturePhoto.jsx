@@ -1,6 +1,7 @@
 // CapturePhoto.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Displayallrecords from '../Customer_DB/Displayallrecords';
 
 function CapturePhoto() {
     const navigate = useNavigate();
@@ -14,6 +15,7 @@ function CapturePhoto() {
             >
                 <span className='text-customColor font-bold text-xl'>+</span> New
             </button>
+            <Displayallrecords />
         </div>
     );
 }

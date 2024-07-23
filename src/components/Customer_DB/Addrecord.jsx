@@ -1,15 +1,54 @@
 import React, { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import axios from 'axios';
 import Camera from '../../assets/camera';
-import Imag from '../../assets/img';
+import { useNavigate } from 'react-router-dom';
 
 function NewPage() {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [selectedImage, setSelectedImage] = useState(null);
     const fileInputRef = useRef(null);
 
-    const onSubmit = (data) => {
-        console.log(data);
+    const navigate = useNavigate();
+
+    // Retrieve the assetId from local storage
+    const assetId = localStorage.getItem('assetId'); // Change key if different
+
+    const onSubmit = async (data) => {
+        console.log('Form Data:', data);
+        const formData = new FormData();
+        formData.append('currentDate', data.currentDate);
+        formData.append('description', data.description);
+
+        // Append assetId to the form data
+        if (assetId) {
+            formData.append('assetId', assetId);
+        }
+
+        // Manually get the file input
+        const file = fileInputRef.current?.files[0];
+        if (file) {
+            formData.append('photo', file);
+        }
+
+        try {
+            const response = await axios.post('http://localhost:3000/assetPhoto', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+
+            if (response.status === 200) {
+                alert('Upload successful!');
+                console.log('Upload successful!');
+                navigate(-1);
+            } else {
+                alert('Upload failed');
+                console.error('Upload failed');
+            }
+        } catch (error) {
+            console.error('Error uploading the file:', error);
+        }
     };
 
     const handleClick = () => {
@@ -56,17 +95,17 @@ function NewPage() {
                         <input
                             type="file"
                             id="photo"
+                            name="photo"
                             className="shadow bg-transparent appearance-none border rounded w-[50px] py-[5px] leading-tight focus:outline-none focus:shadow-outline absolute invisible"
                             capture="camera"
-                            {...register('photo'/*, { required: 'Photo is required' }*/)}
                             ref={fileInputRef}
-                            style={{ opacity: 0, zIndex: -1 }} // Hide the file input
+                            style={{ opacity: 0, zIndex: -1 }}
                             onChange={handleImageChange}
                         />
+
                         <div onClick={handleClick} className='w-fit scale-[1.8]'>
                             <Camera />
                         </div>
-                        {/* {errors.photo && <span className="text-red-500">{errors.photo.message}</span>} */}
                     </div>
                 </div>
                 <div className="mb-4">
@@ -76,10 +115,9 @@ function NewPage() {
                     <textarea
                         id="description"
                         className="shadow bg-transparent appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
-                        {...register('description', { required: 'Discription is required' })}
+                        {...register('description', { required: 'Description is required' })}
                     />
                     {errors.description && <span className="text-red-500">{errors.description.message}</span>}
-
                 </div>
                 <button
                     type="submit"

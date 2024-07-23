@@ -21,6 +21,8 @@ function AssetDetails() {
         }
     });
 
+    localStorage.setItem("assetId", _id);
+
     const { fields, append, remove } = useFieldArray({
         control,
         name: "serialNo"
@@ -82,7 +84,7 @@ function AssetDetails() {
             }
         }
     };
-    
+
 
     const handleBack = () => {
         navigate(-1);
