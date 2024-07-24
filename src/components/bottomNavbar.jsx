@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Ticket from '../assets/Ticket.jsx';
+import Assign from '../assets/Assignticket.jsx';
+import Customerdb from '../assets/Customerdb.jsx';
+import User from '../assets/User.jsx';
 
 const BottomNavbar = () => {
     const [cardData, setCardData] = useState([
-        { content: 'Manage User', endpoint: '/manage-user', permission: 'manageUser' },
-        { content: 'Create Ticket', endpoint: '/create-ticket', permission: 'createTicket' },
-        { content: 'Manage Ticket', endpoint: '/manage-ticket', permission: 'assignTicket' },
-        { content: 'Manage Finance', endpoint: '/report', permission: 'manageFinance' },
-        { content: 'Customer DB', endpoint: '/customer-db', permission: 'createClient' },
-        { content: 'Asset DB', endpoint: '/asset-db', permission: 'createAsset' },
+        { content: 'Manage User', endpoint: '/manage-user', permission: 'manageUser', icon: <User size={28} color="rgb(0 197 255)" /> },
+        { content: 'Create Ticket', endpoint: '/create-ticket', permission: 'createTicket', icon: <Ticket size={28} color="rgb(0 197 255)" /> },
+        { content: 'Manage Ticket', endpoint: '/manage-ticket', permission: 'assignTicket', icon: <Assign size={28} color="rgb(0 197 255)" /> },
+        { content: 'Manage Finance', endpoint: '/report', permission: 'manageFinance', icon: <Ticket size={28} color="rgb(0 197 255)" /> }, // Adjust the icon as needed
+        { content: 'Customer DB', endpoint: '/customer-db', permission: 'createClient', icon: <Customerdb size={28} color="rgb(0 197 255)" /> },
+        { content: 'Asset DB', endpoint: '/asset-db', permission: 'createAsset', icon: <Ticket size={28} color="rgb(0 197 255)" /> }, // Adjust the icon as needed
+        // { content: 'Assigned Ticket', endpoint: '/assigned-ticket', permission: 'assignTicket', icon: <Assign /> },
     ]);
 
     const [filteredCardData, setFilteredCardData] = useState([]);
@@ -54,12 +59,15 @@ const BottomNavbar = () => {
     };
 
     const logout = () => {
-        localStorage.clear()
-        navigate('/');
+        const conf = confirm("Are you sure to Logout ?")
+        if (conf) {
+            localStorage.clear()
+            navigate('/');
+        }
     };
 
     return (
-        <div className=' sm:hidden'>
+        <div className=' md:hidden'>
             <div className='fixed bg-neutral-800 bottom-0 py-2 overflow-y-auto w-full z-50'>
                 <nav className='w-screen flex items-center justify-between px-16 py-2 '>
                     <button onClick={danger}>
@@ -91,19 +99,20 @@ const BottomNavbar = () => {
                     </button>
                 </nav>
                 <div className={`fixed inset-x-0 bottom-0 bg-neutral-800 text-cyan-50 p-4 transition-transform duration-500 rounded-t-3xl ${pop ? 'translate-y-0' : 'translate-y-full'}`}>
-                    <div className='my-5 text-center'>Control Panel</div>
-                    <div className="cards flex gap-6 justify-center flex-wrap">
+                    <div className='my-6 text-center'>Control Panel</div>
+                    <div className="cards flex gap-4 justify-center   items-center flex-wrap">
                         {filteredCardData.map((card, index) => (
                             <button
                                 key={index}
-                                className="card p-3 min-w-[150px] max-w-[300px] rounded-md bg-[#0E0E0E] text-center"
+                                className="card p-3 w-[170px] rounded-md bg-[#0E0E0E] text-center flex items-center gap-2"
                                 onClick={() => navigate(card.endpoint)}
                             >
+                                <span>{card.icon}</span>
                                 <p className="text-[14px]">{card.content}</p>
                             </button>
                         ))}
                     </div>
-                    <button onClick={logout} className='text-red-500 my-16 block m-auto'>Logout</button>
+                    <button onClick={logout} className='text-red-500 mb-8 mt-10 block m-auto'>Logout</button>
                     <button onClick={popUp} className='m-auto block p-3 rounded-lg'>
                         <lord-icon
                             src="https://cdn.lordicon.com/rmkahxvq.json"

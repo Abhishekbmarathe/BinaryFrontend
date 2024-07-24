@@ -32,7 +32,8 @@ function NewPage() {
         }
 
         try {
-            const response = await axios.post('http://localhost:3000/assetPhoto', formData, {
+            const response = await axios.post('https://binarysystemsbackend-mtt8.onrender.com/api/assetPhoto', formData, {
+            // const response = await axios.post('http://localhost:3000/api/assetPhoto', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -47,6 +48,7 @@ function NewPage() {
                 console.error('Upload failed');
             }
         } catch (error) {
+            alert('Error uploading the file:', error)
             console.error('Error uploading the file:', error);
         }
     };

@@ -17,7 +17,8 @@ function DisplayAssets() {
         const fetchAssets = async () => {
             if (assetId) {
                 try {
-                    const response = await axios.get(`http://localhost:3000/assets/${assetId}`);
+                    // const response = await axios.get(`http://localhost:3000/api/assets/${assetId}`);
+                    const response = await axios.get(`https://binarysystemsbackend-mtt8.onrender.com/api/assets/${assetId}`);
                     setAssets(response.data);
                 } catch (error) {
                     console.error('Error fetching assets:', error);
