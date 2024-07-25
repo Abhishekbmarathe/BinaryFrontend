@@ -15,6 +15,7 @@ export default {
       },
       backgroundImage: {
         'panel-gradient': 'linear-gradient(#f8fdff, #00c5ff9e, #00c5ff)',
+        'page-gradient': 'linear-gradient(white, white, #00c5ff5e)',
       },
     },
   },

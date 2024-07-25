@@ -13,7 +13,7 @@ function TopNav() {
     };
 
     return (
-        <div className='hidden md:flex text-black /bg-[#ffffff]   justify-between  items-center bg-[rgb(245 245 245)] sticky top-0 z-30'>
+        <div className='hidden md:flex text-black bg-[#ffffff]   justify-between  items-center bg-[rgb(245 245 245)] sticky top-0 z-30'>
             <div className=''>
                 <Logo/>
             </div>

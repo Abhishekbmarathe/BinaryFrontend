@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import User from '../../assets/User'
+import Logo from '../../assets/Logo'
 
 const Login = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
@@ -25,7 +26,7 @@ const Login = () => {
                 localStorage.clear();
                 if (data.username.trim() === "Master") {
                     await axios.get("https://binarysystemsbackend-mtt8.onrender.com/api/getallusers")
-                    // await axios.get("http://localhost:3000/api/getallusers")
+                        // await axios.get("http://localhost:3000/api/getallusers")
                         .then((response) => {
                             ("All Users:", response.data);
                             localStorage.setItem("allUsers", JSON.stringify(response.data));
@@ -35,7 +36,7 @@ const Login = () => {
                             alert("Something went wrong fetching all users.");
                         });
                     await axios.get("https://binarysystemsbackend-mtt8.onrender.com/api/getAllAsset")
-                    // await axios.get("http://localhost:3000/api/getAllAsset")
+                        // await axios.get("http://localhost:3000/api/getAllAsset")
                         .then((response) => {
                             ("All Assets:", response.data);
                             localStorage.setItem("getAllAssets", JSON.stringify(response.data));
@@ -45,7 +46,7 @@ const Login = () => {
                             alert("Something went wrong fetching all assets.");
                         });
                     await axios.get("https://binarysystemsbackend-mtt8.onrender.com/api/getAllClients")
-                    // await axios.get("http://localhost:3000/api/getAllAsset")
+                        // await axios.get("http://localhost:3000/api/getAllAsset")
                         .then((response) => {
                             ("All customers:", response.data);
                             localStorage.setItem("AllClients", JSON.stringify(response.data));
@@ -69,21 +70,22 @@ const Login = () => {
     };
 
     return (
-        <div className='bg-slate-800 h-screen flex items-center justify-center flex-col p-12 w-screen'>
-            <h2 className="text-2xl text font-bold mb-5 text-center">Binary systems Login</h2>
+        <div className='h-screen text-black bg-[#ffffff] flex items-center justify-center flex-col p-12 w-screen bg-page-gradient'>
+            {/* <h2 className="text-2xl text font-bold mb-5 text-center">Binary systems Login</h2> */}
+            <Logo />
 
             <div className='icon'>
                 <lord-icon
                     src="https://cdn.lordicon.com/hrjifpbq.json"
                     trigger="hover"
-                    colors="primary:#ffffff"
                 >
                 </lord-icon>
+                <h1 className='font-bold text-2xl w-fit m-auto'>Login</h1>
             </div>
-            <div className="p-6 bg-slate-800 text-white rounded-lg shadow-lg">
+            <div className="p-6  text-black rounded-lg /shadow-lg">
                 {loading ? (
                     <div className="flex justify-center items-center gap-3">
-                        <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 border-dotted rounded-full" role="status">
+                        <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 border-dotted rounded-full border-black" role="status">
                         </div>
                         <span className="breathing">Loading...</span>
                     </div>
@@ -91,7 +93,7 @@ const Login = () => {
                     <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
                         <div className="mb-4">
                             <input
-                                className="w-[350px] px-3 py-2 my-3 bg-transparent rounded-lg border-2 focus:outline-none focus:border-blue-500 h-14"
+                                className="w-[350px] px-3 py-2 my-3  rounded-lg border-gray-500 border-2 focus:outline-none focus:border-blue-500 h-14 "
                                 type="text"
                                 id="username"
                                 placeholder='Username'
@@ -102,7 +104,7 @@ const Login = () => {
                         </div>
                         <div className="mb-4 relative">
                             <input
-                                className="w-full px-3 py-2 my-3 bg-transparent rounded-lg border-2 focus:outline-none focus:border-blue-500 h-14"
+                                className="w-full px-3 py-2 my-3  rounded-lg border-gray-500 border-2 focus:outline-none focus:border-blue-500 h-14"
                                 type={passwordVisible ? "text" : "password"}
                                 id="password"
                                 placeholder='Password'
@@ -112,14 +114,14 @@ const Login = () => {
                             <button
                                 type="button"
                                 onClick={togglePasswordVisibility}
-                                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-300"
+                                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-black"
                             >
                                 {passwordVisible ? 'Hide' : 'Show'}
                             </button>
                             {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
                         </div>
                         <button
-                            className="w-[300px] m-auto my-16 block bg-slate-200 text-black py-2 rounded-md hover:bg-slate-400 transition duration-200"
+                            className="w-[300px] m-auto my-16 block bg-blue-400 text-white py-2 rounded-md hover:bg-blue-300 transition duration-200"
                             type="submit"
                         >
                             Login
