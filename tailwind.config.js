@@ -11,10 +11,13 @@ export default {
       },
       colors: {
         'customColor': 'rgb(0 197 255)', // Green color
+        'cardcolor': '#ffffff',
+      },
+      backgroundImage: {
+        'panel-gradient': 'linear-gradient(#f8fdff, #00c5ff9e, #00c5ff)',
       },
     },
   },
   plugins: [],
 }
 
-  

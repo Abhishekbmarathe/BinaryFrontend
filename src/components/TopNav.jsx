@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import Logo from '../assets/Logo';
 
 function TopNav() {
-  
+
 
     const [pop, setPop] = useState(false);
 
@@ -12,12 +13,12 @@ function TopNav() {
     };
 
     return (
-        <div className='hidden md:flex text-white justify-between px-9 items-center bg-slate-800 py-5 sticky top-0 z-30'>
-            <div>
-                <h1 className='text-3xl font-bold'>Binary systems...</h1>
+        <div className='hidden md:flex text-black /bg-[#ffffff]   justify-between  items-center bg-[rgb(245 245 245)] sticky top-0 z-30'>
+            <div className=''>
+                <Logo/>
             </div>
             <div>
-                <ul className='flex gap-12'>
+                <ul className='flex gap-12 font-bold text-xl mr-14'>
                     <li><Link to="/server/Home">Home</Link></li>
                     <li><Link to="/updates">Updates</Link></li>
                     {/* <li className='font-bold text-xl text-[#ff3f3f]'><Link to="/">Logout</Link></li> */}

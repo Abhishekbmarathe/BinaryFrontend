@@ -5,9 +5,10 @@
 
 
 body{
-    background: rgb(29, 27, 27);
-    color: white;
-    /* overflow-y: hidden; */
+    background: rgb(245 245 245);
+    color: black;
+    /* background: linear-gradient(red,green,blue) no-repeat; */
+    overflow: auto;
 }
 
 
