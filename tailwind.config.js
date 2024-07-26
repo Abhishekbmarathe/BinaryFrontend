@@ -7,7 +7,7 @@ export default {
   theme: {
     extend: {
       boxShadow: {
-        'custom-red': 'red 0px 0px 4px 3px',
+        'customBlue': '#00c5ffd6 0px 0px 11px 1px',
       },
       colors: {
         'customColor': 'rgb(0 197 255)', // Green color
@@ -16,6 +16,7 @@ export default {
       backgroundImage: {
         'panel-gradient': 'linear-gradient(#f8fdff, #00c5ff9e, #00c5ff)',
         'page-gradient': 'linear-gradient(white, white, #00c5ff5e)',
+        'bottom-gradient': 'linear-gradient(#f8fdff, #17caff59, #00c5ff91)',
       },
     },
   },

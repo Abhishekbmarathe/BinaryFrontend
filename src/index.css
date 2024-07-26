@@ -4,11 +4,14 @@
 
 
 
+
+
 body{
     background: rgb(245 245 245);
     color: black;
     /* background: linear-gradient(red,green,blue) no-repeat; */
     overflow: auto;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
 
@@ -36,8 +39,8 @@ lord-icon{
 
 
 .icon lord-icon{
-    margin: 50px;
-    transform: scale(5);
+    margin: 0px 50px;
+    transform: scale(3);
 }
 
 @keyframes breathing {
