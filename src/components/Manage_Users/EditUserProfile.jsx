@@ -69,7 +69,8 @@ function UserDetail() {
 
     return (
         <div className="max-w-md mx-auto mt-10 sm:max-w-[50vw]">
-            <div className="shadow-md rounded-lg overflow-hidden mb-4">
+            <h1 className='m-auto w-fit text-2xl'> Edit <span className='text-customColor'>Profile</span></h1>
+            <div className="shadow-md shadow-gray-400 rounded-lg overflow-hidden mb-4">
                 <div className="p-4">
                     {isLoading &&
                         <div className="flex justify-center items-center gap-3">
@@ -92,15 +93,15 @@ function UserDetail() {
                                                     checked={user[key]}
                                                     onChange={handleChange}
                                                 />
-                                                <span className="text-white">{key.charAt(0).toUpperCase() + key.slice(1)}</span>
+                                                <span className="text-black">{key.charAt(0).toUpperCase() + key.slice(1)}</span>
                                             </div>
                                         ) : (
                                             <>
-                                                <label className="block text-white text-sm font-bold mb-2" htmlFor={`${key}-${idx}`}>
+                                                <label className="block text-black text-sm font-bold mb-2" htmlFor={`${key}-${idx}`}>
                                                     {key.charAt(0).toUpperCase() + key.slice(1)}
                                                 </label>
                                                 <input
-                                                    className="shadow appearance-none border rounded w-full py-2 px-3 bg-transparent text-white leading-tight focus:outline-none focus:shadow-outline sm:py-4 sm:rounded-xl"
+                                                    className="shadow-md shadow-gray-400 appearance-none border rounded w-full py-2 px-3 bg-transparent text-black leading-tight focus:outline-none focus:shadow-outline sm:py-4 sm:rounded-xl"
                                                     type="text"
                                                     id={`${key}-${idx}`}
                                                     name={key}

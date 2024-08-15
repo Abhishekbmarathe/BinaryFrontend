@@ -5,6 +5,7 @@ import Login from './components/Auth/Login'
 import Manageuser from './components/Manage_Users/Manageuser';
 import EditUserdetails from './components/Manage_Users/EditUserProfile';
 import AssetDb from './components/Asset_DB/AssetDb';
+import CreateTicket from './components/Ticket_Creation/Alltickets'
 
 import fetchAndStoreUsers from './components/modules/fetchAllusers'
 import getAllAsset from './components/modules/getAllAssets'
@@ -19,6 +20,7 @@ import Assetdetails from './components/Customer_DB/Assetdetails'
 import CapturePhoto from './components/Customer_DB/CapturePhoto';
 import Addrecord from './components/Customer_DB/Addrecord';
 
+import NewTicket from './components/Ticket_Creation/Newticket';
 
 
 function App() {
@@ -33,11 +35,13 @@ function App() {
   return (
     <Router>
       <Routes>
+        
         <Route path="/" element={<Login />} />
         <Route path="/server/Home" element={<Home />} />
         <Route path="/manage-user" element={<Manageuser />} />
         <Route path="/asset-db" element={<AssetDb />} />
         <Route path="/customer-db" element={<CustomerDb />} />
+        <Route path="/create-ticket" element={<CreateTicket />} />
 
         <Route path="/user/:userId" element={<EditUserdetails />} />
         <Route path="/asset/:assetId" element={<Editassets />} />
@@ -48,6 +52,9 @@ function App() {
         <Route path="/productName/:productName" element={<Assetdetails />} />
         <Route path="/capturePhoto" element={<CapturePhoto />} />
         <Route path="/add-record" element={<Addrecord />} />
+
+        <Route path="/newticket" element={<NewTicket/>} />
+        
       </Routes>
     </Router>
   );
