@@ -8,6 +8,14 @@ const NewTicket = () => {
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [ticketStatus, setStatus] = useState('Not Assigned')
+  const [companyType, setCompanyType] = useState('Call Based');
+
+
+  const checkCompany = (isChecked) => {
+    const type = isChecked ? 'Contract Based' : 'Call Based';
+    console.log(type)
+    setCompanyType(type);
+  };
 
 
   const checkStatus = (val) => {
@@ -33,12 +41,25 @@ const NewTicket = () => {
     );
   };
 
+
+
+
   const onSubmit = (data) => {
-    data.collaborator = selectedUsers; // Include selected users in the form data
-    console.log(data);
-    axios.post('http://localhost:3000/api/createTicket', data)
+    data.collaborator = selectedUsers;
+    data.senderCompanyType = companyType;
+
+    // Combine form data with the contacts array and ensure the key matches the schema
+    const formData = {
+      ...data,
+      contact: contacts,  // Use `contact` to match your schema
+    };
+
+    console.log(formData);
+
+    axios.post('http://localhost:3000/api/createTicket', formData)
       .then((response) => {
         console.log('Success:', response.data);
+        alert('Ticket Created Successfully');
       })
       .catch((error) => {
         console.error('Error:', error);
@@ -46,23 +67,42 @@ const NewTicket = () => {
   };
 
 
+
+  const [contacts, setContacts] = useState([{ name: '', number: '' }]);
+
+  const handleAddContact = () => {
+    setContacts([...contacts, { name: '', number: '' }]);
+  };
+
+  const handleRemoveContact = (index) => {
+    setContacts(contacts.filter((_, i) => i !== index));
+  };
+
+  const handleContactChange = (index, field, value) => {
+    const newContacts = contacts.map((contact, i) =>
+      i === index ? { ...contact, [field]: value } : contact
+    );
+    setContacts(newContacts);
+  };
+
+
+
   return (
     <div className="min-h-screen">
-      <h1 className="text-2xl font-semibold mb-6 text-center text-blue-400">
-        New <span className="text-blue-600">Ticket</span>
-      </h1>
+      <h1 className='my-6 font-bold text-3xl  text-center sticky top-0 z-10 bg-[#f5f5f5]'>New<span className='text-customColor'>Ticket</span></h1>
       <form onSubmit={handleSubmit(onSubmit)} className="">
         {step === 1 && (
           <div className="w-full max-w-md p-8 rounded-lg mb-2">
+            <label className="block text-2xl mb-6">Customer Info</label>
             <div className="mb-4">
-              <label className="block text-2xl mb-2">Customer Info</label>
-              <label htmlFor="">Company Type</label>
+              <label htmlFor="" className='font-semibold'>Company Type:</label>
               <div className="flex items-center mb-2">
                 <span className="mr-2">Call Based</span>
                 <input
                   type="checkbox"
-                  {...register('senderCompanyType')}
+                  // {...register('senderCompanyType')}
                   className="toggle-checkbox"
+                  onChange={(e) => checkCompany(e.target.checked)}
                 />
                 <span className="ml-2">Contract Based</span>
               </div>
@@ -106,10 +146,34 @@ const NewTicket = () => {
                 value={'Master'}
               />
             </div>
+            {/* Contact Detail section in the form */}
             <div className="mb-4">
               <label className="block text-sm mb-2" htmlFor="contactDetail">Contact Detail</label>
-              <input className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500" {...register('Name')} type="text" id="contactDetail" placeholder='Contact Name' />
-              <input className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500" {...register('Number')} type="text" id="contactDetail" placeholder='Phone Number' />
+              {contacts.map((contact, index) => (
+                <div key={index} className="mb-4 flex gap-1">
+                  <input
+                    className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500"
+                    type="text"
+                    placeholder='Contact Name'
+                    value={contact.name}
+                    onChange={(e) => handleContactChange(index, 'name', e.target.value)}
+                  />
+                  <input
+                    className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500"
+                    type="text"
+                    placeholder='Phone Number'
+                    value={contact.number}
+                    onChange={(e) => handleContactChange(index, 'number', e.target.value)}
+                  />
+                  {index > 0 && (
+                    <div>
+                   
+                      <button type="button" className="text-red-500 mt-2" onClick={() => handleRemoveContact(index)}>Remove</button>
+                    </div>
+                  )}
+                </div>
+              ))}
+              <button type="button" className="text-blue-500" onClick={handleAddContact}>+ Add Contact</button>
             </div>
             <button type="button" onClick={() => setStep(2)} className="w-full py-2 bg-transparent hover:bg-gray-700 rounded text-blue-400 hover:text-blue-500 font-semibold">
               Next

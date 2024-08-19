@@ -12,8 +12,8 @@ function Sidepannel() {
     const color = "black"
     const [cardData, setCardData] = useState([
         { content: 'Manage User', endpoint: '/manage-user', permission: 'manageUser', icon: <User size={28} color={color} /> },
-        { content: 'Create Ticket', endpoint: '/create-ticket', permission: 'createTicket', icon: <Ticket size={28} color={color} /> },
-        { content: 'Manage Ticket', endpoint: '/manage-ticket', permission: 'assignTicket', icon: <Assign size={28} color={color} /> },
+        { content: 'Manage Ticket', endpoint: '/create-ticket', permission: 'createTicket', icon: <Ticket size={28} color={color} /> },
+        // { content: 'Manage Ticket', endpoint: '/manage-ticket', permission: 'assignTicket', icon: <Assign size={28} color={color} /> },
         { content: 'Customer DB', endpoint: '/customer-db', permission: 'createClient', icon: <Customerdb size={28} color={color} /> },
         { content: 'Asset DB', endpoint: '/asset-db', permission: 'createAsset', icon: <Ticket size={28} color={color} /> },
     ]);

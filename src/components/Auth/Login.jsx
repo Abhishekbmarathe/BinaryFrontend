@@ -55,6 +55,17 @@ const Login = () => {
                             console.error("Error fetching all assets:", error);
                             alert("Something went wrong fetching all assets.");
                         });
+                    await axios.get("https://binarysystemsbackend-mtt8.onrender.com/api/getAllTickets",{username : data.username})
+                    // await axios.post("http://localhost:3000/api/getAlltickets",{username : data.username})
+                        .then((response) => {
+                            // ("All customers:", response.data);
+                            localStorage.setItem("AllTickets", JSON.stringify(response.data));
+                        })
+                        .catch((error) => {
+                            console.error("Error fetching all tickets:", error);
+                            alert("Something went wrong fetching all Tickets.");
+                        });
+               
                 }
                 localStorage.setItem("userDet", JSON.stringify(response.data));
                 navigate('/server/Home');

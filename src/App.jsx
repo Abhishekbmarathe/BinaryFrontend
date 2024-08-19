@@ -10,6 +10,7 @@ import CreateTicket from './components/Ticket_Creation/Alltickets'
 import fetchAndStoreUsers from './components/modules/fetchAllusers'
 import getAllAsset from './components/modules/getAllAssets'
 import getAllcustomers from './components/modules/getAllcustomers';
+import getAllTickets from './components/modules/getAllTickets';
 
 import Editassets from './components/Asset_DB/Editallassets'
 import CustomerDb from './components/Customer_DB/CustomerDb'
@@ -21,6 +22,9 @@ import CapturePhoto from './components/Customer_DB/CapturePhoto';
 import Addrecord from './components/Customer_DB/Addrecord';
 
 import NewTicket from './components/Ticket_Creation/Newticket';
+import Alltickets from './components/Ticket_Creation/Alltickets';
+import Settings from './components/Ticket_Creation/Settings';
+
 
 
 function App() {
@@ -29,13 +33,14 @@ function App() {
       fetchAndStoreUsers();
       getAllAsset();
       getAllcustomers();
+      getAllTickets();
     }
   })
 
   return (
     <Router>
       <Routes>
-        
+
         <Route path="/" element={<Login />} />
         <Route path="/server/Home" element={<Home />} />
         <Route path="/manage-user" element={<Manageuser />} />
@@ -53,8 +58,10 @@ function App() {
         <Route path="/capturePhoto" element={<CapturePhoto />} />
         <Route path="/add-record" element={<Addrecord />} />
 
-        <Route path="/newticket" element={<NewTicket/>} />
-        
+        <Route path="/newticket" element={<NewTicket />} />
+        <Route path="/create-ticket" element={<Alltickets />} />
+        <Route path="/openSettings" element={<Settings />} />
+
       </Routes>
     </Router>
   );
