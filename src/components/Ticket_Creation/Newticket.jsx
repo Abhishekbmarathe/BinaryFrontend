@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const NewTicket = () => {
+
   const { handleSubmit, control, register, setValue } = useForm();
   const [step, setStep] = useState(1);
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [ticketStatus, setStatus] = useState('Not Assigned')
   const [companyType, setCompanyType] = useState('Call Based');
+
+  const navigate = useNavigate();
 
 
   const checkCompany = (isChecked) => {
@@ -51,15 +55,17 @@ const NewTicket = () => {
     // Combine form data with the contacts array and ensure the key matches the schema
     const formData = {
       ...data,
-      contact: contacts,  // Use `contact` to match your schema
+      contacts: contacts,  // Use `contact` to match your schema
     };
 
     console.log(formData);
 
-    axios.post('http://localhost:3000/api/createTicket', formData)
+    axios.post('https://binarysystemsbackend-mtt8.onrender.com/api/createTicket', formData)
       .then((response) => {
         console.log('Success:', response.data);
         alert('Ticket Created Successfully');
+        // navigate(-1)
+        window.location.reload();        
       })
       .catch((error) => {
         console.error('Error:', error);
@@ -300,7 +306,7 @@ const NewTicket = () => {
               <label className="block text-sm mb-2" htmlFor="priority">Priority</label>
               <select className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500" {...register('priority')} id="priority">
                 <option value="">Select Priority</option>
-                <option value="low">Low</option>
+                <option value="Low">Low</option>
                 <option value="normal">Normal</option>
                 <option value="high">High</option>
               </select>

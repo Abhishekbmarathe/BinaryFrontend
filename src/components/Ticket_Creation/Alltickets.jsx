@@ -25,6 +25,23 @@ function Alltickets() {
         navigate('/openSettings');
     }
 
+    const getPriorityColor = (priority) => {
+        switch (priority) {
+            case 'High':
+                return 'text-red-500';
+            case 'Normal':
+                return 'text-green-500';
+            case 'Low':
+                return 'text-yellow-500';
+            default:
+                return 'text-gray-600';
+        }
+    }
+
+    const openTicket = (ticketId) => {
+        navigate('/open-ticket', { state: { ticketId } });
+    }
+
     return (
         <div>
             <Nav />
@@ -39,15 +56,18 @@ function Alltickets() {
                 {allTickets.length > 0 ? (
                     <ul className='space-y-4'>
                         {allTickets.map((ticket, index) => (
-                            <li key={index} className='bg-white py-4 px-2 rounded-lg shadow-md flex justify-between'>
+                            <li 
+                                key={index} 
+                                className='bg-white py-4 px-2 rounded-lg shadow-md flex justify-between cursor-pointer'
+                                onClick={() => openTicket(ticket._id)}
+                            >
                                 <div className='text-[16px] font-sans'>
                                     <h2 className=''>{ticket.ticketNumber} | <span className='text-customColor'>{ticket.companyName}</span></h2>
                                     <p className='text-gray-600'>Updated On: <span className='text-customColor'>{ticket.updatedDate}</span></p>
                                 </div>
                                 <div className='flex text-[14px]'>
-                                    <span className='text-gray-600 '>{ticket.priority}</span>&nbsp;|&nbsp;<span className='text-customColor'>{ticket.ticketStatus}</span>
+                                    <span className={`${getPriorityColor(ticket.priority)}`}>{ticket.priority}</span>&nbsp;|&nbsp;<span className='text-customColor'>{ticket.ticketStatus}</span>
                                 </div>
-                                {/* Add more fields as necessary */}
                             </li>
                         ))}
                     </ul>

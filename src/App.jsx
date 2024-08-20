@@ -24,6 +24,7 @@ import Addrecord from './components/Customer_DB/Addrecord';
 import NewTicket from './components/Ticket_Creation/Newticket';
 import Alltickets from './components/Ticket_Creation/Alltickets';
 import Settings from './components/Ticket_Creation/Settings';
+import Openticket from './components/Ticket_Creation/Openticket';
 
 
 
@@ -61,6 +62,7 @@ function App() {
         <Route path="/newticket" element={<NewTicket />} />
         <Route path="/create-ticket" element={<Alltickets />} />
         <Route path="/openSettings" element={<Settings />} />
+        <Route path="/open-ticket" element={<Openticket />} />
 
       </Routes>
     </Router>
