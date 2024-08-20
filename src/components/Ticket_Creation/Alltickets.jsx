@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Nav from '../TopNav';
 import { useNavigate } from 'react-router-dom';
 import Settings from '../../assets/Settings';
+import getTickets from '../modules/getAllTickets';
 
 function Alltickets() {
 
@@ -24,6 +25,8 @@ function Alltickets() {
     const toggleSettings = () => {
         navigate('/openSettings');
     }
+
+    getTickets();
 
     const getPriorityColor = (priority) => {
         switch (priority) {
@@ -56,8 +59,8 @@ function Alltickets() {
                 {allTickets.length > 0 ? (
                     <ul className='space-y-4'>
                         {allTickets.map((ticket, index) => (
-                            <li 
-                                key={index} 
+                            <li
+                                key={index}
                                 className='bg-white py-4 px-2 rounded-lg shadow-md flex justify-between cursor-pointer'
                                 onClick={() => openTicket(ticket._id)}
                             >

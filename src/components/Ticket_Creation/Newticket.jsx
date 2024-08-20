@@ -55,7 +55,7 @@ const NewTicket = () => {
     // Combine form data with the contacts array and ensure the key matches the schema
     const formData = {
       ...data,
-      contacts: contacts,  // Use `contact` to match your schema
+      contact: contacts,  // Use `contact` to match your schema
     };
 
     console.log(formData);
@@ -65,7 +65,7 @@ const NewTicket = () => {
         console.log('Success:', response.data);
         alert('Ticket Created Successfully');
         // navigate(-1)
-        window.location.reload();        
+        window.location.reload();
       })
       .catch((error) => {
         console.error('Error:', error);
@@ -173,7 +173,7 @@ const NewTicket = () => {
                   />
                   {index > 0 && (
                     <div>
-                   
+
                       <button type="button" className="text-red-500 mt-2" onClick={() => handleRemoveContact(index)}>Remove</button>
                     </div>
                   )}
@@ -270,10 +270,7 @@ const NewTicket = () => {
                 <option value="Engineer">Engineer</option>
               </select>
             </div>
-            <div className="mb-4">
-              <label className="block text-sm mb-2" htmlFor="">Additional Info</label>
-              <textarea className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500" {...register('additionalInfo')} id=""></textarea>
-            </div>
+
             <div className="flex justify-between">
               <button type="button" onClick={() => setStep(1)} className="py-2 bg-transparent hover:bg-gray-700 rounded text-blue-400 hover:text-blue-500 font-semibold">
                 Previous
@@ -303,12 +300,16 @@ const NewTicket = () => {
               <textarea className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500" {...register('issueDescription')} id="issueDescription"></textarea>
             </div>
             <div className="mb-4">
+              <label className="block text-sm mb-2" htmlFor="">Additional Info</label>
+              <textarea className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500" {...register('additionalInfo')} id=""></textarea>
+            </div>
+            <div className="mb-4">
               <label className="block text-sm mb-2" htmlFor="priority">Priority</label>
               <select className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500" {...register('priority')} id="priority">
                 <option value="">Select Priority</option>
                 <option value="Low">Low</option>
-                <option value="normal">Normal</option>
-                <option value="high">High</option>
+                <option value="Normal">Normal</option>
+                <option value="High">High</option>
               </select>
             </div>
             {/* hiden fields */}
@@ -321,14 +322,14 @@ const NewTicket = () => {
                 id="updatedDate"
                 value={new Date().toLocaleDateString()}
                 readOnly
-              // hidden="true"
+                hidden="true"
               />
               <input
                 className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500"
                 {...register('ticketStatus')}
                 type="text"
                 value={ticketStatus}
-              // hidden="true"
+                hidden="true"
               />
             </div>
 
