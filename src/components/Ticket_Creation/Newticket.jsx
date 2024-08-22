@@ -97,6 +97,8 @@ const NewTicket = () => {
       })
       .catch((error) => {
         console.error('Error:', error);
+        alert('Error Creating Ticket');
+
       });
   };
 
