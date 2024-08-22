@@ -52,7 +52,6 @@ const NewTicket = () => {
 
   const checkStatus = (val) => {
     console.log(val)
-
     setStatus('Assigned')
   }
 
@@ -61,7 +60,18 @@ const NewTicket = () => {
   }, [ticketStatus, setValue])
 
 
-  const users = ["Sagar", "Abhishek", "Rashitha", "Pradyumna"]; // Add more users as needed
+  const [users, setUsers] = useState([]);
+  const [ticketAss, setAssign] = useState([]);
+
+  useEffect(() => {
+    const data = localStorage.getItem("allUsers");
+    if (data) {
+      const parsedData = JSON.parse(data);
+      setUsers(parsedData.map((item) => item.name)); // Assuming "name" is the key for user names
+      setAssign(parsedData.map((item) => item.username)); // Assuming "name" is the key for user names
+    }
+  }, []);
+
 
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
 
@@ -304,8 +314,9 @@ const NewTicket = () => {
                 onChange={(e) => checkStatus(e.target.value)}
               >
                 <option value="">Select</option>
-                <option value="Technician">Technician</option>
-                <option value="Engineer">Engineer</option>
+                {ticketAss.map((user, index) => (
+                  <option key={index} value={user}>{user}</option>
+                ))}
               </select>
             </div>
 
@@ -369,7 +380,8 @@ const NewTicket = () => {
                 {...register('ticketStatus')}
                 type="text"
                 value={ticketStatus}
-                hidden="true"
+                // hidden="true" 
+                contentEditable="false"
               />
             </div>
 
