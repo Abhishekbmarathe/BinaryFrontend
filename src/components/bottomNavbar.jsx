@@ -48,8 +48,8 @@ const BottomNavbar = () => {
         navigator.vibrate(60);
     };
 
-    const danger = () => {
-        alert("You clicked danger button ha ha ha 💀");
+    const home = () => {
+        navigate('/Server/Home')
         navigator.vibrate(60);
     };
 
@@ -70,7 +70,7 @@ const BottomNavbar = () => {
         <div className=' md:hidden'>
             <div className='fixed bg-white /bg-bottom-gradient bottom-0 py-2 overflow-y-auto w-full z-50'>
                 <nav className='w-screen flex items-center justify-between px-16 py-2  '>
-                    <button onClick={danger}>
+                    <button onClick={home}>
                         <lord-icon
                             src="https://cdn.lordicon.com/cnpvyndp.json"
                             trigger="click"

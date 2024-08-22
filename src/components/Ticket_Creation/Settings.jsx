@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import getTicketSetting from '../modules/getTicketSetting';
+import { useNavigate } from 'react-router-dom';
 
 function Settings() {
   const [topic, setToggle] = useState('Help topic');
@@ -9,6 +10,13 @@ function Settings() {
   const [slaPlans, setSlaPlans] = useState([]);
   const [departments, setDepartments] = useState([]);
   const [cannedResponses, setCannedResponses] = useState([]);
+
+  const navigate = useNavigate();
+  const home = () => {
+    navigate('/Server/Home')
+    navigator.vibrate(60);
+};
+  
 
   const { register, handleSubmit, setValue, reset } = useForm();
 
@@ -146,6 +154,19 @@ function Settings() {
           Save
         </button>
       </form>
+      <div className='fixed md:hidden /bg-bottom-gradient bottom-0 py-2 overflow-y-auto w-full -z-10'>
+                <nav className='w-screen flex items-center justify-center px-16 py-2  '>
+                    <button onClick={home}>
+                        <lord-icon
+                            src="https://cdn.lordicon.com/cnpvyndp.json"
+                            trigger="click"
+                            colors="primary:black"
+                        >
+                        </lord-icon>
+                        {/* <br /><span>Home</span> */}
+                    </button>
+                </nav>
+            </div>
     </div>
   );
 }

@@ -31,6 +31,11 @@ function UserProfile() {
         navigate(`/user/${userId}`);
     };
 
+    const home = () => {
+        navigate('/Server/Home')
+        navigator.vibrate(60);
+    };
+
     return (
         <div className="max-w-md mx-auto mt-10 sm:max-w-[50vw] ">
             {allUsers.map((user, index) => (
@@ -44,6 +49,20 @@ function UserProfile() {
                     </div>
                 </div>
             ))}
+
+            <div className='fixed md:hidden /bg-bottom-gradient bottom-0 py-2 overflow-y-auto w-full -z-10'>
+                <nav className='w-screen flex items-center justify-center px-16 py-2  '>
+                    <button onClick={home}>
+                        <lord-icon
+                            src="https://cdn.lordicon.com/cnpvyndp.json"
+                            trigger="click"
+                            colors="primary:black"
+                        >
+                        </lord-icon>
+                        {/* <br /><span>Home</span> */}
+                    </button>
+                </nav>
+            </div>
         </div>
     );
 }

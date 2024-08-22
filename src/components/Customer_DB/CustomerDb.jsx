@@ -4,6 +4,7 @@ import axios from 'axios';
 import getAllcustomers from '../modules/getAllcustomers';
 import Nav from '../TopNav';
 import Allcustomers from '../Customer_DB/Allcustomers'
+import { useNavigate } from 'react-router-dom';
 
 function AssetDb() {
   const { register, handleSubmit, control, formState: { errors } } = useForm();
@@ -13,6 +14,14 @@ function AssetDb() {
   });
   const [isLoading, setIsLoading] = useState(false); // Loading state
   const [showForm, setShowForm] = useState(false); // Form visibility state
+
+  const navigate = useNavigate();
+
+  const home = () => {
+    navigate('/Server/Home')
+    navigator.vibrate(60);
+  };
+
 
   const onSubmit = async (data) => {
     setIsLoading(true);
@@ -41,6 +50,7 @@ function AssetDb() {
           >
             <span className='text-customColor font-bold text-xl'>+</span> New
           </button>
+
         ) : null}
         {showForm && (
           <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-6'>
@@ -117,6 +127,19 @@ function AssetDb() {
           </form>
         )}
         {!showForm && <Allcustomers />}
+        <div className='fixed md:hidden /bg-bottom-gradient bottom-0 py-2 overflow-y-auto w-full -z-10'>
+          <nav className='w-screen flex items-center justify-center px-16 py-2  '>
+            <button onClick={home}>
+              <lord-icon
+                src="https://cdn.lordicon.com/cnpvyndp.json"
+                trigger="click"
+                colors="primary:black"
+              >
+              </lord-icon>
+              {/* <br /><span>Home</span> */}
+            </button>
+          </nav>
+        </div>
       </div>
     </>
   );
