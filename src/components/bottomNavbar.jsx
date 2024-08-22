@@ -7,11 +7,11 @@ import User from '../assets/User.jsx';
 
 const BottomNavbar = () => {
     const [cardData, setCardData] = useState([
-        { content: 'Manage User', endpoint: '/manage-user', permission: 'manageUser', icon: <User size={28} color="rgb(0 197 255)" /> },
-        { content: 'Manage Ticket', endpoint: '/create-ticket', permission: 'createTicket', icon: <Ticket size={28} color="rgb(0 197 255)" /> },
+        { content: 'Manage User', endpoint: '/manage-user', permission: 'manageUser', icon: <User size={28} color="white" /> },
+        { content: 'Manage Ticket', endpoint: '/create-ticket', permission: 'createTicket', icon: <Ticket size={28} color="white" /> },
         // { content: 'Manage Ticket', endpoint: '/manage-ticket', permission: 'assignTicket', icon: <Assign size={28} color="rgb(0 197 255)" /> },
-        { content: 'Customer DB', endpoint: '/customer-db', permission: 'createClient', icon: <Customerdb size={28} color="rgb(0 197 255)" /> },
-        { content: 'Asset DB', endpoint: '/asset-db', permission: 'createAsset', icon: <Ticket size={28} color="rgb(0 197 255)" /> }, // Adjust the icon as needed
+        { content: 'Customer DB', endpoint: '/customer-db', permission: 'createClient', icon: <Customerdb size={28} color="white" /> },
+        { content: 'Asset DB', endpoint: '/asset-db', permission: 'createAsset', icon: <Ticket size={28} color="white" /> }, // Adjust the icon as needed
         // { content: 'Manage Finance', endpoint: '/report', permission: 'manageFinance', icon: <Ticket size={28} color="rgb(0 197 255)" /> }, // Adjust the icon as needed
         // { content: 'Assigned Ticket', endpoint: '/assigned-ticket', permission: 'assignTicket', icon: <Assign /> },
     ]);
@@ -68,7 +68,7 @@ const BottomNavbar = () => {
 
     return (
         <div className=' md:hidden'>
-            <div className='fixed bg-white bg-bottom-gradient bottom-0 py-2 overflow-y-auto w-full z-50'>
+            <div className='fixed bg-white /bg-bottom-gradient bottom-0 py-2 overflow-y-auto w-full z-50'>
                 <nav className='w-screen flex items-center justify-between px-16 py-2  '>
                     <button onClick={danger}>
                         <lord-icon
@@ -98,13 +98,13 @@ const BottomNavbar = () => {
                         <br /><span>Updates</span>
                     </button>
                 </nav>
-                <div className={`fixed inset-x-0 bottom-0 /bg-neutral-800 bg-white bg-panel-gradient border-t-2 border-customColor text-cyan-50 p-4 transition-transform duration-500 rounded-t-3xl ${pop ? 'translate-y-0' : 'translate-y-full'}`}>
+                <div className={`fixed inset-x-0 bottom-0 /bg-neutral-800 bg-white bg-panel-gradient/ border-t-2 border-customColor text-cyan-50 p-4 transition-transform duration-500 rounded-t-3xl ${pop ? 'translate-y-0' : 'translate-y-full'}`}>
                     <div className='my-6 text-center text-black font-semibold'>Control Panel</div>
                     <div className="cards flex gap-4 justify-center   items-center flex-wrap">
                         {filteredCardData.map((card, index) => (
                             <button
                                 key={index}
-                                className="card p-3 w-[170px] rounded-md bg-slate-100 text-black text-center flex items-center gap-2"
+                                className="card p-3 w-[170px] rounded-md bg-customColor text-white text-center flex items-center gap-2"
                                 onClick={() => navigate(card.endpoint)}
                             >
                                 <span>{card.icon}</span>
@@ -112,12 +112,12 @@ const BottomNavbar = () => {
                             </button>
                         ))}
                     </div>
-                    <button onClick={logout} className='text-white mb-8 mt-10  m-auto block'><User /> Logout</button>
+                    <button onClick={logout} className='text-red-500 font-semibold text-xl mb-8 mt-10 font-sans  m-auto block'> Logout</button>
                     <button onClick={popUp} className='m-auto block p-3 rounded-lg'>
                         <lord-icon
                             src="https://cdn.lordicon.com/rmkahxvq.json"
                             trigger="hover"
-                            colors="primary:white"
+                            colors="primary:black"
                         >
                         </lord-icon>
                     </button>
