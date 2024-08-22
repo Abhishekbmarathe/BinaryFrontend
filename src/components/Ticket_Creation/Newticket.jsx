@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import ticketSettings from '../modules/getTicketSetting';
 
 const NewTicket = () => {
 
@@ -11,6 +12,33 @@ const NewTicket = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [ticketStatus, setStatus] = useState('Not Assigned')
   const [companyType, setCompanyType] = useState('Call Based');
+
+  const [helpTopics, setHelpTopics] = useState([]);
+  const [departments, setDepartments] = useState([]);
+  const [slaPlans, setSlaPlans] = useState([]);
+  const [cannedResponse, setCannedResponses] = useState([]);
+
+  ticketSettings()
+
+  useEffect(() => {
+    const storedSettings = localStorage.getItem("TicketSettings");
+    if (storedSettings) {
+      try {
+        const parsedSettings = JSON.parse(storedSettings);
+
+        if (Array.isArray(parsedSettings)) {
+          // Filter and set the settings based on type
+          setHelpTopics(parsedSettings.filter(setting => setting.type === 'Help topic').map(setting => setting.data));
+          setDepartments(parsedSettings.filter(setting => setting.type === 'Department').map(setting => setting.data));
+          setSlaPlans(parsedSettings.filter(setting => setting.type === 'SLA Plan').map(setting => setting.data));
+          setCannedResponses(parsedSettings.filter(setting => setting.type === 'Canned Responses').map(setting => setting.data));
+        }
+      } catch (error) {
+        console.error("Failed to parse settings from localStorage:", error);
+      }
+    }
+  }, []);
+
 
   const navigate = useNavigate();
 
@@ -33,7 +61,7 @@ const NewTicket = () => {
   }, [ticketStatus, setValue])
 
 
-  const users = ["User 1", "User 2", "User 3"]; // Add more users as needed
+  const users = ["Sagar", "Abhishek", "Rashitha", "Pradyumna"]; // Add more users as needed
 
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
 
@@ -198,7 +226,13 @@ const NewTicket = () => {
             </div>
             <div className="mb-4">
               <label className="block text-sm mb-2" htmlFor="ticketSource">Ticket Source</label>
-              <input className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500" {...register('ticketSource')} type="text" id="ticketSource" />
+              <select className='w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500' {...register('ticketSource')} >
+                <option value="">Select source</option>
+                <option value="Email">Email</option>
+                <option value="Call">Call</option>
+                <option value="Whatsapp">Whatsapp</option>
+                <option value="Whatsapp">others</option>
+              </select>
             </div>
             <div className="mb-4 relative">
               <label className="block text-sm mb-2" htmlFor="collaborators">Collaborators</label>
@@ -230,30 +264,32 @@ const NewTicket = () => {
               )}
             </div>
             <div className="mb-4">
-              <label className="block text-sm mb-2" htmlFor="">Help Topic</label>
-              <select className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500" {...register('helpTopic')} id="">
+              <label className="block text-sm mb-2" htmlFor="helpTopic">Help Topic</label>
+              <select className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500" {...register('helpTopic')} id="helpTopic">
                 <option value="">Select Help Topic</option>
-                <option value="response1">Response 1</option>
-                <option value="response2">Response 2</option>
+                {helpTopics.map((topic, index) => (
+                  <option key={index} value={topic}>{topic}</option>
+                ))}
               </select>
             </div>
+
             <div className="mb-4">
-              <label className="block text-sm mb-2" htmlFor="">Department</label>
-              <select className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500" {...register('department')} id="">
+              <label className="block text-sm mb-2" htmlFor="department">Department</label>
+              <select className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500" {...register('department')} id="department">
                 <option value="">Select Department</option>
-                <option value="response1">Response 1</option>
-                <option value="response2">Response 2</option>
+                {departments.map((department, index) => (
+                  <option key={index} value={department}>{department}</option>
+                ))}
               </select>
             </div>
+
             <div className="mb-4">
-              <label className="block text-sm mb-2" htmlFor="">SLA</label>
-              <select className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500" {...register('slaPlan')} id="">
+              <label className="block text-sm mb-2" htmlFor="slaPlan">SLA</label>
+              <select className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500" {...register('slaPlan')} id="slaPlan">
                 <option value="">Select SLA</option>
-                <option value="response1">Response 1</option>
-                <option value="response2">Response 2</option>
-                <option value="response3">Response 3</option>
-                <option value="response4">Response 4</option>
-                <option value="response5">Response 5</option>
+                {slaPlans.map((sla, index) => (
+                  <option key={index} value={sla}>{sla}</option>
+                ))}
               </select>
             </div>
             <div className="mb-4">
@@ -291,8 +327,10 @@ const NewTicket = () => {
               <label className="block text-sm mb-2" htmlFor="cannedResponse">Canned Response</label>
               <select className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500" {...register('cannedResponse')} id="cannedResponse">
                 <option value="">Select Canned</option>
-                <option value="response1">Response 1</option>
-                <option value="response2">Response 2</option>
+                {cannedResponse.map((canned, index) => (
+                  <option key={index} value={canned}>{canned}</option>
+                ))}
+                {/* <option value="response2">Response 2</option> */}
               </select>
             </div>
             <div className="mb-4">

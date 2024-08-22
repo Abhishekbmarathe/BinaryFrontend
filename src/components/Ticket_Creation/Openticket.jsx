@@ -93,7 +93,7 @@ const NewTicket = () => {
   const onSubmit = (data) => {
     const formData = {
       ...data,
-      dueDate: formatDate(data.dueDate),
+      // dueDate: formatDate(data.dueDate),
       contactDetails: contacts,
       collaborators: selectedUsers,
       companyType,
@@ -303,13 +303,12 @@ const NewTicket = () => {
 
             {/* Due Date */}
             <div className="mb-6">
-              <label htmlFor="dueDate" className="block text-lg font-medium mb-2">
-                Due Date
+              <label htmlFor="" className="block text-lg font-medium mb-2">
+                Ticket Status
               </label>
               <input
-                type="date"
-                id="dueDate"
-                {...register('dueDate', { required: true })}
+                type="text"
+                {...register('ticketStatus', { required: true })}
                 className="w-full p-3 border border-gray-300 rounded"
               />
             </div>

@@ -13,7 +13,7 @@ function getAllcustomers() {
         })
         .then(data => {
             localStorage.setItem('AllClients', JSON.stringify(data));
-            console.log('Data has been stored in local storage.');
+            // console.log('Data has been stored in local storage.');
         })
         .catch(error => {
             console.error('There was a problem with the fetch operation:', error);

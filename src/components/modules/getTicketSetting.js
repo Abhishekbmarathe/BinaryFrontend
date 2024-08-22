@@ -2,7 +2,7 @@
 
 function getAllAsset() {
     // const apiUrl = 'http://localhost:3000/api/getAllAsset';
-    const apiUrl = 'https://binarysystemsbackend-mtt8.onrender.com/api/getAllAsset';
+    const apiUrl = 'https://binarysystemsbackend-mtt8.onrender.com/api/getTicketSetting';
 
     fetch(apiUrl)
         .then(response => {
@@ -12,8 +12,8 @@ function getAllAsset() {
             return response.json();
         })
         .then(data => {
-            localStorage.setItem('getAllAssets', JSON.stringify(data));
-            // console.log('Data has been stored in local storage.');
+            localStorage.setItem('TicketSettings', JSON.stringify(data));
+            console.log('Data has been stored in local storage.');
         })
         .catch(error => {
             console.error('There was a problem with the fetch operation:', error);
