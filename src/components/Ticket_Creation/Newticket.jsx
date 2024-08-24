@@ -17,6 +17,7 @@ const NewTicket = () => {
   const [departments, setDepartments] = useState([]);
   const [slaPlans, setSlaPlans] = useState([]);
   const [cannedResponse, setCannedResponses] = useState([]);
+  const [creator, setCreator] = useState(JSON.parse(localStorage.getItem('userDet')).username);
 
   ticketSettings()
 
@@ -99,6 +100,7 @@ const NewTicket = () => {
     console.log(formData);
 
     axios.post('https://binarysystemsbackend-mtt8.onrender.com/api/createTicket', formData)
+      // axios.post('http://localhost:3000/api/createTicket', formData)
       .then((response) => {
         console.log('Success:', response.data);
         alert('Ticket Created Successfully');
@@ -189,7 +191,8 @@ const NewTicket = () => {
               <br /><br />
               <input className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500" {...register('creator')}
                 type="text" id="address"
-                value={'Master'}
+                value={creator}
+                hidden="true"
               />
             </div>
             {/* Contact Detail section in the form */}

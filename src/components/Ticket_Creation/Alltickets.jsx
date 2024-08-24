@@ -8,11 +8,16 @@ function Alltickets() {
 
     const [settings, setSetting] = useState(false);
     const [allTickets, setAlltickets] = useState([]);
+    const [isAdmin, setAdmin] = useState(false);
 
     useEffect(() => {
         const data = JSON.parse(localStorage.getItem("AllTickets")); // Assuming data is stored as a stringified JSON
+        const users = JSON.parse(localStorage.getItem("userDet"));
         if (data) {
             setAlltickets(data);
+            if (users.role === "mAdmin") {
+                setAdmin(true);
+            }
         }
     }, []);
 
@@ -55,9 +60,13 @@ function Alltickets() {
             <Nav />
             <div className='my-6 flex items-center justify-between px-3 relative'>
                 <h1 className=' font-semibold font-sans text-3xl sticky top-0 z-10 bg-[#f5f5f5]'>Manage<span className='text-customColor'>Ticket</span></h1>
-                <button onClick={toggleSettings}>
-                    <Settings />
-                </button>
+
+                {isAdmin && (
+                    <button onClick={toggleSettings}>
+                        <Settings />
+                    </button>
+                )}
+
             </div>
 
             <div className="px-3">
@@ -72,6 +81,7 @@ function Alltickets() {
                                 <div className='text-[16px] font-sans'>
                                     <h2 className=''>{ticket.ticketNumber} | <span className='text-customColor'>{ticket.companyName}</span></h2>
                                     <p className='text-gray-600'>Updated On: <span className='text-customColor'>{ticket.updatedDate}</span></p>
+                                    <p className='text-gray-600'>Assigned To: <span className='text-customColor'>{ticket.ticketStatus}</span></p>
                                 </div>
                                 <div className='flex text-[14px]'>
                                     <span className={`${getPriorityColor(ticket.priority)}`}>{ticket.priority}</span>&nbsp;|&nbsp;<span className='text-customColor'>{ticket.ticketStatus}</span>

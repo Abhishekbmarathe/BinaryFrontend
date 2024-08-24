@@ -3,6 +3,8 @@ import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router-dom';
 import getAlltickets from '../modules/getAllTickets';
 import axios from 'axios';
+import History from '../../assets/History';
+import Delete from '../../assets/Delete';
 
 const NewTicket = () => {
   const { handleSubmit, register, setValue } = useForm();
@@ -12,8 +14,9 @@ const NewTicket = () => {
   const [ticketStatus, setTicketStatus] = useState('Not Assigned');
   const [companyType, setCompanyType] = useState('Call');
   const [contacts, setContacts] = useState([{ name: '', number: '' }]);
-
-  const users = ['User 1', 'User 2', 'User 3', 'User 4']; // Example users list
+  const [ticketNumber, setTicketnumber] = useState();
+  const [isAdmin, setAdmin] = useState(false);
+  const [allowEdit, setEdit] = useState(false); // Default to true for editing
 
   const location = useLocation();
   const { ticketId } = location.state; // Get ticketId from state
@@ -22,6 +25,11 @@ const NewTicket = () => {
   const [ticket, setTicket] = useState(null);
 
   useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("userDet"));
+    if (user.role === "mAdmin") {
+      setAdmin(true);
+    }
+
     // Fetch the ticket from local storage
     const allTickets = JSON.parse(localStorage.getItem('AllTickets'));
     const currentTicket = allTickets.find(ticket => ticket._id === ticketId);
@@ -36,15 +44,20 @@ const NewTicket = () => {
       setSelectedUsers(currentTicket.collaborators || []);
       setCompanyType(prevType => (prevType === 'Call' ? 'Contract' : 'Call'));
       setTicketStatus(currentTicket.ticketStatus || 'Not Assigned');
+      setTicketnumber(currentTicket.ticketNumber);
     }
+
+
+    // Edit option enable/disable
+    if (user.username !== currentTicket.creator && user.role !== "mAdmin") {
+      console.log("current user = ", currentTicket.creator)
+      setEdit(true); // Disable editing for non-admin users or non-creators
+    } else {
+      setEdit(false); // Enable editing for admin users or creators
+    }
+
+
   }, [ticketId, setValue]);
-
-
-
-  // const [companyType, setCompanyType] = useState('Call Based'); // Default state
-
-
-
 
   const handleCompanyTypeToggle = (e) => {
     setCompanyType(e.target.checked ? 'Contract' : 'Call');
@@ -83,47 +96,63 @@ const NewTicket = () => {
     );
   };
 
+  const onSubmit = (data) => {
+    if (allowEdit) {
+      const formData = {
+        ...data,
+        contactDetails: contacts,
+        collaborators: selectedUsers,
+        companyType,
+        ticketStatus,
+        updatedDate: new Date().toISOString().slice(0, 10), // Only the date portion
+      };
 
-
-  const formatDate = (dateString) => {
-    const [year, month, day] = dateString.split('-');
-    return `${day}/${month}/${year}`;
+      axios
+        .post('https://binarysystemsbackend-mtt8.onrender.com/api/updateTicket', formData)
+        .then((response) => {
+          alert('Ticket updated Successfully');
+          window.location.reload();
+        })
+        .catch((error) => {
+          console.error('Error Updating ticket:', error);
+        });
+    }
   };
 
-  const onSubmit = (data) => {
-    const formData = {
-      ...data,
-      // dueDate: formatDate(data.dueDate),
-      contactDetails: contacts,
-      collaborators: selectedUsers,
-      companyType,
-      ticketStatus,
-      updatedDate: new Date().toISOString().slice(0, 10), // Only the date portion
-    };
-
-    axios
-      .post('https://binarysystemsbackend-mtt8.onrender.com/api/updateTicket', formData)
-      .then((response) => {
-        alert('Ticket updated Successfully');
-        // Reset form and state if needed
-        window.location.reload();
-      })
-      .catch((error) => {
-        console.error('Error Updating ticket:', error);
-      });
+  const handleDelete = () => {
+    const conf = confirm("Are sure to delete this ticket?");
+    if (conf) {
+      axios.post('https://binarysystemsbackend-mtt8.onrender.com/api/deleteTicket', { ticketNumber })
+        .then((response) => {
+          alert("Ticket deleted successfully");
+          navigate(-1);
+        })
+        .catch((error) => {
+          alert("Error deleting ticket");
+        });
+    }
   };
 
   getAlltickets();
 
-  if (!ticket) return <div>Loading...</div>; // Show a loading message until ticket is fetched
+  if (!ticket) return <div>Loading...</div>; // Show a loading message until the ticket is fetched
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <h1 className="my-6 font-bold text-3xl text-center text-blue-600">
-        Edit Ticket
-      </h1>
-
-      <form onSubmit={handleSubmit(onSubmit)} className="max-w-3xl mx-auto bg-white p-8 rounded shadow">
+    <div className="min-h-screen bg-gray-100 p-3">
+      <div className='flex items-center justify-between px-2'>
+        <h1 className='my-3 font-bold text-3xl text-center sticky top-0 z-10 bg-[#f5f5f5]'>Edit <span className='text-customColor'>Ticket</span></h1>
+        <div className='flex gap-2'>
+          {isAdmin && (
+            <button className='mx-2' onClick={handleDelete}>
+              <Delete />
+            </button>
+          )}
+          <button className='mx-2'>
+            <History />
+          </button>
+        </div>
+      </div>
+      <form onSubmit={handleSubmit(onSubmit)} className="max-w-3xl mx-auto p-8 rounded">
         {/* Step Indicators */}
         <div className="flex justify-between mb-8">
           <div className={`w-1/3 text-center pb-2 ${step === 1 ? 'border-b-4 border-blue-600 text-blue-600' : 'text-gray-500'}`}>
@@ -150,8 +179,8 @@ const NewTicket = () => {
                     type="checkbox"
                     className="sr-only peer"
                     checked={companyType === 'Contract'}
-                    // checked="true"
                     onChange={handleCompanyTypeToggle}
+                    disabled={allowEdit}
                   />
                   <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer dark:bg-gray-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                 </label>
@@ -165,11 +194,11 @@ const NewTicket = () => {
                 Company Name
               </label>
               <input
-                type="text  "
+                type="text"
                 className="w-full p-3 border border-gray-300 rounded"
                 {...register('companyName', { required: true })}
+                readOnly={allowEdit}
               />
-
             </div>
 
             {/* Address */}
@@ -182,6 +211,7 @@ const NewTicket = () => {
                 id="address"
                 {...register('address', { required: true })}
                 className="w-full p-3 border border-gray-300 rounded"
+                readOnly={allowEdit}
               />
             </div>
 
@@ -195,58 +225,54 @@ const NewTicket = () => {
                 id="creator"
                 {...register('creator', { required: true })}
                 className="w-full p-3 border border-gray-300 rounded"
-                value="Master"
-                readOnly
+                readOnly={allowEdit}
               />
             </div>
 
-            {/* Contact Details */}
+            {/* Contacts */}
             <div className="mb-6">
-              <label className="block text-lg font-medium mb-4">Contact Details</label>
+              <label className="block text-lg font-medium mb-2">Contacts</label>
               {contacts.map((contact, index) => (
-                <div key={index} className="flex items-center mb-4 space-x-4">
+                <div key={index} className="flex items-center mb-4">
                   <input
                     type="text"
-                    placeholder="Contact Name"
+                    className="w-1/2 p-3 border border-gray-300 rounded mr-4"
                     value={contact.name}
                     onChange={(e) => handleContactChange(index, 'name', e.target.value)}
-                    className="w-1/2 p-3 border border-gray-300 rounded"
+                    placeholder="Name"
+                    readOnly={allowEdit}
                   />
                   <input
-                    type="tel"
-                    placeholder="Phone Number"
+                    type="text"
+                    className="w-1/2 p-3 border border-gray-300 rounded mr-4"
                     value={contact.number}
                     onChange={(e) => handleContactChange(index, 'number', e.target.value)}
-                    className="w-1/2 p-3 border border-gray-300 rounded"
+                    placeholder="Number"
+                    readOnly={allowEdit}
                   />
-                  {index > 0 && (
+                  {!allowEdit && (
                     <button
                       type="button"
                       onClick={() => handleRemoveContact(index)}
-                      className="p-2 text-red-500 hover:text-red-700"
+                      className=" text-red-500 hover:text-red-700"
                     >
-                      Remove
+                      <Delete />
                     </button>
                   )}
                 </div>
               ))}
-              <button
-                type="button"
-                onClick={handleAddContact}
-                className="text-blue-500 hover:text-blue-700"
-              >
-                + Add another contact
-              </button>
+              {!allowEdit && (
+                <button
+                  type="button"
+                  onClick={handleAddContact}
+                  className="text-blue-500 hover:text-blue-700"
+                >
+                  + Add another contact
+                </button>
+              )}
             </div>
 
             <div className="flex justify-between">
-              <button
-                type="button"
-                className="px-6 py-3 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
-                onClick={() => navigate(-1)}
-              >
-                Cancel
-              </button>
               <button
                 type="button"
                 className="px-6 py-3 bg-blue-600 text-white rounded hover:bg-blue-700"
@@ -261,30 +287,17 @@ const NewTicket = () => {
         {/* Step 2: Ticket Info */}
         {step === 2 && (
           <div>
-            {/* Assigned To */}
+            {/* Product Name */}
             <div className="mb-6">
-              <label htmlFor="assignedTo" className="block text-lg font-medium mb-2">
-                Assigned To
+              <label htmlFor="productName" className="block text-lg font-medium mb-2">
+                Product Name
               </label>
               <input
                 type="text"
-                id="assignedTo"
-                {...register('assignedTo', { required: true })}
+                id="productName"
+                {...register('productName', { required: true })}
                 className="w-full p-3 border border-gray-300 rounded"
-                onChange={handleAssignedToChange}
-              />
-            </div>
-
-            {/* SLA Plan */}
-            <div className="mb-6">
-              <label htmlFor="slaPlan" className="block text-lg font-medium mb-2">
-                SLA Plan
-              </label>
-              <input
-                type="text"
-                id="slaPlan"
-                {...register('slaPlan', { required: true })}
-                className="w-full p-3 border border-gray-300 rounded"
+                readOnly={allowEdit}
               />
             </div>
 
@@ -298,18 +311,7 @@ const NewTicket = () => {
                 id="helpTopic"
                 {...register('helpTopic', { required: true })}
                 className="w-full p-3 border border-gray-300 rounded"
-              />
-            </div>
-
-            {/* Due Date */}
-            <div className="mb-6">
-              <label htmlFor="" className="block text-lg font-medium mb-2">
-                Ticket Status
-              </label>
-              <input
-                type="text"
-                {...register('ticketStatus', { required: true })}
-                className="w-full p-3 border border-gray-300 rounded"
+                readOnly={allowEdit}
               />
             </div>
 
@@ -323,41 +325,51 @@ const NewTicket = () => {
                 id="department"
                 {...register('department', { required: true })}
                 className="w-full p-3 border border-gray-300 rounded"
+                readOnly={allowEdit}
               />
             </div>
 
-            {/* Collaborators */}
+            {/* SLA Plan */}
             <div className="mb-6">
-              <label className="block text-lg font-medium mb-2">Collaborators</label>
-              <div className="relative">
-                <button
-                  type="button"
-                  onClick={toggleDropdown}
-                  className="w-full p-3 border border-gray-300 rounded text-left"
-                >
-                  {selectedUsers.length > 0
-                    ? `Selected (${selectedUsers.length})`
-                    : 'Select Collaborators'}
-                </button>
-                {isDropdownOpen && (
-                  <ul className="absolute z-10 w-full bg-white border border-gray-300 rounded mt-1 max-h-60 overflow-y-auto">
-                    {users.map((user) => (
-                      <li key={user}>
-                        <label className="block p-2">
-                          <input
-                            type="checkbox"
-                            value={user}
-                            checked={selectedUsers.includes(user)}
-                            onChange={() => handleUserSelection(user)}
-                            className="mr-2"
-                          />
-                          {user}
-                        </label>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
+              <label htmlFor="slaPlan" className="block text-lg font-medium mb-2">
+                SLA Plan
+              </label>
+              <input
+                type="text"
+                id="slaPlan"
+                {...register('slaPlan', { required: true })}
+                className="w-full p-3 border border-gray-300 rounded"
+                readOnly={allowEdit}
+              />
+            </div>
+
+            {/* Due Date */}
+            <div className="mb-6">
+              <label htmlFor="dueDate" className="block text-lg font-medium mb-2">
+                Due Date
+              </label>
+              <input
+                type="date"
+                id="dueDate"
+                {...register('dueDate', { required: true })}
+                className="w-full p-3 border border-gray-300 rounded"
+                readOnly={allowEdit}
+              />
+            </div>
+
+            {/* Assigned To */}
+            <div className="mb-6">
+              <label htmlFor="assignedTo" className="block text-lg font-medium mb-2">
+                Assigned To
+              </label>
+              <input
+                type="text"
+                id="assignedTo"
+                {...register('assignedTo')}
+                className="w-full p-3 border border-gray-300 rounded"
+                readOnly={allowEdit}
+                onChange={handleAssignedToChange}
+              />
             </div>
 
             <div className="flex justify-between">
@@ -382,6 +394,20 @@ const NewTicket = () => {
         {/* Step 3: Response */}
         {step === 3 && (
           <div>
+            {/* Canned Response */}
+            <div className="mb-6">
+              <label htmlFor="cannedResponse" className="block text-lg font-medium mb-2">
+                Canned Response
+              </label>
+              <textarea
+                id="cannedResponse"
+                {...register('cannedResponse')}
+                className="w-full p-3 border border-gray-300 rounded"
+                rows="5"
+                readOnly={allowEdit}
+              />
+            </div>
+
             {/* Issue Description */}
             <div className="mb-6">
               <label htmlFor="issueDescription" className="block text-lg font-medium mb-2">
@@ -390,19 +416,9 @@ const NewTicket = () => {
               <textarea
                 id="issueDescription"
                 {...register('issueDescription', { required: true })}
-                rows="4"
                 className="w-full p-3 border border-gray-300 rounded"
-              />
-            </div>
-            <div className="mb-6">
-              <label htmlFor="issueDescription" className="block text-lg font-medium mb-2">
-                Additional Info
-              </label>
-              <textarea
-                id="issueDescription"
-                {...register('additionalInfo', { required: true })}
-                rows="4"
-                className="w-full p-3 border border-gray-300 rounded"
+                rows="5"
+                readOnly={allowEdit}
               />
             </div>
 
@@ -411,38 +427,17 @@ const NewTicket = () => {
               <label htmlFor="priority" className="block text-lg font-medium mb-2">
                 Priority
               </label>
-              <input
-                type="text"
+              <select
                 id="priority"
                 {...register('priority', { required: true })}
                 className="w-full p-3 border border-gray-300 rounded"
-              />
-            </div>
-
-            {/* Canned Response */}
-            <div className="mb-6">
-              <label htmlFor="cannedResponse" className="block text-lg font-medium mb-2">
-                Canned Response
-              </label>
-              <input
-                type="text"
-                id="cannedResponse"
-                {...register('cannedResponse', { required: true })}
-                className="w-full p-3 border border-gray-300 rounded"
-              />
-            </div>
-
-            {/* Ticket Number */}
-            <div className="mb-6">
-              <label htmlFor="ticketNumber" className="block text-lg font-medium mb-2">
-                Ticket Number
-              </label>
-              <input
-                type="text"
-                id="ticketNumber"
-                {...register('ticketNumber', { required: true })}
-                className="w-full p-3 border border-gray-300 rounded"
-              />
+                disabled={allowEdit}
+              >
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+                <option value="Urgent">Urgent</option>
+              </select>
             </div>
 
             <div className="flex justify-between">
@@ -453,12 +448,14 @@ const NewTicket = () => {
               >
                 Previous
               </button>
-              <button
-                type="submit"
-                className="px-6 py-3 bg-blue-600 text-white rounded hover:bg-blue-700"
-              >
-                Update
-              </button>
+              {!allowEdit && (
+                <button
+                  type="submit"
+                  className="px-6 py-3 bg-blue-600 text-white rounded hover:bg-blue-700"
+                >
+                  Save
+                </button>
+              )}
             </div>
           </div>
         )}
