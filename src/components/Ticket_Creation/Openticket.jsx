@@ -104,7 +104,7 @@ const NewTicket = () => {
         collaborators: selectedUsers,
         companyType,
         ticketStatus,
-        updatedDate: new Date().toISOString().slice(0, 10), // Only the date portion
+        updatedDate: new Date() // Only the date portion
       };
 
       axios
@@ -217,15 +217,15 @@ const NewTicket = () => {
 
             {/* Creator */}
             <div className="mb-6">
-              <label htmlFor="creator" className="block text-lg font-medium mb-2">
+              {/* <label htmlFor="creator" className="block text-lg font-medium mb-2">
                 Creator
-              </label>
+              </label> */}
               <input
                 type="text"
                 id="creator"
                 {...register('creator', { required: true })}
                 className="w-full p-3 border border-gray-300 rounded"
-                readOnly={allowEdit}
+                hidden={true}
               />
             </div>
 
@@ -452,6 +452,7 @@ const NewTicket = () => {
                 <button
                   type="submit"
                   className="px-6 py-3 bg-blue-600 text-white rounded hover:bg-blue-700"
+                  onClick={onSubmit}
                 >
                   Save
                 </button>

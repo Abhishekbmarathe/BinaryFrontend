@@ -67,6 +67,15 @@ const Login = () => {
                         });
 
                 }
+                await axios.get("https://binarysystemsbackend-mtt8.onrender.com/api/getOptionUsers")
+                    // await axios.post("http://localhost:3000/api/getAlltickets",{username : data.username})
+                    .then((response) => {
+                        localStorage.setItem("onlyUsers", JSON.stringify(response.data));
+                    })
+                    .catch((error) => {
+                        console.error("Error fetching only users:", error);
+                        alert("Something went wrong fetching only users.");
+                    });
                 localStorage.setItem("userDet", JSON.stringify(response.data));
                 navigate('/server/Home');
             } else {

@@ -10,7 +10,7 @@ const NewTicket = () => {
   const [step, setStep] = useState(1);
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [ticketStatus, setStatus] = useState('Not Assigned')
+  const [ticketStatus, setStatus] = useState('Open')
   const [companyType, setCompanyType] = useState('Call Based');
 
   const [helpTopics, setHelpTopics] = useState([]);
@@ -61,15 +61,18 @@ const NewTicket = () => {
   }, [ticketStatus, setValue])
 
 
-  const [users, setUsers] = useState([]);
-  const [ticketAss, setAssign] = useState([]);
+  const [users, setUsers] = useState([]); // Collaborators
+  const [ticketAss, setAssign] = useState([]); // Technicians
 
   useEffect(() => {
-    const data = localStorage.getItem("allUsers");
+    const data = localStorage.getItem("onlyUsers");
     if (data) {
       const parsedData = JSON.parse(data);
-      setUsers(parsedData.map((item) => item.name)); // Assuming "name" is the key for user names
-      setAssign(parsedData.map((item) => item.username)); // Assuming "name" is the key for user names
+      const adminUsers = parsedData.filter((item) => item.role === "admin").map((item) => item.username);
+      const technicianUsers = parsedData.filter((item) => item.role === "technician").map((item) => item.username);
+
+      setUsers(adminUsers);
+      setAssign(technicianUsers);
     }
   }, []);
 
@@ -84,35 +87,40 @@ const NewTicket = () => {
     );
   };
 
-
-
+  const currentDateTime = new Date();
+  console.log(currentDateTime)
 
   const onSubmit = (data) => {
     data.collaborator = selectedUsers;
     data.senderCompanyType = companyType;
 
+    // Get current date and time
+    const currentDateTime = new Date();
+
+    // Format the date as dd-mm-yyyy hh:mm:ss
+    const formattedDate = `${String(currentDateTime.getDate()).padStart(2, '0')}/${String(currentDateTime.getMonth() + 1).padStart(2, '0')}/${currentDateTime.getFullYear()} ${String(currentDateTime.getHours()).padStart(2, '0')}:${String(currentDateTime.getMinutes()).padStart(2, '0')}:${String(currentDateTime.getSeconds()).padStart(2, '0')}`;
+
     // Combine form data with the contacts array and ensure the key matches the schema
     const formData = {
       ...data,
       contact: contacts,  // Use `contact` to match your schema
+      updatedDate: formattedDate,  // Use formatted date and time
     };
 
     console.log(formData);
 
     axios.post('https://binarysystemsbackend-mtt8.onrender.com/api/createTicket', formData)
-      // axios.post('http://localhost:3000/api/createTicket', formData)
       .then((response) => {
         console.log('Success:', response.data);
         alert('Ticket Created Successfully');
-        // navigate(-1)
         window.location.reload();
       })
       .catch((error) => {
         console.error('Error:', error);
         alert('Error Creating Ticket');
-
       });
   };
+
 
 
 
@@ -249,35 +257,7 @@ const NewTicket = () => {
                 <option value="Whatsapp">others</option>
               </select>
             </div>
-            <div className="mb-4 relative">
-              <label className="block text-sm mb-2" htmlFor="collaborators">Collaborators</label>
-              <div
-                className="w-full p-2 bg-transparent border border-gray-600 rounded cursor-pointer"
-                onClick={toggleDropdown}
-              >
-                {selectedUsers.length > 0 ? selectedUsers.join(", ") : "Select Collaborators"}
-              </div>
 
-              {isDropdownOpen && (
-                <div className="absolute mt-2 w-full bg-white border border-gray-600 rounded shadow-lg z-10">
-                  {users.map((user, index) => (
-                    <div key={index} className="px-4 py-2 flex items-center">
-                      <input
-                        type="checkbox"
-                        id={`user-${index}`}
-                        checked={selectedUsers.includes(user)}
-                        onChange={() => handleUserSelection(user)}
-                        className="mr-2"
-                      />
-                      <label htmlFor={`user-${index}`} className="text-sm">
-                        {user}
-                      </label>
-                    </div>
-                  ))}
-                </div>
-
-              )}
-            </div>
             <div className="mb-4">
               <label className="block text-sm mb-2" htmlFor="helpTopic">Help Topic</label>
               <select className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500" {...register('helpTopic')} id="helpTopic">
@@ -308,20 +288,13 @@ const NewTicket = () => {
               </select>
             </div>
             <div className="mb-4">
-              <label className="block text-sm mb-2" htmlFor="">Due Date</label>
-              <input className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500" {...register('dueDate')} type="date" id="ticketSource" />
+              {/* <label className="block text-sm mb-2" htmlFor="">Due Date</label> */}
+              <input className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500" {...register('dueDate')} type="text" id="ticketSource"
+                value={"00/00/0000"}
+                hidden={true}
+              />
             </div>
-            <div className="mb-4">
-              <label className="block text-sm mb-2" htmlFor="">Assigned To</label>
-              <select className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500" {...register('assignedTo')} id=""
-                onChange={(e) => checkStatus(e.target.value)}
-              >
-                <option value="">Select</option>
-                {ticketAss.map((user, index) => (
-                  <option key={index} value={user}>{user}</option>
-                ))}
-              </select>
-            </div>
+
 
             <div className="flex justify-between">
               <button type="button" onClick={() => setStep(1)} className="py-2 bg-transparent hover:bg-gray-700 rounded text-blue-400 hover:text-blue-500 font-semibold">
@@ -333,8 +306,96 @@ const NewTicket = () => {
             </div>
           </div>
         )}
-
         {step === 3 && (
+          <div className='w-full max-w-md p-8 rounded-lg  mb-2'>
+            <div className="mb-4">
+              <label className="block text-sm mb-2" htmlFor="priority">Priority</label>
+              <div className="flex gap-3 items-center">
+                <label className="inline-flex items-center">
+                  <input
+                    type="radio"
+                    value="Low"
+                    {...register('priority')}
+                    className="form-radio text-blue-600"
+                  />
+                  <span className="ml-2">Low</span>
+                </label>
+                <label className="inline-flex items-center">
+                  <input
+                    type="radio"
+                    value="Normal"
+                    {...register('priority')}
+                    className="form-radio text-blue-600"
+                  />
+                  <span className="ml-2">Normal</span>
+                </label>
+                <label className="inline-flex items-center">
+                  <input
+                    type="radio"
+                    value="High"
+                    {...register('priority')}
+                    className="form-radio text-blue-600"
+                  />
+                  <span className="ml-2">High</span>
+                </label>
+              </div>
+            </div>
+
+
+            <div className="mb-4">
+              <label className="block text-sm mb-2" htmlFor="">Assign Technician</label>
+              <select className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500" {...register('assignedTo')} id=""
+                onChange={(e) => checkStatus(e.target.value)}
+              >
+                <option value="">Select</option>
+                {ticketAss.map((user, index) => (
+                  <option key={index} value={user}>{user}</option>
+                ))}
+              </select>
+            </div>
+            <div className="mb-4 relative">
+              <label className="block text-sm mb-2" htmlFor="collaborators">Collaborators</label>
+              <div
+                className="w-full p-2 bg-transparent border border-gray-600 rounded cursor-pointer"
+                onClick={toggleDropdown}
+              >
+                {selectedUsers.length > 0 ? selectedUsers.join(", ") : "Select Collaborators"}
+              </div>
+
+              {isDropdownOpen && (
+                <div className="absolute mt-2 w-full bg-white border border-gray-600 rounded shadow-lg z-10">
+                  {users.map((user, index) => (
+                    <div key={index} className="px-4 py-2 flex items-center">
+                      <input
+                        type="checkbox"
+                        id={`user-${index}`}
+                        checked={selectedUsers.includes(user)}
+                        onChange={() => handleUserSelection(user)}
+                        className="mr-2"
+                      />
+                      <label htmlFor={`user-${index}`} className="text-sm">
+                        {user}
+                      </label>
+                    </div>
+                  ))}
+                </div>
+
+              )}
+            </div>
+            <div className="flex justify-between">
+              <button type="button" onClick={() => setStep(2)} className="py-2 bg-transparent hover:bg-gray-700 rounded text-blue-400 hover:text-blue-500 font-semibold">
+                Previous
+              </button>
+              <button type="button" onClick={() => setStep(4)} className="py-2 bg-transparent hover:bg-gray-700 rounded text-blue-400 hover:text-blue-500 font-semibold">
+                Next
+              </button>
+            </div>
+          </div>
+
+
+        )}
+
+        {step === 4 && (
           <div className="w-full max-w-md p-8 rounded-lg  mb-2">
             <div className="mb-4">
               <label className="block text-2xl mb-2">Response</label>
@@ -357,15 +418,7 @@ const NewTicket = () => {
               <label className="block text-sm mb-2" htmlFor="">Additional Info</label>
               <textarea className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500" {...register('additionalInfo')} id=""></textarea>
             </div>
-            <div className="mb-4">
-              <label className="block text-sm mb-2" htmlFor="priority">Priority</label>
-              <select className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500" {...register('priority')} id="priority">
-                <option value="">Select Priority</option>
-                <option value="Low">Low</option>
-                <option value="Normal">Normal</option>
-                <option value="High">High</option>
-              </select>
-            </div>
+
             {/* hiden fields */}
 
             <div className="mb-4">
@@ -383,7 +436,7 @@ const NewTicket = () => {
                 {...register('ticketStatus')}
                 type="text"
                 value={ticketStatus}
-                // hidden="true" 
+                hidden="true"
                 contentEditable="false"
               />
             </div>
