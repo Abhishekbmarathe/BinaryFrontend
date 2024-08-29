@@ -3,17 +3,27 @@ import Nav from '../TopNav';
 import { useNavigate } from 'react-router-dom';
 import Settings from '../../assets/Settings';
 import getTickets from '../modules/getAllTickets';
+import Ticket from '../../assets/Ticket';
+import History from '../../assets/History';
+import Technician from '../../assets/Technician'
+import getTicketsettings from '../modules/getTicketSetting'
 
 function Alltickets() {
 
     const [settings, setSetting] = useState(false);
     const [allTickets, setAlltickets] = useState([]);
     const [isAdmin, setAdmin] = useState(false);
+    const [date, setDate] = useState();
+    const [time, setTime] = useState();
 
     useEffect(() => {
         const data = JSON.parse(localStorage.getItem("AllTickets")); // Assuming data is stored as a stringified JSON
         const users = JSON.parse(localStorage.getItem("userDet"));
         if (data) {
+            const trimdate = data.map((item) => {
+                return item.updatedDate.trim("");
+            })
+            console.log("Alltickets ", trimdate)
             setAlltickets(data);
             if (users.role === "mAdmin") {
                 setAdmin(true);
@@ -37,7 +47,8 @@ function Alltickets() {
     };
 
     getTickets();
-
+    getTicketsettings();
+    
     const getPriorityColor = (priority) => {
         switch (priority) {
             case 'High':
@@ -54,6 +65,7 @@ function Alltickets() {
     const openTicket = (ticketId) => {
         navigate('/open-ticket', { state: { ticketId } });
     }
+
 
     return (
         <div>
@@ -75,16 +87,22 @@ function Alltickets() {
                         {allTickets.map((ticket, index) => (
                             <li
                                 key={index}
-                                className='bg-white py-4 px-2 rounded-lg shadow-md flex justify-between cursor-pointer'
+                                className='bg-white py-4 px-5 rounded-lg shadow-md flex justify-between cursor-pointer'
                                 onClick={() => openTicket(ticket._id)}
                             >
                                 <div className='text-[16px] font-sans'>
-                                    <h2 className=''>{ticket.ticketNumber} | <span className='text-customColor'>{ticket.companyName}</span></h2>
-                                    <p className='text-gray-600'>Updated On: <span className='text-customColor'>{ticket.updatedDate}</span></p>
-                                    <p className='text-gray-600'>Assigned To: <span className='text-customColor'>{ticket.ticketStatus}</span></p>
+                                    <h2 className='text-gray-600'>{ticket.ticketNumber} <span className='text-[11px] text-gray-400'>●</span> <span className={`${getPriorityColor(ticket.priority)}`}>{ticket.priority}</span></h2>
+                                    <span className='text-customColor text-xl'>{ticket.companyName}</span>
+                                    <div className='my-1 text-customColor flex items-center gap-2'><span className={`text-white px-2 w-fit rounded-md ${ticket.ticketStatus === "Assigned" ? "bg-red-400" : "bg-yellow-400"
+                                        }`}>{ticket.ticketStatus}</span> <span className='flex gap-1 items-center'>{ticket.ticketStatus === "Assigned" ? <><Technician /> {ticket.assignedTo}</> : ""}</span></div>
+                                    <div className='text-gray-600 flex items-center'>
+                                        <History />
+                                        <span className='text-customColor'>{ticket.updatedDate}</span>
+                                    </div>
+
                                 </div>
-                                <div className='flex text-[14px]'>
-                                    <span className={`${getPriorityColor(ticket.priority)}`}>{ticket.priority}</span>&nbsp;|&nbsp;<span className='text-customColor'>{ticket.ticketStatus}</span>
+                                <div className='bg-[#E2FEFB] rounded-full h-fit p-3 mt-4'>
+                                    <Ticket size={25} color="rgb(0 197 255)" />
                                 </div>
                             </li>
                         ))}

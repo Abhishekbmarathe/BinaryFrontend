@@ -159,7 +159,7 @@ const NewTicket = () => {
         companyType,
         ticketStatus,
         ticketNumber,
-        updatedDate: formattedDate // Only the date portion
+        updatedDate: formattedDate // Only the date portion  
       };
 
       console.log(formData);
@@ -360,6 +360,17 @@ const NewTicket = () => {
                 className="w-full p-3 border border-gray-300 rounded"
                 readOnly={allowEdit}
               />
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-sm mb-2" htmlFor="ticketSource">Ticket Source</label>
+              <select className='w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500' {...register('ticketSource')} >
+                <option value="">Select source</option>
+                <option value="Email">Email</option>
+                <option value="Call">Call</option>
+                <option value="Whatsapp">Whatsapp</option>
+                <option value="Whatsapp">others</option>
+              </select>
             </div>
 
             {/* Help Topic */}
