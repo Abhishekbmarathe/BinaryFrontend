@@ -13,7 +13,7 @@ function getAllAsset() {
         })
         .then(data => {
             localStorage.setItem('TicketSettings', JSON.stringify(data));
-            console.log('Data has been stored in local storage.');
+            // console.log('Data has been stored in local storage.');
         })
         .catch(error => {
             console.error('There was a problem with the fetch operation:', error);

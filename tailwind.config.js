@@ -10,7 +10,7 @@ export default {
         'customBlue': '#00c5ffd6 0px 0px 11px 1px',
       },
       colors: {
-        'customColor': 'rgb(0 197 255)', // Green color
+        'customColor': 'rgb(0 197 255)', 
         'cardcolor': '#ffffff',
       },
       backgroundImage: {

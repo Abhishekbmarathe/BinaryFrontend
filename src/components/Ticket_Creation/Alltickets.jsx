@@ -5,6 +5,7 @@ import Settings from '../../assets/Settings';
 import getTickets from '../modules/getAllTickets';
 import Ticket from '../../assets/Ticket';
 import History from '../../assets/History';
+import Calender from '../../assets/Calender';
 import Technician from '../../assets/Technician'
 import getTicketsettings from '../modules/getTicketSetting'
 
@@ -13,17 +14,18 @@ function Alltickets() {
     const [settings, setSetting] = useState(false);
     const [allTickets, setAlltickets] = useState([]);
     const [isAdmin, setAdmin] = useState(false);
-    const [date, setDate] = useState();
-    const [time, setTime] = useState();
+    const [dateTime, setDateTime] = useState([]);
 
     useEffect(() => {
         const data = JSON.parse(localStorage.getItem("AllTickets")); // Assuming data is stored as a stringified JSON
         const users = JSON.parse(localStorage.getItem("userDet"));
         if (data) {
-            const trimdate = data.map((item) => {
-                return item.updatedDate.trim("");
-            })
-            console.log("Alltickets ", trimdate)
+            const dateTimeArray = data.map((item) => {
+                const [date, time] = item.updatedDate.split(' ');
+                return { date, time };
+            });
+            setDateTime(dateTimeArray);
+            console.log("Alltickets ", dateTimeArray)
             setAlltickets(data);
             if (users.role === "mAdmin") {
                 setAdmin(true);
@@ -48,7 +50,7 @@ function Alltickets() {
 
     getTickets();
     getTicketsettings();
-    
+
     const getPriorityColor = (priority) => {
         switch (priority) {
             case 'High':
@@ -81,25 +83,42 @@ function Alltickets() {
 
             </div>
 
-            <div className="px-3">
+            <div className="px-3 md:w-fit m-auto">
                 {allTickets.length > 0 ? (
-                    <ul className='space-y-4'>
+                    <ul className='md:flex md:gap-4 md:flex-wrap items-center m-auto'>
                         {allTickets.map((ticket, index) => (
                             <li
                                 key={index}
-                                className='bg-white py-4 px-5 rounded-lg shadow-md flex justify-between cursor-pointer'
+                                className='my-4 bg-white py-4 px-5 rounded-lg shadow-md flex items-center justify-between cursor-pointer min-w-80'
                                 onClick={() => openTicket(ticket._id)}
                             >
                                 <div className='text-[16px] font-sans'>
-                                    <h2 className='text-gray-600'>{ticket.ticketNumber} <span className='text-[11px] text-gray-400'>●</span> <span className={`${getPriorityColor(ticket.priority)}`}>{ticket.priority}</span></h2>
+                                    <h2 className='text-gray-600'>{ticket.ticketNumber} <span className='text-[10px] text-gray-400'>●</span> <span className={`${getPriorityColor(ticket.priority)}`}>{ticket.priority}</span></h2>
                                     <span className='text-customColor text-xl'>{ticket.companyName}</span>
-                                    <div className='my-1 text-customColor flex items-center gap-2'><span className={`text-white px-2 w-fit rounded-md ${ticket.ticketStatus === "Assigned" ? "bg-red-400" : "bg-yellow-400"
-                                        }`}>{ticket.ticketStatus}</span> <span className='flex gap-1 items-center'>{ticket.ticketStatus === "Assigned" ? <><Technician /> {ticket.assignedTo}</> : ""}</span></div>
-                                    <div className='text-gray-600 flex items-center'>
-                                        <History />
-                                        <span className='text-customColor'>{ticket.updatedDate}</span>
+                                    <div className='my-1 text-customColor flex items-center gap-2'>
+                                        <span className={`text-white px-2 w-fit rounded-md ${ticket.ticketStatus === "Assigned" ? "bg-red-400" : "bg-yellow-400"}`}>
+                                            {ticket.ticketStatus}
+                                        </span>
+                                        <span className='flex gap-[2px] items-center'>
+                                            {ticket.ticketStatus === "Assigned" && <>
+                                                <Technician /> {ticket.assignedTo}
+                                            </>}
+                                        </span>
                                     </div>
-
+                                    <div className='text-gray-600 flex items-center'>
+                                        {dateTime[index] && (
+                                            <div className='flex gap-2'>
+                                                <div className='flex'>
+                                                    <History size={18} />
+                                                    <span className='text-customColor'>{dateTime[index].time}</span>
+                                                </div>
+                                                <div className='flex gap-1'>
+                                                    <Calender />
+                                                    <span className='text-customColor '>{dateTime[index].date}</span>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
                                 <div className='bg-[#E2FEFB] rounded-full h-fit p-3 mt-4'>
                                     <Ticket size={25} color="rgb(0 197 255)" />
@@ -111,6 +130,7 @@ function Alltickets() {
                     <p>No tickets available.</p>
                 )}
             </div>
+
 
             <button
                 className='bg-slate-400 py-2 px-3 rounded-xl my-9 fixed bottom-0 right-8 flex justify-between w-20 items-center text-white'
