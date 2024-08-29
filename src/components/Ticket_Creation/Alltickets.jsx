@@ -83,7 +83,7 @@ function Alltickets() {
 
             </div>
 
-            <div className="px-3 md:w-fit m-auto">
+            <div className="px-3 md:w-fit">
                 {allTickets.length > 0 ? (
                     <ul className='md:flex md:gap-4 md:flex-wrap items-center m-auto'>
                         {allTickets.map((ticket, index) => (
