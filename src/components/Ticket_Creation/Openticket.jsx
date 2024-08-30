@@ -17,6 +17,7 @@ const NewTicket = () => {
   const [ticketNumber, setTicketnumber] = useState();
   const [isAdmin, setAdmin] = useState(false);
   const [allowEdit, setEdit] = useState(false); // Default to true for editing
+  const [ticketOC, setTicketOC] = useState();
 
   const location = useLocation();
   const { ticketId } = location.state; // Get ticketId from state
@@ -35,6 +36,8 @@ const NewTicket = () => {
     const currentTicket = allTickets.find(ticket => ticket._id === ticketId);
     if (currentTicket) {
       setTicket(currentTicket);
+      setTicketOC(currentTicket.ticketStatus);
+
       // Populate form fields with existing ticket data
       Object.keys(currentTicket).forEach((key) => {
         setValue(key, currentTicket[key]);
@@ -114,14 +117,12 @@ const NewTicket = () => {
     }
   }, []);
 
-
-
-
   const [helpTopics, setHelpTopics] = useState([]);
   const [departments, setDepartments] = useState([]);
   const [slaPlans, setSlaPlans] = useState([]);
   const [cannedResponse, setCannedResponses] = useState([]);
   const [creator, setCreator] = useState(JSON.parse(localStorage.getItem('userDet')).username);
+
   useEffect(() => {
     const storedSettings = localStorage.getItem("TicketSettings");
     if (storedSettings) {
@@ -143,7 +144,7 @@ const NewTicket = () => {
 
 
 
-
+  const [closeData, setClosedata] = useState();
 
   const onSubmit = (data) => {
     if (!allowEdit) {
@@ -162,6 +163,8 @@ const NewTicket = () => {
         updatedDate: formattedDate // Only the date portion  
       };
 
+
+      setClosedata(formData)
       console.log(formData);
 
       axios
@@ -196,17 +199,70 @@ const NewTicket = () => {
 
   getAlltickets();
 
+
+
+
+
+
+  const changeStatus = (status) => {
+    const mv = status.split('ed')[0]
+    console.log(mv);
+    const conf = confirm("Are you sure want to " + (mv === "Clos" ? "Close" : mv) + " the ticket ?")
+    if (conf) {
+      const currentDateTime = new Date();
+
+      // Format the date as dd-mm-yyyy hh:mm:ss
+      const formattedDate = `${String(currentDateTime.getDate()).padStart(2, '0')}/${String(currentDateTime.getMonth() + 1).padStart(2, '0')}/${currentDateTime.getFullYear()} ${String(currentDateTime.getHours()).padStart(2, '0')}:${String(currentDateTime.getMinutes()).padStart(2, '0')}:${String(currentDateTime.getSeconds()).padStart(2, '0')}`;
+      const formData = {
+        ...closeData,
+        contactDetails: contacts,
+        collaborators: selectedUsers,
+        companyType,
+        ticketStatus: status,
+        ticketNumber,
+        updatedDate: formattedDate // Only the date portion  
+      };
+
+
+      console.log(formData);
+
+      axios
+        .post('https://binarysystemsbackend-mtt8.onrender.com/api/updateTicket', formData)
+        .then((response) => {
+          alert('Ticket ' + status + ' successfully');
+          console.log(response);
+          // Instead of reloading the page, consider navigating to another page or updating the state
+          window.location.reload();
+          navigate(-1); // Replace '/some-page' with the actual route you want to navigate to
+        })
+        .catch((error) => {
+          alert('Error' + status + ' ticket:', error);
+          console.error('Error' + status + ' ticket:', error);
+        });
+    }
+  }
+
   if (!ticket) return <div>Loading...</div>; // Show a loading message until the ticket is fetched
 
   return (
     <div className="min-h-screen bg-gray-100 p-3">
       <div className='flex items-center justify-between px-2'>
-        <h1 className='my-3 font-bold text-3xl text-center sticky top-0 z-10 bg-[#f5f5f5]'>Edit <span className='text-customColor'>Ticket</span></h1>
+        <h1 className='my-3 font-bold text-2xl text-center sticky top-0 z-10 bg-[#f5f5f5]'>Edit <span className='text-customColor'>Ticket</span></h1>
         <div className='flex gap-2'>
           {isAdmin && (
-            <button className='mx-2' onClick={handleDelete}>
-              <Delete />
-            </button>
+            <>
+              {ticketOC === "Open" && (
+                <button className='bg-blue-500 px-3 py-1 rounded-md text-white' onClick={() => changeStatus('Closed')}>Close</button>
+              )}
+              {ticketOC === "Closed" ? (
+                <button className='bg-blue-500 px-3 py-1 rounded-md text-white' onClick={() => changeStatus('reopened')}>Reopen</button>
+              ) : (
+                <button className='bg-blue-500 px-3 py-1 rounded-md text-white' onClick={() => changeStatus('Closed')}>Close</button>
+              )}
+              <button className='mx-2' onClick={handleDelete}>
+                <Delete />
+              </button>
+            </>
           )}
           <button className='mx-2'>
             <History />

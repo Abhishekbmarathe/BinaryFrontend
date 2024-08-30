@@ -25,7 +25,6 @@ function Alltickets() {
                 return { date, time };
             });
             setDateTime(dateTimeArray);
-            console.log("Alltickets ", dateTimeArray)
             setAlltickets(data);
             if (users.role === "mAdmin") {
                 setAdmin(true);
@@ -63,6 +62,16 @@ function Alltickets() {
                 return 'text-gray-600';
         }
     }
+    const statusColor = (status) => {
+        switch (status) {
+            case 'Assigned':
+                return 'bg-red-400';
+            case 'Closed':
+                return 'bg-green-400';
+            default:
+                return 'bg-yellow-400';
+        }
+    }
 
     const openTicket = (ticketId) => {
         navigate('/open-ticket', { state: { ticketId } });
@@ -93,16 +102,16 @@ function Alltickets() {
                                 onClick={() => openTicket(ticket._id)}
                             >
                                 <div className='text-[16px] font-sans'>
-                                    <h2 className='text-gray-600'>{ticket.ticketNumber} <span className='text-[10px] text-gray-400'>●</span> <span className={`${getPriorityColor(ticket.priority)}`}>{ticket.priority}</span></h2>
+                                    <div className='text-gray-600 flex items-center gap-1'>{ticket.ticketNumber} <span className='text-[10px] text-gray-400'>●</span> <span className={`${getPriorityColor(ticket.priority)}`}>{ticket.priority}</span></div>
                                     <span className='text-customColor text-xl'>{ticket.companyName}</span>
                                     <div className='my-1 text-customColor flex items-center gap-2'>
-                                        <span className={`text-white px-2 w-fit rounded-md ${ticket.ticketStatus === "Assigned" ? "bg-red-400" : "bg-yellow-400"}`}>
+                                        <span className={`text-white px-2 w-fit rounded-md ${statusColor(ticket.ticketStatus)}`}>
                                             {ticket.ticketStatus}
                                         </span>
                                         <span className='flex gap-[2px] items-center'>
                                             {ticket.ticketStatus === "Assigned" && <>
-                                                <Technician /> {ticket.assignedTo}
-                                            </>}
+                                                <Technician /> {ticket.assignedTo}</>
+                                            }
                                         </span>
                                     </div>
                                     <div className='text-gray-600 flex items-center'>

@@ -3,6 +3,8 @@ import { useForm, Controller } from 'react-hook-form';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import ticketSettings from '../modules/getTicketSetting';
+import Attachment from '../../assets/Attachment';
+import { handleFileChange, handleRemoveFile, handleSubmitt } from '../modules/Attachfile';
 
 const NewTicket = () => {
 
@@ -18,6 +20,8 @@ const NewTicket = () => {
   const [slaPlans, setSlaPlans] = useState([]);
   const [cannedResponse, setCannedResponses] = useState([]);
   const [creator, setCreator] = useState(JSON.parse(localStorage.getItem('userDet')).username);
+
+  const [selectedFiles, setSelectedFiles] = useState([]);
 
   ticketSettings()
 
@@ -88,11 +92,15 @@ const NewTicket = () => {
   };
 
   const currentDateTime = new Date();
-  console.log(currentDateTime)
 
   const onSubmit = (data) => {
     data.collaborator = selectedUsers;
     data.senderCompanyType = companyType;
+
+    const attachedFiles = new FormData();
+    selectedFiles.forEach((file, index) => {
+      attachedFiles.append(`file${index}`, file);
+    });
 
     // Get current date and time
     const currentDateTime = new Date();
@@ -105,12 +113,14 @@ const NewTicket = () => {
       ...data,
       contact: contacts,  // Use `contact` to match your schema
       updatedDate: formattedDate,  // Use formatted date and time
+      // attachedFiles
     };
 
-    console.log(formData);
 
     axios.post('https://binarysystemsbackend-mtt8.onrender.com/api/createTicket', formData)
+    // axios.post('http://localhost:3000/api/createTicket', formData)
       .then((response) => {
+        // console.log("attached files", formData.attachedFiles);
         console.log('Success:', response.data);
         alert('Ticket Created Successfully');
         window.location.reload();
@@ -200,7 +210,7 @@ const NewTicket = () => {
               <input className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500" {...register('creator')}
                 type="text" id="address"
                 value={creator}
-                hidden="true"
+                hidden={true}
               />
             </div>
             {/* Contact Detail section in the form */}
@@ -419,6 +429,50 @@ const NewTicket = () => {
               <textarea className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500" {...register('additionalInfo')} id=""></textarea>
             </div>
 
+            <div>
+              <input
+                type="file"
+                multiple
+                onChange={(e) => handleFileChange(e, selectedFiles, setSelectedFiles)}
+                // {..register('attach')}
+                className="mb-2"
+                style={{ display: 'none' }}
+                id="fileInput"
+              />
+              <button
+                className='flex items-center gap-1 bg-blue-400 text-white p-3 rounded-lg'
+                type='button'
+                onClick={() => document.getElementById('fileInput').click()}
+              >
+                <Attachment />
+                Attach File
+              </button>
+
+              <ul className='mt-3'>
+                {selectedFiles.map((file, index) => (
+                  <li key={index} className='flex items-center justify-between bg-gray-100 p-2 rounded mb-2'>
+                    {file.name}
+                    <button
+                      onClick={() => handleRemoveFile(index, selectedFiles, setSelectedFiles)}
+                      className="ml-2 text-red-500"
+                    >
+                      Remove
+                    </button>
+                  </li>
+                ))}
+              </ul>
+
+              {/* {selectedFiles.length > 0 && (
+                <button
+                  onClick={() => handleSubmitt(selectedFiles)}
+                  type='button'
+                  className="mt-3 bg-green-500 text-white p-2 rounded"
+                >
+                  Submit
+                </button>
+              )} */}
+            </div>
+
             {/* hiden fields */}
 
             <div className="mb-4">
@@ -429,14 +483,14 @@ const NewTicket = () => {
                 id="updatedDate"
                 value={new Date().toLocaleDateString()}
                 readOnly
-                hidden="true"
+                hidden={true}
               />
               <input
                 className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500"
                 {...register('ticketStatus')}
                 type="text"
                 value={ticketStatus}
-                hidden="true"
+                hidden={true}
                 contentEditable="false"
               />
             </div>
