@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import ticketSettings from '../modules/getTicketSetting';
 import Attachment from '../../assets/Attachment';
-import { handleFileChange, handleRemoveFile, handleSubmitt } from '../modules/Attachfile';
+// import { handleFileChange, handleRemoveFile, handleSubmitt } from '../modules/Attachfile';
 
 const NewTicket = () => {
 
@@ -97,11 +97,6 @@ const NewTicket = () => {
     data.collaborator = selectedUsers;
     data.senderCompanyType = companyType;
 
-    const attachedFiles = new FormData();
-    selectedFiles.forEach((file, index) => {
-      attachedFiles.append(`file${index}`, file);
-    });
-
     // Get current date and time
     const currentDateTime = new Date();
 
@@ -120,10 +115,13 @@ const NewTicket = () => {
     axios.post('https://binarysystemsbackend-mtt8.onrender.com/api/createTicket', formData)
     // axios.post('http://localhost:3000/api/createTicket', formData)
       .then((response) => {
-        // console.log("attached files", formData.attachedFiles);
-        console.log('Success:', response.data);
-        alert('Ticket Created Successfully');
-        window.location.reload();
+        const ticketNumber = response.data.ticketNumber;
+        if (ticketNumber) {
+          submitFiles(selectedFiles, ticketNumber);
+          alert('Ticket Created Successfully');
+        } else {
+          throw new Error('No ticket number returned from API');
+        }
       })
       .catch((error) => {
         console.error('Error:', error);
@@ -149,6 +147,43 @@ const NewTicket = () => {
       i === index ? { ...contact, [field]: value } : contact
     );
     setContacts(newContacts);
+  };
+
+
+
+
+  // const [selectedFiles, setSelectedFiles] = useState([]);
+  // Reusable file handling functions
+  const handleFileChange = (e, selectedFiles, setSelectedFiles) => {
+    const newFiles = Array.from(e.target.files);
+    setSelectedFiles([...selectedFiles, ...newFiles]);
+  };
+
+  const removeFile = (index, selectedFiles, setSelectedFiles) => {
+    const updatedFiles = selectedFiles.filter((_, i) => i !== index);
+    setSelectedFiles(updatedFiles);
+  };
+
+
+
+  const submitFiles = async (selectedFiles, ticketFileId) => {
+    const formData = new FormData();
+    selectedFiles.forEach((file) => {
+      formData.append('files', file);
+    });
+    formData.append('ticketFileId', ticketFileId);
+    try {
+      const response = await axios.post('https://binarysystemsbackend-mtt8.onrender.com/api/fileAttach', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      alert('Files successfully submitted:', response.data);
+      // Optionally, clear the selected files after successful upload
+      setSelectedFiles([]);
+    } catch (error) {
+      alert('Error submitting files:', error);
+    }
   };
 
 
@@ -434,41 +469,47 @@ const NewTicket = () => {
                 type="file"
                 multiple
                 onChange={(e) => handleFileChange(e, selectedFiles, setSelectedFiles)}
-                // {..register('attach')}
-                className="mb-2"
                 style={{ display: 'none' }}
                 id="fileInput"
               />
               <button
-                className='flex items-center gap-1 bg-blue-400 text-white p-3 rounded-lg'
-                type='button'
+                className="flex items-center gap-1 bg-blue-400 text-white p-3 rounded-lg"
+                type="button"
                 onClick={() => document.getElementById('fileInput').click()}
               >
                 <Attachment />
                 Attach File
               </button>
 
-              <ul className='mt-3'>
-                {selectedFiles.map((file, index) => (
-                  <li key={index} className='flex items-center justify-between bg-gray-100 p-2 rounded mb-2'>
-                    {file.name}
-                    <button
-                      onClick={() => handleRemoveFile(index, selectedFiles, setSelectedFiles)}
-                      className="ml-2 text-red-500"
-                    >
-                      Remove
-                    </button>
-                  </li>
-                ))}
-              </ul>
+              <div className="mt-2">
+                {selectedFiles.length > 0 && (
+                  <div>
+                    <h4>Selected Files:</h4>
+                    <ul>
+                      {selectedFiles.map((file, index) => (
+                        <li key={index} className="flex items-center justify-between mb-1">
+                          {file.name}
+                          <button
+                            className="text-red-500 ml-2"
+                            type="button"
+                            onClick={() => removeFile(index, selectedFiles, setSelectedFiles)}
+                          >
+                            Remove
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
 
               {/* {selectedFiles.length > 0 && (
                 <button
-                  onClick={() => handleSubmitt(selectedFiles)}
-                  type='button'
-                  className="mt-3 bg-green-500 text-white p-2 rounded"
+                  className="mt-4 bg-green-500 text-white p-2 rounded-lg"
+                  type="button"
+                  onClick={() => submitFiles(selectedFiles)}
                 >
-                  Submit
+                  Submit Files
                 </button>
               )} */}
             </div>

@@ -255,7 +255,7 @@ const NewTicket = () => {
                 <button className='bg-blue-500 px-3 py-1 rounded-md text-white' onClick={() => changeStatus('Closed')}>Close</button>
               )}
               {ticketOC === "Closed" ? (
-                <button className='bg-blue-500 px-3 py-1 rounded-md text-white' onClick={() => changeStatus('reopened')}>Reopen</button>
+                <button className='bg-blue-500 px-3 py-1 rounded-md text-white' onClick={() => changeStatus('Reopened')}>Reopen</button>
               ) : (
                 <button className='bg-blue-500 px-3 py-1 rounded-md text-white' onClick={() => changeStatus('Closed')}>Close</button>
               )}
