@@ -45,10 +45,10 @@ function AssetDb() {
         <h1 className='my-6 font-bold text-3xl mx-auto w-fit'>Customer <span className='text-customColor'>DB</span></h1>
         {!showForm ? (
           <button
-            className='bg-neutral-500 py-2 px-3 rounded-xl my-9 fixed bottom-0 right-8 flex justify-between w-20 items-center'
+            className='bg-slate-400 py-2 px-3 rounded-xl my-9 fixed bottom-0 right-8 flex justify-between w-20 items-center'
             onClick={() => setShowForm(true)}
           >
-            <span className='text-customColor font-bold text-xl'>+</span> New
+            <span className='text-white font-bold text-xl'>+</span> New
           </button>
 
         ) : null}
@@ -58,7 +58,7 @@ function AssetDb() {
               <label className='block'>Company Name</label>
               <input
                 {...register('companyName', { required: true })}
-                className='border-2 rounded p-3 w-full bg-transparent'
+                className='border-2 border-gray-400 focus:border-customColor outline-none rounded p-3 w-full bg-transparent'
               />
               {errors.companyName && <span className='text-red-500'>Company Name is required</span>}
             </div>
@@ -66,7 +66,7 @@ function AssetDb() {
               <label className='block '>Web Address</label>
               <input
                 {...register('web', { required: true })}
-                className='border-2 rounded p-3 w-full bg-transparent'
+                className='border-2 border-gray-400 focus:border-customColor outline-none rounded p-3 w-full bg-transparent'
               />
               {errors.web && <span className='text-red-500'>Web Address is required</span>}
             </div>
@@ -74,7 +74,15 @@ function AssetDb() {
               <label className='block '>Email Address</label>
               <input
                 {...register('email', { required: true })}
-                className='border-2 rounded p-3 w-full bg-transparent'
+                className='border-2 border-gray-400 focus:border-customColor outline-none rounded p-3 w-full bg-transparent'
+              />
+              {errors.email && <span className='text-red-500'>Email Address is required</span>}
+            </div>
+            <div>
+              <label className='block '>Main Branch</label>
+              <input
+                {...register('email', { required: true })}
+                className='border-2 border-gray-400 focus:border-customColor outline-none rounded p-3 w-full bg-transparent'
               />
               {errors.email && <span className='text-red-500'>Email Address is required</span>}
             </div>
@@ -112,7 +120,7 @@ function AssetDb() {
             </div>
             <button
               type="submit"
-              className="w-full block m-auto p-2 bg-slate-200 text-black rounded-md hover:bg-slate-500 transition-all"
+              className="w-full block m-auto p-2  text-white rounded-md bg-slate-400 transition-all"
               disabled={isLoading} // Disable button when loading
             >
               {isLoading ? (

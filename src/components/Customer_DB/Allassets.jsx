@@ -30,7 +30,7 @@ function Allassets({ companyName }) {
     
     return (
         <div className="w-[95vw] mx-auto mt-10 sm:max-w-[50vw]">
-            <div className="shadow-md rounded-lg overflow-hidden mb-4">
+            <div className=" rounded-lg overflow-hidden mb-4">
                 {allassets.length === 0 ? (
                     <p className='text-customColor m-auto w-fit text-3xl'>No assets!</p>
                 ) : (
@@ -38,7 +38,7 @@ function Allassets({ companyName }) {
                         {allassets.map(asset => (
                             <li key={asset._id} className="mb-2">
                                 <p
-                                    className="cursor-pointer border rounded m-auto p-3"
+                                    className="cursor-pointer border border-customColor bg-cyan-50 rounded m-auto p-3"
                                     onClick={() => handleBrandClick(asset.productName, asset.brand, asset.category,asset._id)}
                                 >
                                     {asset.productName}
