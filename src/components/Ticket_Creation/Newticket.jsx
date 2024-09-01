@@ -113,7 +113,7 @@ const NewTicket = () => {
 
 
     axios.post('https://binarysystemsbackend-mtt8.onrender.com/api/createTicket', formData)
-    // axios.post('http://localhost:3000/api/createTicket', formData)
+      // axios.post('http://localhost:3000/api/createTicket', formData)
       .then((response) => {
         const ticketNumber = response.data.ticketNumber;
         if (ticketNumber) {
@@ -163,8 +163,6 @@ const NewTicket = () => {
     const updatedFiles = selectedFiles.filter((_, i) => i !== index);
     setSelectedFiles(updatedFiles);
   };
-
-
 
   const submitFiles = async (selectedFiles, ticketFileId) => {
     const formData = new FormData();
@@ -535,16 +533,13 @@ const NewTicket = () => {
                 contentEditable="false"
               />
             </div>
-
-
-
             {/* hidden fields end */}
 
             <div className="flex justify-between">
               <button type="button" onClick={() => setStep(2)} className="py-2 bg-transparent hover:bg-gray-700 rounded text-blue-400 hover:text-blue-500 font-semibold">
                 Previous
               </button>
-              <button type="submit" className="py-2 bg-transparent hover:bg-gray-700 rounded text-blue-400 hover:text-blue-500 font-semibold">
+              <button type="submit" className="py-2 bg-transparent  rounded text-blue-400 hover:text-blue-500 font-semibold">
                 Save
               </button>
             </div>

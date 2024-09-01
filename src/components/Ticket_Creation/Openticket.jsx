@@ -5,6 +5,7 @@ import getAlltickets from '../modules/getAllTickets';
 import axios from 'axios';
 import History from '../../assets/History';
 import Delete from '../../assets/Delete';
+import Attachment from '../../assets/Attachment';
 
 const NewTicket = () => {
   const { handleSubmit, register, setValue } = useForm();
@@ -18,6 +19,8 @@ const NewTicket = () => {
   const [isAdmin, setAdmin] = useState(false);
   const [allowEdit, setEdit] = useState(false); // Default to true for editing
   const [ticketOC, setTicketOC] = useState();
+  const [selectedFiles, setSelectedFiles] = useState([]);
+
 
   const location = useLocation();
   const { ticketId } = location.state; // Get ticketId from state
@@ -171,8 +174,11 @@ const NewTicket = () => {
         .post('https://binarysystemsbackend-mtt8.onrender.com/api/updateTicket', formData)
         .then((response) => {
           alert('Ticket updated successfully');
-          console.log(response);
+          const ticketNumber = formData.ticketNumber;
+          console.log(ticketNumber);
           // Instead of reloading the page, consider navigating to another page or updating the state
+          submitFiles(selectedFiles, ticketNumber);
+
           window.location.reload();
           navigate(-1); // Replace '/some-page' with the actual route you want to navigate to
         })
@@ -242,6 +248,45 @@ const NewTicket = () => {
     }
   }
 
+
+
+
+  // const [selectedFiles, setSelectedFiles] = useState([]);
+  // Reusable file handling functions
+  const handleFileChange = (e, selectedFiles, setSelectedFiles) => {
+    const newFiles = Array.from(e.target.files);
+    setSelectedFiles([...selectedFiles, ...newFiles]);
+  };
+
+  const removeFile = (index, selectedFiles, setSelectedFiles) => {
+    const updatedFiles = selectedFiles.filter((_, i) => i !== index);
+    setSelectedFiles(updatedFiles);
+  };
+
+  const submitFiles = async (selectedFiles, ticketFileId) => {
+    const formData = new FormData();
+    selectedFiles.forEach((file) => {
+      formData.append('files', file);
+    });
+    formData.append('ticketFileId', ticketFileId);
+    try {
+      const response = await axios.post('https://binarysystemsbackend-mtt8.onrender.com/api/fileAttach', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      alert('Files successfully submitted:', response.data);
+      // Optionally, clear the selected files after successful upload
+      setSelectedFiles([]);
+    } catch (error) {
+      alert('Error submitting files:', error);
+    }
+  };
+
+
+
+
+
   if (!ticket) return <div>Loading...</div>; // Show a loading message until the ticket is fetched
 
   return (
@@ -254,9 +299,13 @@ const NewTicket = () => {
               {ticketOC === "Open" && (
                 <button className='bg-blue-500 px-3 py-1 rounded-md text-white' onClick={() => changeStatus('Closed')}>Close</button>
               )}
-              {ticketOC === "Closed" ? (
+              {ticketOC === "Closed" && (
                 <button className='bg-blue-500 px-3 py-1 rounded-md text-white' onClick={() => changeStatus('Reopened')}>Reopen</button>
-              ) : (
+              )}
+              {ticketOC === "Reopened" && (
+                <button className='bg-blue-500 px-3 py-1 rounded-md text-white' onClick={() => changeStatus('Closed')}>Close</button>
+              )}
+              {ticketOC === "Assigned" && (
                 <button className='bg-blue-500 px-3 py-1 rounded-md text-white' onClick={() => changeStatus('Closed')}>Close</button>
               )}
               <button className='mx-2' onClick={handleDelete}>
@@ -621,7 +670,55 @@ const NewTicket = () => {
               <textarea className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500" {...register('additionalInfo')} id=""></textarea>
             </div>
 
+            <div>
+              <input
+                type="file"
+                multiple
+                onChange={(e) => handleFileChange(e, selectedFiles, setSelectedFiles)}
+                style={{ display: 'none' }}
+                id="fileInput"
+              />
+              <button
+                className="flex items-center gap-1 bg-blue-400 text-white p-3 rounded-lg"
+                type="button"
+                onClick={() => document.getElementById('fileInput').click()}
+              >
+                <Attachment />
+                Attach File
+              </button>
 
+              <div className="mt-2">
+                {selectedFiles.length > 0 && (
+                  <div>
+                    <h4>Selected Files:</h4>
+                    <ul>
+                      {selectedFiles.map((file, index) => (
+                        <li key={index} className="flex items-center justify-between mb-1">
+                          {file.name}
+                          <button
+                            className="text-red-500 ml-2"
+                            type="button"
+                            onClick={() => removeFile(index, selectedFiles, setSelectedFiles)}
+                          >
+                            Remove
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+
+              {/* {selectedFiles.length > 0 && (
+                <button
+                  className="mt-4 bg-green-500 text-white p-2 rounded-lg"
+                  type="button"
+                  onClick={() => submitFiles(selectedFiles)}
+                >
+                  Submit Files
+                </button>
+              )} */}
+            </div>
 
             <div className="flex justify-between">
               <button
