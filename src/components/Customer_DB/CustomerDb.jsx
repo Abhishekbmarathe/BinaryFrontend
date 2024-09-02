@@ -44,8 +44,8 @@ function AssetDb() {
   const onSubmit = async (data) => {
     setIsLoading(true);
     try {
-      // const response = await axios.post('https://binarysystemsbackend-mtt8.onrender.com/api/addClient', data);
-      const response = await axios.post('http://localhost:3000/api/addClient', data);
+      const response = await axios.post('https://binarysystemsbackend-mtt8.onrender.com/api/addClient', data);
+      // const response = await axios.post('http://localhost:3000/api/addClient', data);
       submitBranches(data.companyName); // Pass companyName to submitBranches
       getAllcustomers();
       alert('Customer added successfully...');
@@ -72,9 +72,11 @@ function AssetDb() {
 
     console.log(payload)
     // Send the payload to the API
-    axios.post('http://localhost:3000/api/updateClientbranches', payload)
+    axios.post('https://binarysystemsbackend-mtt8.onrender.com/api/updateClientbranches', payload)
+      // axios.post('http://localhost:3000/api/updateClientbranches', payload)
       .then(response => {
         console.log('Branches and company name submitted:', response.data);
+        window.location.reload();
       })
       .catch(error => {
         console.error('Error submitting branches and company name:', error);
