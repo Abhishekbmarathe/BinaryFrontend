@@ -6,6 +6,7 @@ import Nav from '../TopNav';
 import Allcustomers from '../Customer_DB/Allcustomers'
 import { useNavigate } from 'react-router-dom';
 import Delete from '../../assets/Delete';
+import Clientbranches from '../modules/getClientbranches';
 
 function AssetDb() {
   const { register, handleSubmit, control, formState: { errors }, watch } = useForm();
@@ -17,6 +18,8 @@ function AssetDb() {
   const [showForm, setShowForm] = useState(false); // Form visibility state
   const [step, setStep] = useState(1);
   const [branches, setBranches] = useState([]);
+
+  Clientbranches();
 
   const navigate = useNavigate();
 

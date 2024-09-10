@@ -20,6 +20,7 @@ import CustomerAsset from './components/Customer_DB/Customerasset'
 import Assetdetails from './components/Customer_DB/Assetdetails'
 import CapturePhoto from './components/Customer_DB/CapturePhoto';
 import Addrecord from './components/Customer_DB/Addrecord';
+import PrivateData from './components/Customer_DB/PrivateData'
 
 import NewTicket from './components/Ticket_Creation/Newticket';
 import Alltickets from './components/Ticket_Creation/Alltickets';
@@ -58,11 +59,13 @@ function App() {
         <Route path="/productName/:productName" element={<Assetdetails />} />
         <Route path="/capturePhoto" element={<CapturePhoto />} />
         <Route path="/add-record" element={<Addrecord />} />
+        <Route path='/customer/private-data' element={<PrivateData />} />
 
         <Route path="/newticket" element={<NewTicket />} />
         <Route path="/create-ticket" element={<Alltickets />} />
         <Route path="/openSettings" element={<Settings />} />
         <Route path="/open-ticket" element={<Openticket />} />
+
 
       </Routes>
     </Router>
