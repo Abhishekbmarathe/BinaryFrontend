@@ -13,7 +13,10 @@ function App() {
     const [loading, setLoading] = useState(false);  // Loading state
     const [selectedKey, setSelectedKey] = useState(null); // Track selected key for update
     const [errors, setErrors] = useState({ key: '', value: '' }); // Validation errors
+
     const [permissionPage, setPage] = useState(false);
+    const [flag, setFlag] = useState(false);
+    const [pflag, setpPflag] = useState(false);
 
     const location = useLocation();
     const { companyName, customerId } = location.state || {};
@@ -110,6 +113,7 @@ function App() {
             return;
         }
 
+        setFlag(true);
         const existingKeys = Object.keys(formData.data);
         // Check if key already exists, excluding the original key being edited
         if (existingKeys.includes(tempData.key) && selectedKey !== tempData.key) {
@@ -133,6 +137,7 @@ function App() {
 
     // Delete key-value pair
     const handleDelete = () => {
+        setFlag(true)
         setFormData((prevData) => {
             const updatedData = { ...prevData.data };
             delete updatedData[selectedKey];
@@ -143,154 +148,317 @@ function App() {
 
     // Submit the data to the server
     const handleSave = () => {
-        setLoading(true); // Start loading
-        axios.post(url + "updateGlobalData", formData)
-            .then(() => {
-                return axios.post(url + "getGlobalData", { companyName });
-            })
-            .then(response => {
-                const fetchedArray = response.data;
-                const fetchedData = fetchedArray.reduce((acc, obj) => ({ ...acc, ...obj.data }), {});
-                setFormData(prevData => ({
-                    ...prevData,
-                    companyName,
-                    data: { ...prevData.data, ...fetchedData }
-                }));
-            })
-            .catch(error => {
-                console.error('Error submitting data:', error);
-            })
-            .finally(() => setLoading(false)); // End loading
+        const cnf = confirm("Are you sure to save the changes?");
+        if (cnf) {
+            setLoading(true); // Start loading
+            axios.post(url + "updateGlobalData", formData)
+                .then(() => {
+                    return axios.post(url + "getGlobalData", { companyName });
+                })
+                .then(response => {
+                    const fetchedArray = response.data;
+                    const fetchedData = fetchedArray.reduce((acc, obj) => ({ ...acc, ...obj.data }), {});
+    
+                    // Updating only the existing keys and adding new ones
+                    setFormData(prevData => {
+                        const updatedData = { ...prevData.data };
+    
+                        // Loop through fetchedData to either update or add new keys
+                        Object.keys(fetchedData).forEach(key => {
+                            if (updatedData.hasOwnProperty(key)) {
+                                // Update existing key value
+                                updatedData[key] = fetchedData[key];
+                            } else {
+                                // If it's new, add only when creating
+                                if (isCreating) {  // 'isCreating' is a flag you should set for Create operations
+                                    updatedData[key] = fetchedData[key];
+                                }
+                            }
+                        });
+    
+                        return {
+                            ...prevData,
+                            companyName,
+                            data: updatedData
+                        };
+                    });
+    
+                    alert("Changes saved successfully");
+                    setFlag(false);
+                })
+                .catch(error => {
+                    alert("Error saving changes");
+                    console.error('Error submitting data:', error);
+                })
+                .finally(() => setLoading(false)); // End loading
+        }
     };
+    
+    
+
+
+
+    const [isPermissionModalOpen, setIsPermissionModalOpen] = useState(false);
+    const [permissionData, setPermissionData] = useState({ username: '', key: '' });
+    const [grantedPermissions, setGrantedPermissions] = useState([]);
+
+
+    const handlePermissionInputChange = (e) => {
+        const { name, value } = e.target;
+        setPermissionData((prevData) => ({
+            ...prevData,
+            [name]: value,
+        }));
+    };
+    const openPermissionModal = () => {
+        setPermissionData({ username: '', key: '' }); // Reset form fields
+        setIsPermissionModalOpen(true);
+    };
+
+    const closePermissionModal = () => {
+        setIsPermissionModalOpen(false);
+    };
+
+    const handleGrantPermission = () => {
+        // Logic to grant permission to the user
+        console.log("Granting permission to user", permissionData);
+
+        closePermissionModal();
+    };
+
 
     return (
         <div>
             <div className='flex justify-between items-center mb-10 p-4 font-sans'>
                 <h2 className="text-2xl w-fit font-semibold">Global <span className='text-customColor'>Data</span></h2>
-                <div className='flex items-center gap-5'>
+
+                <div>
                     {permissionPage ? (
-                        <button className='text-red-400 font-semibold' onClick={() => setPage(!permissionPage)}>Data <span className='text-xs'>●</span></button>
+                        <div>
+                            {pflag && (
+                                <button
+                                    className='rounded-xl flex justify-center w-fit items-center font-sans text-green-500'
+                                    // onClick={handleSave}
+                                    disabled={loading} // Disable if loading
+                                >Save Changes<span className='text-xs'>&nbsp;●</span>
+                                </button>
+                            )}
+                        </div>
                     ) : (
-                        <button className='text-red-400 font-semibold' onClick={() => setPage(!permissionPage)}>Permissions<span className='text-xs'>●</span></button>
-                    )
-                    }
+                        <div>
+                            {flag && (
+                                <button
+                                    className='rounded-xl flex justify-center w-fit items-center font-sans text-green-500'
+                                    onClick={handleSave}
+                                    disabled={loading} // Disable if loading
+                                >Save Changes<span className='text-xs'>&nbsp;●</span>
+                                </button>
+                            )}
+                        </div>
+                    )}
                 </div>
+
+
+
+
+            </div>
+            <div className='flex items-center justify-center fixed bottom-4 left-1/2 -translate-x-1/2 gap-14'>
+                <button className='font-sans text-xl text-customColor w-16' onClick={() => setPage(false)}>Data </button>
+                <button type='button' className='text-3xl'>|</button>
+                <button className='font-sans text-xl text-customColor' onClick={() => setPage(true)}>Permissions</button>
             </div>
 
-          
-
-
-            {/* Button to Open the Modal for Creating */}
-            <button
-                className='bg-slate-400 py-2 px-3 rounded-xl my-9 fixed bottom-0 right-8 flex justify-between w-20 items-center'
-                onClick={() => openModal()}
-            >
-                <span className='text-white text-xl font-bold'>+</span> New
-            </button>
-
-            {/* Save Button */}
-            <button
-                className='bg-cyan-400 p-2 px-7 rounded-xl my-9 fixed bottom-0 left-8 flex justify-center w-fit items-center font-sans text-white'
-                onClick={handleSave}
-                disabled={loading} // Disable if loading
-            >
-                {loading ? (<Loader />) : 'Save'}
-            </button>
-
-            {/* Display Loading State */}
-            {loading ? (
-                <Loader />
-            ) : (
+            {permissionPage ? (
                 <div>
-                    {/* Display Existing and Newly Added Data */}
-                    {Object.entries(formData.data).map(([key, { value, sensitive }], index) => (
-                        <div key={index} className='bg-cyan-100 px-4 py-3 m-auto rounded border font-sans border-cyan-400 w-[95%] mb-2'
-                            onClick={() => openModal(key)} // Open modal on click with existing data
-                        >
+                    {grantedPermissions.map((permission, index) => (
+                        <div key={index} className='bg-cyan-100 px-4 py-3 m-auto rounded border font-sans border-cyan-400 w-[95%] mb-2'>
                             <div className='flex justify-between'>
-                                <span className='font-medium'>{key}</span>
-                                <span>{value}</span>
+                                <span className='font-medium'>{permission.username}</span>
+                                <span>{permission.key}</span>
                             </div>
                         </div>
                     ))}
-                </div>
-            )}
+                    {isPermissionModalOpen && (
+                        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+                            <div className="bg-white p-6 rounded shadow-lg w-[88%]">
+                                <h2 className="text-xl font-semi-bold mb-4 font-sans">
+                                    Grant Permission to User
+                                </h2>
 
-            {/* Modal Popup */}
-            {isModalOpen && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-                    <div className="bg-white p-6 rounded shadow-lg w-[88%]">
-                        <h2 className="text-xl font-semi-bold mb-4 font-sans">
-                            {selectedKey ? 'Update Key-Value Pair' : 'Enter Key-Value Pair'}
-                        </h2>
+                                <div className="mb-4">
+                                    <label className="block text-sm font-medium text-gray-700">Username</label>
+                                    <input
+                                        type="text"
+                                        name="username"
+                                        value={permissionData.username}
+                                        onChange={handlePermissionInputChange}
+                                        className="mt-1 block w-full border border-gray-500 rounded shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                        placeholder="Enter username"
+                                    />
+                                </div>
 
-                        <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700">Key</label>
-                            <input
-                                type="text"
-                                name="key"
-                                value={tempData.key}
-                                onChange={handleInputChange}
-                                className="mt-1 block w-full border border-gray-500 rounded shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                placeholder="Enter key"
-                            />
+                                <div className="mb-4">
+                                    <label className="block text-sm font-medium text-gray-700">Select Key</label>
+                                    <input
+                                        type="text"
+                                        name="key"
+                                        value={permissionData.key}
+                                        onChange={handlePermissionInputChange}
+                                        className="mt-1 block w-full border border-gray-500 rounded shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                        placeholder="Enter key"
+                                        list="key-suggestions" // Adding a datalist for suggestions
+                                    />
+                                    {/* Suggestions for keys */}
+                                    <datalist id="key-suggestions">
+                                        {Object.keys(formData.data).map((key, index) => (
+                                            <option key={index} value={key} />
+                                        ))}
+                                    </datalist>
+                                </div>
 
-                            {errors.key && <span className="text-red-500 text-xs">{errors.key}</span>}
-                        </div>
-
-                        <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700">Value</label>
-                            <div className="relative">
-                                <input
-                                    type={showPassword ? 'text' : 'password'}
-                                    name="value"
-                                    value={tempData.value}
-                                    onChange={handleInputChange}
-                                    className={`mt-1 block w-full border ${errors.value ? 'border-red-500' : 'border-gray-500'} rounded shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
-                                    placeholder="Enter value"
-                                />
-                                <span className="absolute right-2 top-2 cursor-pointer" onClick={togglePasswordVisibility}>
-                                    {showPassword ? <ShowPasswordIcon size={6} color="rgb(0 197 255)" /> : <HidePasswordIcon size={6} color="rgb(0 197 255)" />}
-                                </span>
+                                <div className="flex justify-end space-x-4">
+                                    <button
+                                        className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded"
+                                        onClick={closePermissionModal}
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+                                        onClick={handleGrantPermission}
+                                    >
+                                        Grant
+                                    </button>
+                                </div>
                             </div>
-                            {errors.value && <span className="text-red-500 text-xs">{errors.value}</span>}
-                        </div>
 
-                        <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700">Sensitive</label>
-                            <input
-                                type="checkbox"
-                                checked={tempData.sensitive}
-                                onChange={handleSensitiveChange}
-                                className="mr-2"
-                            />
-                        </div>
 
-                        <div className="flex justify-between">
-                            <button
-                                className="bg-gray-500 text-white px-4 py-2 rounded"
-                                onClick={closeModal}
-                            >
-                                Cancel
-                            </button>
-                            {selectedKey && (
-                                <button
-                                    className="bg-red-500 text-white px-4 py-2 rounded"
-                                    onClick={handleDelete}
+                        </div>
+                    )}
+
+                    <button
+                        className='bg-slate-400 py-2 px-3 rounded-xl my-9 fixed bottom-12 right-8 flex justify-between w-20 items-center'
+                        onClick={openPermissionModal}
+                    >
+                        <span className='text-white text-xl font-bold'>+</span> New
+                    </button>
+                </div>
+            ) : (
+                <div>
+                    {/* Button to Open the Modal for Creating */}
+                    <button
+                        className='bg-slate-400 py-2 px-3 rounded-xl my-9 fixed bottom-12 right-8 flex justify-between w-20 items-center'
+                        onClick={() => openModal()}
+                    >
+                        <span className='text-white text-xl font-bold'>+</span> New
+                    </button>
+
+                    {/* Save Button */}
+
+
+                    {/* Display Loading State */}
+                    {loading ? (
+                        <Loader />
+                    ) : (
+                        <div>
+                            {/* Display Existing and Newly Added Data */}
+                            {Object.entries(formData.data).map(([key, { value, sensitive }], index) => (
+                                <div key={index} className='bg-cyan-100 px-4 py-3 m-auto rounded border font-sans border-cyan-400 w-[95%] mb-2'
+                                    onClick={() => openModal(key)} // Open modal on click with existing data
                                 >
-                                    Delete
-                                </button>
-                            )}
-                            <button
-                                className="bg-cyan-500 text-white px-4 py-2 rounded"
-                                onClick={handleSubmit}
-                            >
-                                {selectedKey ? 'Update' : 'Create'}
-                            </button>
+                                    <div className='flex justify-between'>
+                                        <span className='font-medium'>{key}</span>
+                                        <span>{value}</span>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
-                    </div>
+                    )}
+
+                    {/* Modal Popup */}
+                    {isModalOpen && (
+                        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+                            <div className="bg-white p-6 rounded shadow-lg w-[88%]">
+                                <h2 className="text-xl font-semi-bold mb-4 font-sans">
+                                    {selectedKey ? 'Update Key-Value Pair' : 'Enter Key-Value Pair'}
+                                </h2>
+
+                                <div className="mb-4">
+                                    <label className="block text-sm font-medium text-gray-700">Key</label>
+                                    <input
+                                        type="text"
+                                        name="key"
+                                        value={tempData.key}
+                                        onChange={handleInputChange}
+                                        className="mt-1 block w-full border border-gray-500 rounded shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                        placeholder="Enter key"
+                                    />
+
+                                    {errors.key && <span className="text-red-500 text-xs">{errors.key}</span>}
+                                </div>
+
+                                <div className="mb-4">
+                                    <label className="block text-sm font-medium text-gray-700">Value</label>
+                                    <div className="relative">
+                                        <input
+                                            type={showPassword ? 'text' : 'password'}
+                                            name="value"
+                                            value={tempData.value}
+                                            onChange={handleInputChange}
+                                            className={`mt-1 block w-full border ${errors.value ? 'border-red-500' : 'border-gray-500'} rounded shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
+                                            placeholder="Enter value"
+                                        />
+                                        <span className="absolute right-2 top-2 cursor-pointer" onClick={togglePasswordVisibility}>
+                                            {showPassword ? <ShowPasswordIcon size={6} color="rgb(0 197 255)" /> : <HidePasswordIcon size={6} color="rgb(0 197 255)" />}
+                                        </span>
+                                    </div>
+                                    {errors.value && <span className="text-red-500 text-xs">{errors.value}</span>}
+                                </div>
+
+                                <div className="mb-4">
+                                    <label className="block text-sm font-medium text-gray-700">Sensitive</label>
+                                    <input
+                                        type="checkbox"
+                                        checked={tempData.sensitive}
+                                        onChange={handleSensitiveChange}
+                                        className="mr-2"
+                                    />
+                                </div>
+
+                                <div className="flex justify-between">
+                                    <button
+                                        className="bg-gray-500 text-white px-4 py-2 rounded"
+                                        onClick={closeModal}
+                                    >
+                                        Cancel
+                                    </button>
+                                    {selectedKey && (
+                                        <button
+                                            className="bg-red-500 text-white px-4 py-2 rounded"
+                                            onClick={handleDelete}
+                                        >
+                                            Delete
+                                        </button>
+                                    )}
+                                    <button
+                                        className="bg-cyan-500 text-white px-4 py-2 rounded"
+                                        onClick={handleSubmit}
+                                    >
+                                        {selectedKey ? 'Update' : 'Create'}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </div>
             )}
+
+
+
+
+
+
+
         </div>
     );
 }
