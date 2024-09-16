@@ -8,7 +8,7 @@ import Loader from '../Loader';
 function App() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [formData, setFormData] = useState({ companyName: '', data: {}, permissions: {} });
-    const [tempData, setTempData] = useState({ key: '', value: '', sensitive: false });
+    // const [tempData, setTempData] = useState({ key: '', value: '', sensitive: false });
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);  // Loading state
     const [selectedKey, setSelectedKey] = useState(null); // Track selected key for update
@@ -46,17 +46,28 @@ function App() {
         setShowPassword(!showPassword);
     };
 
+
+    const [tempData, setTempData] = useState({ key: '', value: '', sensitive: false, id: null });
+
     // Open modal for creating or editing data
     const openModal = (key = null) => {
         if (key) {
             setSelectedKey(key);
-            setTempData({ key, value: formData.data[key]?.value || '', sensitive: formData.data[key]?.sensitive || false });
+            setTempData({
+                key: key,
+                value: formData.data[key]?.value || '',
+                sensitive: formData.data[key]?.sensitive || false,
+                id: formData.data[key]?._id || null // Store the object ID for future comparison
+            });
+            console.log(tempData.id)
         } else {
             setTempData({ key: '', value: '', sensitive: false });
         }
-        setErrors({ key: '', value: '' }); // Reset errors
-        setIsModalOpen(true);
+        setErrors({ key: '', value: '' }); // Reset any previous errors
+        setIsModalOpen(true); // Open the modal
     };
+
+    // console.log(tempData.id)
 
     const closeModal = () => {
         setIsModalOpen(false);
@@ -114,25 +125,26 @@ function App() {
         }
 
         setFlag(true);
-        const existingKeys = Object.keys(formData.data);
-        // Check if key already exists, excluding the original key being edited
-        if (existingKeys.includes(tempData.key) && selectedKey !== tempData.key) {
-            alert("Key already exists. Please enter a unique key.");
-            return;
-        }
 
-        setFormData((prevData) => ({
-            ...prevData,
-            data: {
-                ...prevData.data,
-                [tempData.key]: {
-                    value: tempData.value,
-                    sensitive: tempData.sensitive,
-                },
-            },
-        }));
+        // Directly modify the existing formData
+        setFormData((prevData) => {
+            // Clone the previous data
+            const updatedData = { ...prevData };
+
+            // Find the specific card using the key and update its value and sensitive fields
+            if (updatedData.data[tempData.key]) {
+                updatedData.data[tempData.key].value = tempData.value; // Update value
+                updatedData.data[tempData.key].sensitive = tempData.sensitive; // Update sensitive flag
+            }
+
+            return updatedData; // Return the updated data without creating new entries
+        });
+
+        // Close the modal after updating
         closeModal();
     };
+
+
 
 
     // Delete key-value pair
@@ -158,11 +170,11 @@ function App() {
                 .then(response => {
                     const fetchedArray = response.data;
                     const fetchedData = fetchedArray.reduce((acc, obj) => ({ ...acc, ...obj.data }), {});
-    
+
                     // Updating only the existing keys and adding new ones
                     setFormData(prevData => {
                         const updatedData = { ...prevData.data };
-    
+
                         // Loop through fetchedData to either update or add new keys
                         Object.keys(fetchedData).forEach(key => {
                             if (updatedData.hasOwnProperty(key)) {
@@ -175,14 +187,14 @@ function App() {
                                 }
                             }
                         });
-    
+
                         return {
                             ...prevData,
                             companyName,
                             data: updatedData
                         };
                     });
-    
+
                     alert("Changes saved successfully");
                     setFlag(false);
                 })
@@ -193,16 +205,17 @@ function App() {
                 .finally(() => setLoading(false)); // End loading
         }
     };
-    
-    
 
 
 
+
+
+    // State variables
     const [isPermissionModalOpen, setIsPermissionModalOpen] = useState(false);
     const [permissionData, setPermissionData] = useState({ username: '', key: '' });
     const [grantedPermissions, setGrantedPermissions] = useState([]);
 
-
+    // Handle input change
     const handlePermissionInputChange = (e) => {
         const { name, value } = e.target;
         setPermissionData((prevData) => ({
@@ -210,21 +223,39 @@ function App() {
             [name]: value,
         }));
     };
+
+    // Open permission modal
     const openPermissionModal = () => {
         setPermissionData({ username: '', key: '' }); // Reset form fields
         setIsPermissionModalOpen(true);
     };
 
+    // Close permission modal
     const closePermissionModal = () => {
         setIsPermissionModalOpen(false);
     };
 
+    // Handle grant permission
     const handleGrantPermission = () => {
-        // Logic to grant permission to the user
-        console.log("Granting permission to user", permissionData);
+        // Ensure username and key are provided
+        if (permissionData.username && permissionData.key) {
+            // Add the new permission to grantedPermissions array
+            setGrantedPermissions((prevPermissions) => [
+                ...prevPermissions,
+                { ...permissionData, grantedAt: new Date().toLocaleString() },
+            ]);
 
+            setpPflag(true)
+
+            console.log(`Permission granted to user ${permissionData.username} for key ${permissionData.key} at ${new Date().toLocaleString()}`);
+        } else {
+            console.log("Username and key are required to grant permission.");
+        }
+
+        // Close the permission modal
         closePermissionModal();
     };
+
 
 
     return (
@@ -270,14 +301,18 @@ function App() {
 
             {permissionPage ? (
                 <div>
+                    {/* Permission Cards */}
                     {grantedPermissions.map((permission, index) => (
                         <div key={index} className='bg-cyan-100 px-4 py-3 m-auto rounded border font-sans border-cyan-400 w-[95%] mb-2'>
                             <div className='flex justify-between'>
-                                <span className='font-medium'>{permission.username}</span>
-                                <span>{permission.key}</span>
+                                <span className='font-medium'>User: {permission.username}</span>
+                                <span>Key: {permission.key}</span>
+                                <span>Granted At: {permission.grantedAt}</span>
                             </div>
                         </div>
                     ))}
+
+                    {/* Permission Modal */}
                     {isPermissionModalOpen && (
                         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
                             <div className="bg-white p-6 rounded shadow-lg w-[88%]">
@@ -306,7 +341,8 @@ function App() {
                                         onChange={handlePermissionInputChange}
                                         className="mt-1 block w-full border border-gray-500 rounded shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                         placeholder="Enter key"
-                                        list="key-suggestions" // Adding a datalist for suggestions
+                                        list="key-suggestions"
+                                        autoComplete="off"
                                     />
                                     {/* Suggestions for keys */}
                                     <datalist id="key-suggestions">
@@ -331,8 +367,6 @@ function App() {
                                     </button>
                                 </div>
                             </div>
-
-
                         </div>
                     )}
 
