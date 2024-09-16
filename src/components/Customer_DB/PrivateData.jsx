@@ -210,10 +210,10 @@ function App() {
 
 
 
-    // State variables
     const [isPermissionModalOpen, setIsPermissionModalOpen] = useState(false);
     const [permissionData, setPermissionData] = useState({ username: '', key: '' });
     const [grantedPermissions, setGrantedPermissions] = useState([]);
+    const [editIndex, setEditIndex] = useState(null); // To track which permission is being edited
 
     // Handle input change
     const handlePermissionInputChange = (e) => {
@@ -224,37 +224,47 @@ function App() {
         }));
     };
 
-    // Open permission modal
-    const openPermissionModal = () => {
-        setPermissionData({ username: '', key: '' }); // Reset form fields
+    // Open permission modal for editing
+    const openPermissionModal = (index = null) => {
+        if (index !== null && grantedPermissions[index]) {
+            // Editing existing permission
+            setPermissionData(grantedPermissions[index]); // Pre-fill with existing data
+            setEditIndex(index); // Track the index being edited
+        } else {
+            // Adding new permission
+            setPermissionData({ username: '', key: '' }); // Reset form fields
+            setEditIndex(null); // No edit, it's new
+        }
         setIsPermissionModalOpen(true);
     };
+
 
     // Close permission modal
     const closePermissionModal = () => {
         setIsPermissionModalOpen(false);
+        setEditIndex(null); // Reset editing state when closed
     };
 
-    // Handle grant permission
+    // Handle grant permission (add or update)
     const handleGrantPermission = () => {
         // Ensure username and key are provided
-        if (permissionData.username && permissionData.key) {
-            // Add the new permission to grantedPermissions array
-            setGrantedPermissions((prevPermissions) => [
-                ...prevPermissions,
-                { ...permissionData, grantedAt: new Date().toLocaleString() },
-            ]);
-
-            setpPflag(true)
-
-            console.log(`Permission granted to user ${permissionData.username} for key ${permissionData.key} at ${new Date().toLocaleString()}`);
-        } else {
-            console.log("Username and key are required to grant permission.");
+        if (!permissionData.username.trim() || !permissionData.key.trim()) {
+            alert("Username and key are required to grant permission.");
+            return; // Stop execution if validation fails
         }
+
+        // Add the new permission to grantedPermissions array
+        setGrantedPermissions((prevPermissions) => [
+            ...prevPermissions,
+            { ...permissionData, grantedAt: new Date().toLocaleString() },
+        ]);
+
+        console.log(`Permission granted to user ${permissionData.username} for key ${permissionData.key} at ${new Date().toLocaleString()}`);
 
         // Close the permission modal
         closePermissionModal();
     };
+
 
 
 
@@ -303,7 +313,11 @@ function App() {
                 <div>
                     {/* Permission Cards */}
                     {grantedPermissions.map((permission, index) => (
-                        <div key={index} className='bg-cyan-100 px-4 py-3 m-auto rounded border font-sans border-cyan-400 w-[95%] mb-2'>
+                        <div
+                            key={index}
+                            className='bg-cyan-100 px-4 py-3 m-auto rounded border font-sans border-cyan-400 w-[95%] mb-2 cursor-pointer'
+                            onClick={() => openPermissionModal(index)} // Open modal with the clicked card data
+                        >
                             <div className='flex justify-between'>
                                 <span className='font-medium'>User: {permission.username}</span>
                                 <span>Key: {permission.key}</span>
@@ -317,7 +331,7 @@ function App() {
                         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
                             <div className="bg-white p-6 rounded shadow-lg w-[88%]">
                                 <h2 className="text-xl font-semi-bold mb-4 font-sans">
-                                    Grant Permission to User
+                                    {editIndex !== null ? "Edit Permission" : "Grant Permission to User"}
                                 </h2>
 
                                 <div className="mb-4">
@@ -363,7 +377,7 @@ function App() {
                                         className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
                                         onClick={handleGrantPermission}
                                     >
-                                        Grant
+                                        {editIndex !== null ? "Update" : "Grant"}
                                     </button>
                                 </div>
                             </div>
