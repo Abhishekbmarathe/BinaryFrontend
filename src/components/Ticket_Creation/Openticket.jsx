@@ -664,11 +664,11 @@ const NewTicket = () => {
             </div>
             <div className="mb-4">
               <label className="block text-sm mb-2" htmlFor="issueDescription">Issue Description</label>
-              <textarea className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500" {...register('issueDescription')} id="issueDescription"></textarea>
+              <textarea className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500" {...register('issueDescription')} id="issueDescription" readOnly={allowEdit}></textarea>
             </div>
             <div className="mb-4">
               <label className="block text-sm mb-2" htmlFor="">Additional Info</label>
-              <textarea className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500" {...register('additionalInfo')} id=""></textarea>
+              <textarea className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500" {...register('additionalInfo')} id="" readOnly={allowEdit}></textarea>
             </div>
 
             <div>
@@ -679,14 +679,17 @@ const NewTicket = () => {
                 style={{ display: 'none' }}
                 id="fileInput"
               />
-              <button
-                className="flex items-center gap-1 bg-blue-400 text-white p-3 rounded-lg"
-                type="button"
-                onClick={() => document.getElementById('fileInput').click()}
-              >
-                <Attachment />
-                Attach File
-              </button>
+              {!allowEdit && (
+
+                <button
+                  className="flex items-center gap-1 bg-blue-400 text-white p-3 rounded-lg"
+                  type="button"
+                  onClick={() => document.getElementById('fileInput').click()}
+                >
+                  <Attachment />
+                  Attach File
+                </button>
+              )}
 
               <div className="mt-2">
                 {selectedFiles.length > 0 && (

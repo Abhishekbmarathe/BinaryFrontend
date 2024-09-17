@@ -3,7 +3,7 @@ import api from './Api'
 
 function getAllAsset() {
     // const apiUrl = 'http://localhost:3000/api/getAllAsset';
-    const apiUrl = api + 'getTicketSetting';
+    const apiUrl = api + 'api/getTicketSetting';
 
     fetch(apiUrl)
         .then(response => {

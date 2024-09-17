@@ -4,6 +4,13 @@
 
 
 
+@layer utilities {
+    .last-child\:bg-gray-400:last-child {
+      background-color: #fd0000; /* You can change this color to whatever you want */
+    }
+  }
+  
+
 
 
 body{

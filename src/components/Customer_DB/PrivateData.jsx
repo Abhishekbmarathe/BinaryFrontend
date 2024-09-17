@@ -269,7 +269,7 @@ function App() {
 
 
     return (
-        <div>
+        <div className='md:w-1/2 m-auto'>
             <div className='flex justify-between items-center mb-10 p-4 font-sans'>
                 <h2 className="text-2xl w-fit font-semibold">Global <span className='text-customColor'>Data</span></h2>
 
@@ -329,7 +329,7 @@ function App() {
                     {/* Permission Modal */}
                     {isPermissionModalOpen && (
                         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-                            <div className="bg-white p-6 rounded shadow-lg w-[88%]">
+                            <div className="bg-white p-6 rounded shadow-lg w-[88%] md:w-1/3">
                                 <h2 className="text-xl font-semi-bold mb-4 font-sans">
                                     {editIndex !== null ? "Edit Permission" : "Grant Permission to User"}
                                 </h2>
@@ -426,7 +426,7 @@ function App() {
                     {/* Modal Popup */}
                     {isModalOpen && (
                         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-                            <div className="bg-white p-6 rounded shadow-lg w-[88%]">
+                            <div className="bg-white p-6 rounded shadow-lg w-[88%] md:w-1/3">
                                 <h2 className="text-xl font-semi-bold mb-4 font-sans">
                                     {selectedKey ? 'Update Key-Value Pair' : 'Enter Key-Value Pair'}
                                 </h2>

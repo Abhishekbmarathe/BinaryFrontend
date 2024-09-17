@@ -106,7 +106,7 @@ function AssetDetail() {
                                                         id={`${key}-${idx}`}
                                                         name={key}
                                                         value={asset[key]}
-                                                        onChange={handleChange}
+                                                         onChange={handleChange}
                                                     />
                                                 </>
                                             )}

@@ -12,6 +12,7 @@ export default {
       colors: {
         'customColor': 'rgb(0 197 255)', 
         'cardcolor': '#ffffff',
+        'cardBlack': 'rgb(26 24 37 / 94%)',
       },
       backgroundImage: {
         'panel-gradient': 'linear-gradient(#f8fdff, #00c5ff9e, #00c5ff)',
