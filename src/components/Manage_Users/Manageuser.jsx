@@ -4,6 +4,7 @@ import axios from 'axios';
 import Alluser from './Alluser';
 import fetchAndStoreUsers from '../modules/fetchAllusers'
 import Nav from '../TopNav'
+import api from '../modules/Api'
 
 function Manageuser() {
     const { register, handleSubmit, formState: { errors } } = useForm();
@@ -14,7 +15,7 @@ function Manageuser() {
     const onSubmit = async (data) => {
         setIsLoading(true); // Set loading state to true on form submission
         try {
-            const response = await axios.post('https://binarysystemsbackend-mtt8.onrender.com/api/addUser', data);
+            const response = await axios.post(api + '/api/addUser', data);
             console.log(response);
             fetchAndStoreUsers();
             alert('User added successfully!');

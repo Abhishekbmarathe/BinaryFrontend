@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import ticketSettings from '../modules/getTicketSetting';
 import Attachment from '../../assets/Attachment';
-// import { handleFileChange, handleRemoveFile, handleSubmitt } from '../modules/Attachfile';
+import api from '../modules/Api';
 
 const NewTicket = () => {
 
@@ -112,7 +112,7 @@ const NewTicket = () => {
     };
 
 
-    axios.post('https://binarysystemsbackend-mtt8.onrender.com/api/createTicket', formData)
+    axios.post(api + 'api/createTicket', formData)
       // axios.post('http://localhost:3000/api/createTicket', formData)
       .then((response) => {
         const ticketNumber = response.data.ticketNumber;
@@ -171,7 +171,7 @@ const NewTicket = () => {
     });
     formData.append('ticketFileId', ticketFileId);
     try {
-      const response = await axios.post('https://binarysystemsbackend-mtt8.onrender.com/api/fileAttach', formData, {
+      const response = await axios.post(api + 'api/fileAttach', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

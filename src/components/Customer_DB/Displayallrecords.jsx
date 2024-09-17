@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
+import api from '../modules/Api'
 
 function DisplayAssets() {
     const [assets, setAssets] = useState([]);
@@ -18,7 +19,7 @@ function DisplayAssets() {
             if (assetId) {
                 try {
                     // const response = await axios.get(`http://localhost:3000/api/assets/${assetId}`);
-                    const response = await axios.get(`https://binarysystemsbackend-mtt8.onrender.com/api/assets/${assetId}`);
+                    const response = await axios.get(`${api}api/assets/${assetId}`);
                     setAssets(response.data);
                 } catch (error) {
                     console.error('Error fetching assets:', error);

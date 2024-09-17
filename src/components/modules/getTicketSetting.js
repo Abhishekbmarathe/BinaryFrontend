@@ -1,8 +1,9 @@
 // src/apiService.js
+import api from './Api'
 
 function getAllAsset() {
     // const apiUrl = 'http://localhost:3000/api/getAllAsset';
-    const apiUrl = 'https://binarysystemsbackend-mtt8.onrender.com/api/getTicketSetting';
+    const apiUrl = api + 'getTicketSetting';
 
     fetch(apiUrl)
         .then(response => {

@@ -3,6 +3,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
+import api from '../modules/Api'
 
 function NewCustomerForm() {
     const { register, handleSubmit, formState: { errors } } = useForm();
@@ -14,7 +15,7 @@ function NewCustomerForm() {
     const onSubmit = async (data) => {
         console.log(data);
         try {
-            const response = await axios.post('https://binarysystemsbackend-mtt8.onrender.com/api/createClientAsset', data);
+            const response = await axios.post(api + 'api/createClientAsset', data);
             console.log(response.data);
             alert("Asset created successfullyc")
             navigate(`/customer/${customerId}`); // Navigate back to the customer list after creating the new customer

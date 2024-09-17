@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import fetchAndStoreUsers from '../modules/fetchAllusers';
+import api from '../modules/Api'
 
 function UserDetail() {
     const { userId } = useParams();
@@ -28,7 +29,7 @@ function UserDetail() {
         try {
             const conf = confirm("Are you sure to save the changes ?")
             if (conf) {
-                const response = await axios.post('https://binarysystemsbackend-mtt8.onrender.com/api/updateUser', user);
+                const response = await axios.post(api + 'api/updateUser', user);
                 console.log('Saved user details:', response.data);
                 fetchAndStoreUsers();
                 alert("Saved successfully...");
@@ -49,7 +50,7 @@ function UserDetail() {
             const conf = confirm("Are you sure to delete this user")
             if (conf) {
 
-                await axios.post('https://binarysystemsbackend-mtt8.onrender.com/api/deleteUser', { username: user.username });
+                await axios.post(api + 'api/deleteUser', { username: user.username });
                 console.log('User deleted:', user.username);
                 fetchAndStoreUsers();
                 alert("User Deleted successfully...");

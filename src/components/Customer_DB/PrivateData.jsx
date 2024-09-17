@@ -4,6 +4,7 @@ import ShowPasswordIcon from '../../assets/Eyeopen';
 import HidePasswordIcon from '../../assets/Eyeclose';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Loader from '../Loader';
+import api from '../modules/Api'
 
 function App() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -20,12 +21,11 @@ function App() {
 
     const location = useLocation();
     const { companyName, customerId } = location.state || {};
-    const url = 'https://binarysystemsbackend-mtt8.onrender.com/api/';
-
+   
     // Fetch existing data
     useEffect(() => {
         setLoading(true); // Start loading
-        axios.post(url + "getGlobalData", { companyName })
+        axios.post(api + "api/getGlobalData", { companyName })
             .then(response => {
                 const fetchedArray = response.data;
                 const fetchedData = fetchedArray.reduce((acc, obj) => ({ ...acc, ...obj.data }), {});
@@ -163,9 +163,9 @@ function App() {
         const cnf = confirm("Are you sure to save the changes?");
         if (cnf) {
             setLoading(true); // Start loading
-            axios.post(url + "updateGlobalData", formData)
+            axios.post(api + "updateGlobalData", formData)
                 .then(() => {
-                    return axios.post(url + "getGlobalData", { companyName });
+                    return axios.post(api + "api/getGlobalData", { companyName });
                 })
                 .then(response => {
                     const fetchedArray = response.data;

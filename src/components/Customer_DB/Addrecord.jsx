@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import Camera from '../../assets/camera';
 import { useNavigate } from 'react-router-dom';
+import api from '../modules/Api'
 
 function NewPage() {
     const { register, handleSubmit, formState: { errors } } = useForm();
@@ -32,8 +33,8 @@ function NewPage() {
         }
 
         try {
-            const response = await axios.post('https://binarysystemsbackend-mtt8.onrender.com/api/assetPhoto', formData, {
-            // const response = await axios.post('http://localhost:3000/api/assetPhoto', formData, {
+            const response = await axios.post(api + 'api/assetPhoto', formData, {
+                // const response = await axios.post('http://localhost:3000/api/assetPhoto', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }

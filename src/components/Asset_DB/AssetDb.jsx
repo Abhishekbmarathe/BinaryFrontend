@@ -5,6 +5,7 @@ import fetchAndStoreUsers from '../modules/fetchAllusers';
 import getAllAsset from '../modules/getAllAssets';
 import Allassets from './Allassets'
 import Nav from '../TopNav'
+import api from '../modules/Api'
 
 function AssetDb() {
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -16,7 +17,7 @@ function AssetDb() {
     setIsLoading(true);
     try {
 
-      const response = await axios.post('https://binarysystemsbackend-mtt8.onrender.com/api/addAsset', data)
+      const response = await axios.post(api + 'api/addAsset', data)
       // const response = await axios.post('http://localhost:3000/api/addAsset', data)
       console.log(response.data)
       getAllAsset();
@@ -85,7 +86,7 @@ function AssetDb() {
         )}
         {!showForm && <Allassets />}
       </div>
-    </> 
+    </>
   );
 }
 

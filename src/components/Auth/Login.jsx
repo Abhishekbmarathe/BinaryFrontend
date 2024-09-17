@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import User from '../../assets/User'
 import Logo from '../../assets/Logo'
+import api from '../modules/Api'
 
 const Login = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
@@ -17,15 +18,16 @@ const Login = () => {
     };
 
 
+
     const onSubmit = async (data) => {
         setLoading(true);
         try {
-            const response = await axios.post('https://binarysystemsbackend-mtt8.onrender.com/api/login', data);
+            const response = await axios.post(api + 'api/login', data);
             // const response = await axios.post('http://localhost:3000/api/login', data);
             if (response.status === 200) {
                 localStorage.clear();
                 if (data.username.trim() === "Master") {
-                    await axios.get("https://binarysystemsbackend-mtt8.onrender.com/api/getallusers")
+                    await axios.get(api + "api/getallusers")
                         // await axios.get("http://localhost:3000/api/getallusers")
                         .then((response) => {
                             ("All Users:", response.data);
@@ -35,7 +37,7 @@ const Login = () => {
                             console.error("Error fetching all users:", error);
                             alert("Something went wrong fetching all users.");
                         });
-                    await axios.get("https://binarysystemsbackend-mtt8.onrender.com/api/getAllAsset")
+                    await axios.get(api + "api/getAllAsset")
                         // await axios.get("http://localhost:3000/api/getAllAsset")
                         .then((response) => {
                             ("All Assets:", response.data);
@@ -45,7 +47,7 @@ const Login = () => {
                             console.error("Error fetching all assets:", error);
                             alert("Something went wrong fetching all assets.");
                         });
-                    await axios.get("https://binarysystemsbackend-mtt8.onrender.com/api/getAllClients")
+                    await axios.get(api + "api/getAllClients")
                         // await axios.get("http://localhost:3000/api/getAllAsset")
                         .then((response) => {
                             ("All customers:", response.data);
@@ -55,7 +57,7 @@ const Login = () => {
                             console.error("Error fetching all assets:", error);
                             alert("Something went wrong fetching all assets.");
                         });
-                    await axios.post("https://binarysystemsbackend-mtt8.onrender.com/api/getAllTickets", { username: data.username })
+                    await axios.post(api + "api/getAllTickets", { username: data.username })
                         // await axios.post("http://localhost:3000/api/getAlltickets",{username : data.username})
                         .then((response) => {
                             // ("All customers:", response.data);
@@ -67,7 +69,7 @@ const Login = () => {
                         });
 
                 }
-                await axios.get("https://binarysystemsbackend-mtt8.onrender.com/api/getOptionUsers")
+                await axios.get(api + "api/getOptionUsers")
                     // await axios.post("http://localhost:3000/api/getAlltickets",{username : data.username})
                     .then((response) => {
                         localStorage.setItem("onlyUsers", JSON.stringify(response.data));

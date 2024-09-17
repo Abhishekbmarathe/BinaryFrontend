@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import api from '../modules/Api'
 
 function Allassets({ companyName }) {
     const [allassets, setAllassets] = useState([]);
@@ -9,7 +10,7 @@ function Allassets({ companyName }) {
     useEffect(() => {
         const fetchAssets = async () => {
             try {
-                const response = await axios.post(`https://binarysystemsbackend-mtt8.onrender.com/api/getAllClientAssets`, {
+                const response = await axios.post(`${api}api/getAllClientAssets`, {
                     companyName: companyName
                 });
                 setAllassets(response.data);
@@ -27,7 +28,7 @@ function Allassets({ companyName }) {
         console.log({ productName, brand, category, _id }); // Debugging line
         navigate(`/productName/${productName}`, { state: { productName, brand, category, _id } });
     };
-    
+
     return (
         <div className="w-[95vw] mx-auto mt-10 sm:max-w-[50vw]">
             <div className=" rounded-lg overflow-hidden mb-4">
@@ -39,7 +40,7 @@ function Allassets({ companyName }) {
                             <li key={asset._id} className="mb-2">
                                 <p
                                     className="cursor-pointer border border-customColor bg-cyan-50 rounded m-auto p-3"
-                                    onClick={() => handleBrandClick(asset.productName, asset.brand, asset.category,asset._id)}
+                                    onClick={() => handleBrandClick(asset.productName, asset.brand, asset.category, asset._id)}
                                 >
                                     {asset.productName}
                                 </p>

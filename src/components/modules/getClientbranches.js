@@ -1,8 +1,9 @@
 // src/apiService.js
+import api from './Api'
 
 function getAllcustomers() {
     // const apiUrl = 'http://localhost:3000/api/getAllAsset';
-    const apiUrl = 'https://binarysystemsbackend-mtt8.onrender.com/api/getClientbranches';
+    const apiUrl = api + 'api/getClientbranches';
 
     fetch(apiUrl)
         .then(response => {

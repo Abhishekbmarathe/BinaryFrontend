@@ -6,6 +6,7 @@ import axios from 'axios';
 import History from '../../assets/History';
 import Delete from '../../assets/Delete';
 import Attachment from '../../assets/Attachment';
+import api from '../modules/Api'
 
 const NewTicket = () => {
   const { handleSubmit, register, setValue } = useForm();
@@ -171,7 +172,7 @@ const NewTicket = () => {
       console.log(formData);
 
       axios
-        .post('https://binarysystemsbackend-mtt8.onrender.com/api/updateTicket', formData)
+        .post(api + 'api/updateTicket', formData)
         .then((response) => {
           alert('Ticket updated successfully');
           const ticketNumber = formData.ticketNumber;
@@ -192,7 +193,7 @@ const NewTicket = () => {
   const handleDelete = () => {
     const conf = confirm("Are sure to delete this ticket?");
     if (conf) {
-      axios.post('https://binarysystemsbackend-mtt8.onrender.com/api/deleteTicket', { ticketNumber })
+      axios.post(api + 'api/deleteTicket', { ticketNumber })
         .then((response) => {
           alert("Ticket deleted successfully");
           navigate(-1);
@@ -233,7 +234,7 @@ const NewTicket = () => {
       console.log(formData);
 
       axios
-        .post('https://binarysystemsbackend-mtt8.onrender.com/api/updateTicket', formData)
+        .post(api + 'api/updateTicket', formData)
         .then((response) => {
           alert('Ticket ' + status + ' successfully');
           console.log(response);
@@ -270,7 +271,7 @@ const NewTicket = () => {
     });
     formData.append('ticketFileId', ticketFileId);
     try {
-      const response = await axios.post('https://binarysystemsbackend-mtt8.onrender.com/api/fileAttach', formData, {
+      const response = await axios.post(api + 'api/fileAttach', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

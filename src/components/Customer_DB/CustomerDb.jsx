@@ -7,6 +7,7 @@ import Allcustomers from '../Customer_DB/Allcustomers'
 import { useNavigate } from 'react-router-dom';
 import Delete from '../../assets/Delete';
 import Clientbranches from '../modules/getClientbranches';
+import api from '../modules/Api'
 
 function AssetDb() {
   const { register, handleSubmit, control, formState: { errors }, watch } = useForm();
@@ -47,7 +48,7 @@ function AssetDb() {
   const onSubmit = async (data) => {
     setIsLoading(true);
     try {
-      const response = await axios.post('https://binarysystemsbackend-mtt8.onrender.com/api/addClient', data);
+      const response = await axios.post(api + 'api/addClient', data);
       // const response = await axios.post('http://localhost:3000/api/addClient', data);
       submitBranches(data.companyName); // Pass companyName to submitBranches
       getAllcustomers();
@@ -75,7 +76,7 @@ function AssetDb() {
 
     console.log(payload)
     // Send the payload to the API
-    axios.post('https://binarysystemsbackend-mtt8.onrender.com/api/updateClientbranches', payload)
+    axios.post(api + 'api/updateClientbranches', payload)
       // axios.post('http://localhost:3000/api/updateClientbranches', payload)
       .then(response => {
         console.log('Branches and company name submitted:', response.data);

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
+import api from '../modules/Api'
 
 function CustomerEdit() {
     const { customerId } = useParams();
@@ -55,7 +55,7 @@ function CustomerEdit() {
             setLoading(true);
             try {
                 // Update customer details
-                const response = await axios.post('https://binarysystemsbackend-mtt8.onrender.com/api/updateClient', {
+                const response = await axios.post(api + 'api/updateClient', {
                     id: customerId,
                     ...customer
                 });
@@ -81,7 +81,7 @@ function CustomerEdit() {
     const handleBranchUpdate = async () => {
         // console.log(branches,companyName)
         try {
-            const response = await axios.post('https://binarysystemsbackend-mtt8.onrender.com/api/updateClientbranches', {
+            const response = await axios.post(api + 'api/updateClientbranches', {
                 companyName: customer.companyName,
                 branches
             });

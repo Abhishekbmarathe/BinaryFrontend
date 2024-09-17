@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import fetchAndStoreassets from '../modules/getAllAssets';
-
+import api from '../modules/Api'
 
 function AssetDetail() {
     const { assetId } = useParams();
@@ -30,7 +30,7 @@ function AssetDetail() {
             const conf = confirm("Are you sure to save the changes ?");
             if (conf) {
                 const payload = { ...asset, id: asset._id };
-                const response = await axios.post('https://binarysystemsbackend-mtt8.onrender.com/api/updateAsset', payload);
+                const response = await axios.post(api + 'api/updateAsset', payload);
                 // const response = await axios.post('http://localhost:3000/api/updateAsset', payload);
                 fetchAndStoreassets();
                 alert("Saved successfully...");
@@ -49,7 +49,7 @@ function AssetDetail() {
         try {
             const conf = confirm("Are you sure to delete this asset ?");
             if (conf) {
-                await axios.post('https://binarysystemsbackend-mtt8.onrender.com/api/deleteAsset', { id: asset._id });
+                await axios.post(api + 'api/deleteAsset', { id: asset._id });
                 fetchAndStoreassets();
                 alert("Asset deleted successfully...");
                 navigate('/asset-db');

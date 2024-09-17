@@ -5,6 +5,7 @@ import axios from 'axios';
 import { Html5QrcodeScanner, Html5QrcodeSupportedFormats } from 'html5-qrcode';
 import BottomMenu from './BottomMenu';
 import Camera from '../../assets/camera';
+import api from '../modules/Api'
 
 function AssetDetails() {
     const { state } = useLocation();
@@ -62,7 +63,7 @@ function AssetDetails() {
         delete updatedData._id; // Remove _id if present
 
         try {
-            await axios.post('https://binarysystemsbackend-mtt8.onrender.com/api/updateClientAsset', updatedData);
+            await axios.post(api + 'api/updateClientAsset', updatedData);
             alert('Asset updated successfully');
             navigate(-1);
         } catch (error) {
@@ -75,7 +76,7 @@ function AssetDetails() {
         if (confirm("Are you sure you want to delete this asset?")) {
             try {
                 // Sending the id in the request body as per backend requirements
-                await axios.post('https://binarysystemsbackend-mtt8.onrender.com/api/deleteClientAsset', { id: data.id });
+                await axios.post(api + 'api/deleteClientAsset', { id: data.id });
                 alert('Asset deleted successfully');
                 navigate(-1);
             } catch (error) {
