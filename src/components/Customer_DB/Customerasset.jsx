@@ -175,7 +175,7 @@ function NewCustomerForm() {
                         type="submit"
                         className="bg-slate-300 text-blue-600 font-bold w-full mt-[20%] px-4 py-2 rounded-xl"
                     >
-                        CREATE  
+                        Save  
                     </button>
                 </form>
             </div>
