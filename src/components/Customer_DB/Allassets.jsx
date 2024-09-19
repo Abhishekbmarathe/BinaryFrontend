@@ -38,12 +38,14 @@ function Allassets({ companyName }) {
                     <ul className='mt-4'>
                         {allassets.map(asset => (
                             <li key={asset._id} className="mb-2">
-                                <p
+                                <div
                                     className="cursor-pointer border border-customColor bg-cyan-50 rounded m-auto p-3"
                                     onClick={() => handleBrandClick(asset.productName, asset.brand, asset.category, asset._id)}
                                 >
-                                    {asset.productName}
-                                </p>
+                                    <span>{asset.productName}</span><br />
+                                    <span>Location: {asset.location}</span><br />
+                                    <span>Department: {asset.department}</span>
+                                </div>
                             </li>
                         ))}
                     </ul>
