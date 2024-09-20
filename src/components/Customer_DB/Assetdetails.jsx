@@ -6,6 +6,7 @@ import { Html5QrcodeScanner, Html5QrcodeSupportedFormats } from 'html5-qrcode';
 import BottomMenu from './BottomMenu';
 import Camera from '../../assets/camera';
 import api from '../modules/Api';
+import Delete from '../../assets/Delete';
 
 function AssetUpdate() {
     const { state } = useLocation();
@@ -95,18 +96,36 @@ function AssetUpdate() {
     };
 
     return (
-        <div className="max-w-md mx-auto mt-3 sm:max-w-[50vw]">
+        <div className="max-w-md mx-auto sm:max-w-[50vw]">
             <BottomMenu />
-            <div className="shadow-md rounded-lg overflow-hidden mb-4 p-4">
-                <h2 className="text-3xl mb-4 font-bold m-auto w-fit">Update <span className='text-customColor'>Asset</span></h2>
+            <div className=" rounded-lg mb-4 p-4">
+                <div className='flex items-center justify-between mb-8'>
+                    <h2 className="text-2xl font-semibold w-fit font-sans">Update <span className='text-customColor'>Asset</span></h2>
+                    <div className="flex items-center">
+                        <button
+                            type="button"
+                            onClick={handleSubmit(handleDelete)}
+                        >
+                            <Delete />
+                        </button>
+                        <button
+                            type="submit"
+                            className="text-customColor font-semibold px-4"
+                            onClick={handleSubmit(handleUpdate)}
+                        >
+                            Save
+                        </button>
+                    </div>
+                </div>
                 <form onSubmit={handleSubmit(handleUpdate)}>
                     <input type="hidden" {...register("id")} value={_id} />
 
                     {/* Location Field */}
                     <div className='mb-4'>
+                        <label className="block mb-1">Location</label>
                         <input
                             {...register('location', { required: true })}
-                            className='border-2 border-gray-400 focus:border-customColor outline-none rounded p-3 w-full bg-transparent'
+                            className='border-2 border-gray-400 focus:border-customColor outline-none rounded p-3 w-full bg-transparent font-bold font-sans text-xl'
                             placeholder="Location"
                         />
                         {errors.location && <span className='text-red-500'>Location is required</span>}
@@ -114,9 +133,10 @@ function AssetUpdate() {
 
                     {/* Department Field */}
                     <div className='mb-4'>
+                        <label className="block mb-1">Department</label>
                         <input
                             {...register('department', { required: true })}
-                            className='border-2 border-gray-400 focus:border-customColor outline-none rounded p-3 w-full bg-transparent'
+                            className='border-2 border-gray-400 focus:border-customColor outline-none rounded p-3 w-full bg-transparent font-bold font-sans text-xl'
                             placeholder="Department"
                         />
                         {errors.department && <span className='text-red-500'>Department is required</span>}
@@ -128,7 +148,7 @@ function AssetUpdate() {
                         <input
                             type="text"
                             {...register("category", { required: true })}
-                            className="w-full border p-3 rounded-xl mb-1 bg-transparent"
+                            className="border-2 border-gray-400 focus:border-customColor outline-none rounded p-3 w-full bg-transparent font-bold font-sans text-xl"
                         />
                         {errors.category && <span className="text-red-500">Category is required</span>}
                     </div>
@@ -139,7 +159,7 @@ function AssetUpdate() {
                         <input
                             type="text"
                             {...register("brand", { required: true })}
-                            className="w-full border p-3 rounded-xl mb-1 bg-transparent"
+                            className="border-2 border-gray-400 focus:border-customColor outline-none rounded p-3 w-full bg-transparent font-bold font-sans text-xl"
                         />
                         {errors.brand && <span className="text-red-500">Brand is required</span>}
                     </div>
@@ -150,7 +170,7 @@ function AssetUpdate() {
                         <input
                             type="text"
                             {...register("productName", { required: true })}
-                            className="w-full border p-3 rounded-xl mb-1 bg-transparent"
+                            className="border-2 border-gray-400 focus:border-customColor outline-none rounded p-3 w-full bg-transparent font-bold font-sans text-xl"
                         />
                         {errors.productName && <span className="text-red-500">Product Name is required</span>}
                     </div>
@@ -158,16 +178,16 @@ function AssetUpdate() {
                     {/* Serial Number Field */}
                     <div className="mb-4">
                         <label className="block mb-1">Serial Number</label>
-                        <div className="flex relative">
+                        <div className="flex items-center relative border-2 border-gray-400 focus:border-customColor outline-none rounded  w-full bg-transparent">
                             <input
                                 type="text"
                                 {...register("serialNo", { required: false })}
-                                className="w-full border p-3 rounded-xl mb-1 bg-transparent outline-none"
+                                className="w-full border p-3 rounded-xl mb-1 bg-transparent outline-none font-bold font-sans text-xl"
                                 placeholder='Serial Number'
                             />
                             <button
                                 type="button"
-                                className="absolute right-0 text-customColor text-xs"
+                                className="absolute right-3 text-customColor text-xs"
                                 onClick={() => setScanningIndex(0)}
                             >
                                 <Camera />
@@ -182,22 +202,10 @@ function AssetUpdate() {
                         <input
                             type="text"
                             {...register("additionalData", { required: false })}
-                            className="w-full border p-3 rounded-xl mb-1 bg-transparent"
+                            className="border-2 border-gray-400 focus:border-customColor outline-none rounded p-3 w-full bg-transparent font-bold font-sans text-xl"
                             placeholder="Additional Info"
                         />
                     </div>
-
-                    {/* Update and Delete Buttons */}
-                    <button type="submit" className="bg-slate-200 text-purple-600 font-bold w-full mt-10 px-4 py-2 rounded-xl">
-                        UPDATE
-                    </button>
-                    <button
-                        type="button"
-                        className="bg-slate-200 text-red-500 font-bold mt-3 mb-16 px-4 py-2 rounded-xl"
-                        onClick={handleSubmit(handleDelete)}
-                    >
-                        DELETE
-                    </button>
                 </form>
 
                 {scanningIndex !== null && (
