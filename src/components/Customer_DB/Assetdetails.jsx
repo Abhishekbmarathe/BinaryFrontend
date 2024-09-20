@@ -125,7 +125,7 @@ function AssetUpdate() {
                         <label className="block mb-1">Location</label>
                         <input
                             {...register('location', { required: true })}
-                            className='border-2 border-gray-400 focus:border-customColor outline-none rounded p-3 w-full bg-transparent font-bold font-sans text-xl'
+                            className='border-2 border-gray-400 focus:border-customColor outline-none rounded p-2 w-full bg-transparent font-bold font-sans'
                             placeholder="Location"
                         />
                         {errors.location && <span className='text-red-500'>Location is required</span>}
@@ -136,7 +136,7 @@ function AssetUpdate() {
                         <label className="block mb-1">Department</label>
                         <input
                             {...register('department', { required: true })}
-                            className='border-2 border-gray-400 focus:border-customColor outline-none rounded p-3 w-full bg-transparent font-bold font-sans text-xl'
+                            className='border-2 border-gray-400 focus:border-customColor outline-none rounded p-2 w-full bg-transparent font-bold font-sans'
                             placeholder="Department"
                         />
                         {errors.department && <span className='text-red-500'>Department is required</span>}
@@ -148,7 +148,7 @@ function AssetUpdate() {
                         <input
                             type="text"
                             {...register("category", { required: true })}
-                            className="border-2 border-gray-400 focus:border-customColor outline-none rounded p-3 w-full bg-transparent font-bold font-sans text-xl"
+                            className="border-2 border-gray-400 focus:border-customColor outline-none rounded p-2 w-full bg-transparent font-bold font-sans"
                         />
                         {errors.category && <span className="text-red-500">Category is required</span>}
                     </div>
@@ -159,7 +159,7 @@ function AssetUpdate() {
                         <input
                             type="text"
                             {...register("brand", { required: true })}
-                            className="border-2 border-gray-400 focus:border-customColor outline-none rounded p-3 w-full bg-transparent font-bold font-sans text-xl"
+                            className="border-2 border-gray-400 focus:border-customColor outline-none rounded p-2 w-full bg-transparent font-bold font-sans "
                         />
                         {errors.brand && <span className="text-red-500">Brand is required</span>}
                     </div>
@@ -170,7 +170,7 @@ function AssetUpdate() {
                         <input
                             type="text"
                             {...register("productName", { required: true })}
-                            className="border-2 border-gray-400 focus:border-customColor outline-none rounded p-3 w-full bg-transparent font-bold font-sans text-xl"
+                            className="border-2 border-gray-400 focus:border-customColor outline-none rounded p-2 w-full bg-transparent font-bold font-sans "
                         />
                         {errors.productName && <span className="text-red-500">Product Name is required</span>}
                     </div>
@@ -182,12 +182,12 @@ function AssetUpdate() {
                             <input
                                 type="text"
                                 {...register("serialNo", { required: false })}
-                                className="w-full border p-3 rounded-xl mb-1 bg-transparent outline-none font-bold font-sans text-xl"
+                                className="w-full border p-1 rounded-xl mb-1 bg-transparent outline-none font-bold font-sans"
                                 placeholder='Serial Number'
                             />
                             <button
                                 type="button"
-                                className="absolute right-3 text-customColor text-xs"
+                                className="absolute right-3 text-customColor text-xs flex flex-col items-center"
                                 onClick={() => setScanningIndex(0)}
                             >
                                 <Camera />
