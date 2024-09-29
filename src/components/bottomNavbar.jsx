@@ -12,8 +12,6 @@ const BottomNavbar = () => {
         // { content: 'Manage Ticket', endpoint: '/manage-ticket', permission: 'assignTicket', icon: <Assign size={28} color="rgb(0 197 255)" /> },
         { content: 'Customer DB', endpoint: '/customer-db', permission: 'createClient', icon: <Customerdb size={28} color="white" /> },
         { content: 'Asset DB', endpoint: '/asset-db', permission: 'createAsset', icon: <Ticket size={28} color="white" /> }, // Adjust the icon as needed
-        // { content: 'Manage Finance', endpoint: '/report', permission: 'manageFinance', icon: <Ticket size={28} color="rgb(0 197 255)" /> }, // Adjust the icon as needed
-        // { content: 'Assigned Ticket', endpoint: '/assigned-ticket', permission: 'assignTicket', icon: <Assign /> },
     ]);
 
     const [filteredCardData, setFilteredCardData] = useState([]);

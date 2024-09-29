@@ -26,7 +26,7 @@ function AssetUpdate() {
         }
     });
     localStorage.setItem("assetId", _id);
-    console.log(productName, brand, category, _id, location, department, serialNo, additionalData);
+    
 
     const [scanningIndex, setScanningIndex] = useState(null);
     const scannerRef = useRef(null);

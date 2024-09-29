@@ -25,7 +25,7 @@ function Allassets({ companyName }) {
     }, [companyName]);
 
     const handleBrandClick = (productName, brand, category, _id, location, department, serialNo,additionalData) => {
-        console.log({ productName, brand, category, _id }); // Debugging line
+       
         navigate(`/productName/${productName}`, { state: { productName, brand, category, _id, location, department, serialNo,additionalData } });
     };
 

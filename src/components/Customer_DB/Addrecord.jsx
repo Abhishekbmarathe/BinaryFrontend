@@ -3,12 +3,14 @@ import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import Camera from '../../assets/camera';
 import { useNavigate } from 'react-router-dom';
-import api from '../modules/Api'
+import api from '../modules/Api';
+import GalleryIcon from '../../assets/img'; // Assuming you have a gallery icon
 
 function NewPage() {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [selectedImage, setSelectedImage] = useState(null);
     const fileInputRef = useRef(null);
+    const galleryInputRef = useRef(null); // New reference for the gallery input
 
     const navigate = useNavigate();
 
@@ -27,14 +29,13 @@ function NewPage() {
         }
 
         // Manually get the file input
-        const file = fileInputRef.current?.files[0];
+        const file = fileInputRef.current?.files[0] || galleryInputRef.current?.files[0]; // Check both inputs
         if (file) {
             formData.append('photo', file);
         }
 
         try {
             const response = await axios.post(api + 'api/assetPhoto', formData, {
-                // const response = await axios.post('http://localhost:3000/api/assetPhoto', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -49,13 +50,13 @@ function NewPage() {
                 console.error('Upload failed');
             }
         } catch (error) {
-            alert('Error uploading the file:', error)
+            alert('Error uploading the file:', error);
             console.error('Error uploading the file:', error);
         }
     };
 
-    const handleClick = () => {
-        fileInputRef.current.click();
+    const handleClick = (inputRef) => {
+        inputRef.current.click();
     };
 
     const handleImageChange = (e) => {
@@ -105,9 +106,23 @@ function NewPage() {
                             style={{ opacity: 0, zIndex: -1 }}
                             onChange={handleImageChange}
                         />
-
-                        <div onClick={handleClick} className='w-fit scale-[1.8]'>
+                        <div onClick={() => handleClick(fileInputRef)} className='w-fit scale-[1.8] cursor-pointer'>
                             <Camera />
+                        </div>
+                    </div>
+
+                    <div className="relative">
+                        <input
+                            type="file"
+                            id="gallery"
+                            name="gallery"
+                            className="shadow bg-transparent appearance-none border rounded w-[50px] py-[5px] leading-tight focus:outline-none focus:shadow-outline absolute invisible"
+                            ref={galleryInputRef}
+                            style={{ opacity: 0, zIndex: -1 }}
+                            onChange={handleImageChange}
+                        />
+                        <div onClick={() => handleClick(galleryInputRef)} className='w-fit scale-[1.4] cursor-pointer bg-customColor rounded'>
+                            <GalleryIcon />
                         </div>
                     </div>
                 </div>
