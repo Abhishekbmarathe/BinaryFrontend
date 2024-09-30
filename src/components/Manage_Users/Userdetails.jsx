@@ -163,25 +163,25 @@ function Userdetails() {
             </div>
 
             <div className='flex flex-col w-fit md:mt-5 sticky top-12 z-10'>
-                <div className='flex gap-3 md:w-fit w-screen px-6 py-3 md:py-0 md:p-6 items-center border-customColor border-b-[3px]  md:bg-cardcolor  bg-cardBlack shadow-lg m-auto md:m-0 md:rounded-xl'>
+                <div className='flex gap-3 md:w-fit w-screen px-6 py-3 md:py-0 md:p-6 items-center border-customColor border-b-[3px]  bg-cardcolor  bg-cardBlack/ shadow-lg m-auto md:m-0 md:rounded-xl'>
                     <div className='user'>
                         <User size='130' color='rgb(0 197 255)' />
                         <div className='px-8'>
-                            <h1 className='text-2xl text-white md:text-black'>{userName}</h1>
+                            <h1 className='text-2xl text-black'>{userName}</h1>
                             <h4 className='text-customColor'>{role}</h4>
                         </div>
                     </div>
                     <div className=''>
                         <div className='flex md:flex-row md:text-2xl md:my-4'>
-                            <label className='text-white md:text-black'>Name:</label>
+                            <label className='text-black'>Name:</label>
                             <span className='text-customColor'>{currentUser}</span>
                         </div>
                         <div className='flex md:flex-row md:text-2xl md:my-4'>
-                            <label className='text-white md:text-black whitespace-nowrap'>Phone no:</label>
+                            <label className='text-black whitespace-nowrap'>Phone no:</label>
                             <span className='text-customColor'>{phone}</span>
                         </div>
                         <div className='flex md:flex-row md:text-2xl md:my-4'>
-                            <label className='text-white md:text-black'>Email:</label>
+                            <label className='text-black'>Email:</label>
                             <span className='whitespace-nowrap text-customColor'>{email}@gmail.com</span>
                         </div>
                     </div>

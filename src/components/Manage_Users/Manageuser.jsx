@@ -15,7 +15,7 @@ function Manageuser() {
     const onSubmit = async (data) => {
         setIsLoading(true); // Set loading state to true on form submission
         try {
-            const response = await axios.post(api + '/api/addUser', data);
+            const response = await axios.post(api + 'api/addUser', data);
             console.log(response);
             fetchAndStoreUsers();
             alert('User added successfully!');
@@ -143,14 +143,14 @@ function Manageuser() {
                                             />
                                             <span className="ml-2">Ticket Creation</span>
                                         </label>
-                                        <label className="flex items-center  mt-2">
+                                        {/* <label className="flex items-center  mt-2">
                                             <input
                                                 type="checkbox"
                                                 {...register('assignTicket')}
                                                 className="form-checkbox bg-gray outline-none w-6 h-6 cursor-pointer"
                                             />
                                             <span className="ml-2">Ticket Management</span>
-                                        </label>
+                                        </label> */}
                                         <label className="flex items-center  mt-2">
                                             <input
                                                 type="checkbox"
@@ -167,14 +167,14 @@ function Manageuser() {
                                             />
                                             <span className="ml-2">Asset Database</span>
                                         </label>
-                                        <label className="flex items-center  mt-2">
+                                        {/* <label className="flex items-center  mt-2">
                                             <input
                                                 type="checkbox"
                                                 {...register('manageFinance')}
                                                 className="form-checkbox bg-gray outline-none w-6 h-6 cursor-pointer"
                                             />
                                             <span className="ml-2">Finance Management</span>
-                                        </label>
+                                        </label> */}
                                     </div>
                                 </div>
                             )}
