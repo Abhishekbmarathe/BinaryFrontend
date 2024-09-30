@@ -20,10 +20,14 @@ function DisplayAssets() {
         const fetchAssets = async () => {
             if (assetId) {
                 try {
-                    const response = await axios.get(`${api}api/assets/${assetId}`);
+                    // Send assetId as a query parameter
+                    const response = await axios.get(`${api}api/assets`, {
+                        params: { assetId }
+                    });
                     setAssets(response.data);
                 } catch (error) {
                     console.error('Error fetching assets:', error);
+                    setError('Failed to fetch assets');
                 }
             }
         };
