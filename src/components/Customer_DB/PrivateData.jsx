@@ -4,7 +4,7 @@ import ShowPasswordIcon from '../../assets/Eyeopen';
 import HidePasswordIcon from '../../assets/Eyeclose';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Loader from '../Loader';
-import api from '../modules/Api'
+import api from '../modules/Api';
 
 function App() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -21,7 +21,8 @@ function App() {
 
     const location = useLocation();
     const { companyName, customerId } = location.state || {};
-   
+
+
     // Fetch existing data
     useEffect(() => {
         setLoading(true); // Start loading
@@ -130,6 +131,7 @@ function App() {
         setFormData((prevData) => {
             // Clone the previous data
             const updatedData = { ...prevData };
+            console.log(tempData.data)
 
             // Find the specific card using the key and update its value and sensitive fields
             if (updatedData.data[tempData.key]) {
@@ -137,6 +139,7 @@ function App() {
                 updatedData.data[tempData.key].sensitive = tempData.sensitive; // Update sensitive flag
             }
 
+            console.log(updatedData)
             return updatedData; // Return the updated data without creating new entries
         });
 
@@ -163,8 +166,9 @@ function App() {
         const cnf = confirm("Are you sure to save the changes?");
         if (cnf) {
             setLoading(true); // Start loading
-            axios.post(api + "updateGlobalData", formData)
+            axios.post(api + "api/updateGlobalData", formData)
                 .then(() => {
+                    console.log(formData)
                     return axios.post(api + "api/getGlobalData", { companyName });
                 })
                 .then(response => {
@@ -269,7 +273,7 @@ function App() {
 
 
     return (
-        <div className='md:w-1/2 m-auto'>
+        <div>
             <div className='flex justify-between items-center mb-10 p-4 font-sans'>
                 <h2 className="text-2xl w-fit font-semibold">Global <span className='text-customColor'>Data</span></h2>
 
@@ -329,7 +333,7 @@ function App() {
                     {/* Permission Modal */}
                     {isPermissionModalOpen && (
                         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-                            <div className="bg-white p-6 rounded shadow-lg w-[88%] md:w-1/3">
+                            <div className="bg-white p-6 rounded shadow-lg w-[88%]">
                                 <h2 className="text-xl font-semi-bold mb-4 font-sans">
                                     {editIndex !== null ? "Edit Permission" : "Grant Permission to User"}
                                 </h2>
@@ -426,7 +430,7 @@ function App() {
                     {/* Modal Popup */}
                     {isModalOpen && (
                         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-                            <div className="bg-white p-6 rounded shadow-lg w-[88%] md:w-1/3">
+                            <div className="bg-white p-6 rounded shadow-lg w-[88%]">
                                 <h2 className="text-xl font-semi-bold mb-4 font-sans">
                                     {selectedKey ? 'Update Key-Value Pair' : 'Enter Key-Value Pair'}
                                 </h2>

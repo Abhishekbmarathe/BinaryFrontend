@@ -8,7 +8,7 @@ import api from '../modules/Api';
 
 const NewTicket = () => {
 
-  const { handleSubmit, control, register, setValue } = useForm();
+  const { handleSubmit, control, register, setValue, reset } = useForm();
   const [step, setStep] = useState(1);
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -23,20 +23,126 @@ const NewTicket = () => {
 
   const [selectedFiles, setSelectedFiles] = useState([]);
 
+  // suggestions state
+  const [suggestions, setSuggestions] = useState([]);
+  const [filteredAddresses, setFilteredAddresses] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [companyData, setCompanyData] = useState({});
+  const [selectedCompany, setSelectedCompany] = useState('');
+  const [addressInput, setAddressInput] = useState('');
+  const [productInput, setProductInput] = useState('');
+  const [showCompanySuggestions, setShowCompanySuggestions] = useState(false);
+  const [showAddressSuggestions, setShowAddressSuggestions] = useState(false);
+  const [showProductSuggestions, setShowProductSuggestions] = useState(false);
+
+  // Fetch company data (company names, addresses, and products) from the API
+  useEffect(() => {
+    const fetchCompanyData = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/api/optionsForTicketDropdown');
+        const data = response.data;
+
+        // Store the entire response in localStorage
+        localStorage.setItem('companyData', JSON.stringify(data));
+
+        // Extract company names and store them in suggestions
+        const companyNames = Object.keys(data);
+        setSuggestions(companyNames);
+
+        // Store the full data in state for later address and product filtering
+        setCompanyData(data);
+      } catch (error) {
+        console.error('Error fetching company data:', error);
+      }
+    };
+
+    fetchCompanyData();
+  }, []);
+
+  // Handle when a company is selected
+  const handleCompanySelection = (companyName) => {
+    setSelectedCompany(companyName);
+    setShowCompanySuggestions(false); // Hide the company suggestions list
+
+    // Update the address field based on the selected company
+    if (companyData[companyName]) {
+      const addresses = Object.keys(companyData[companyName]);
+      setFilteredAddresses(addresses);
+    } else {
+      setFilteredAddresses([]);
+    }
+
+    // Clear address and product inputs when a new company is selected
+    setAddressInput('');
+    setProductInput('');
+    setFilteredProducts([]);
+    setValue('companyName', companyName);
+  };
+
+  // Handle when an address is selected
+  const handleAddressSelection = (address) => {
+    setAddressInput(address);
+    setShowAddressSuggestions(false); // Hide the address suggestions list
+
+    // Update the product suggestions based on the selected address
+    if (companyData[selectedCompany] && companyData[selectedCompany][address]) {
+      const products = companyData[selectedCompany][address];
+      setFilteredProducts(products);
+    } else {
+      setFilteredProducts([]);
+    }
+
+    setValue('address', address);  // Register selected address in the form
+  };
+
+  // Handle when a product is selected
+  const handleProductSelection = (product) => {
+    setProductInput(product);
+    console.log(product)
+    setShowProductSuggestions(false); // Hide the product suggestions list
+    setValue('productName', product);  // Register selected product in the form
+  };
+
+  const handleCompanyInputChange = (e) => {
+    const value = e.target.value;
+    setSelectedCompany(value);
+    handleCompanySelection(value);  // Filter addresses based on the selected company
+    setShowCompanySuggestions(true); // Show suggestions when typing in the company field
+    setValue('companyName', value); // Register company name field in the form
+  };
+
+  const handleAddressInputChange = (e) => {
+    const value = e.target.value;
+    setAddressInput(value);
+    setShowAddressSuggestions(true); // Show suggestions when typing in the address field
+    setValue('address', value); // Register address field in the form
+  };
+
+  const handleProductInputChange = (e) => {
+    const value = e.target.value;
+    setProductInput(value);
+    setShowProductSuggestions(true); // Show suggestions when typing in the product field
+    setValue('productName', value); // Register product field in the form
+  };
+
+
+
   ticketSettings()
+
 
   useEffect(() => {
     const storedSettings = localStorage.getItem("TicketSettings");
+
     if (storedSettings) {
       try {
         const parsedSettings = JSON.parse(storedSettings);
 
         if (Array.isArray(parsedSettings)) {
           // Filter and set the settings based on type
-          setHelpTopics(parsedSettings.filter(setting => setting.type === 'Help topic').map(setting => setting.data));
+          setHelpTopics(parsedSettings.filter(setting => setting.type === 'Help').map(setting => setting.data));
           setDepartments(parsedSettings.filter(setting => setting.type === 'Department').map(setting => setting.data));
-          setSlaPlans(parsedSettings.filter(setting => setting.type === 'SLA Plan').map(setting => setting.data));
-          setCannedResponses(parsedSettings.filter(setting => setting.type === 'Canned Responses').map(setting => setting.data));
+          setSlaPlans(parsedSettings.filter(setting => setting.type === 'SLA').map(setting => setting.data));
+          setCannedResponses(parsedSettings.filter(setting => setting.type === 'Canned').map(setting => setting.data));
         }
       } catch (error) {
         console.error("Failed to parse settings from localStorage:", error);
@@ -232,20 +338,66 @@ const NewTicket = () => {
             }
           `}</style>
             </div>
-            <div className="mb-4">
-              <label className="block text-sm mb-2" htmlFor="clientName">Company Name</label>
-              <input className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500" {...register('companyName')} type="text" id="clientName" />
-            </div>
-            <div className="mb-4">
-              <label className="block text-sm mb-2" htmlFor="address">Address</label>
-              <input className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500" {...register('address')} type="text" id="address" />
-              <br /><br />
-              <input className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500" {...register('creator')}
-                type="text" id="address"
-                value={creator}
-                hidden={true}
+            {/* Company Name Field */}
+            <div className="mb-4 relative">
+              <label className="block text-sm mb-2" htmlFor="companyName">Company Name</label>
+              <input
+                className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500"
+                type="text"
+                id="companyName"
+                value={selectedCompany}
+                onChange={handleCompanyInputChange}
+                onFocus={() => setShowCompanySuggestions(true)} // Show suggestions when focused
+                onBlur={() => setTimeout(() => setShowCompanySuggestions(false), 100)} // Hide suggestions on blur with a delay
+                autoComplete='off'
               />
+              {/* Display company name suggestions */}
+              {showCompanySuggestions && suggestions.length > 0 && (
+                <ul className="suggestions-list bg-slate-200 absolute z-10 w-full">
+                  {suggestions.map((suggestion, index) => (
+                    <li key={index} onClick={() => handleCompanySelection(suggestion)} className='p-1'>
+                      {suggestion}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
+
+            {/* Address Field */}
+            <div className="mb-4 relative">
+              <label className="block text-sm mb-2" htmlFor="address">Address</label>
+              <input
+                className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500"
+                {...register('address')}
+                type="text"
+                id="address"
+                value={addressInput}
+                onChange={handleAddressInputChange}
+                onFocus={() => setShowAddressSuggestions(true)} // Show suggestions when focused
+                onBlur={() => setTimeout(() => setShowAddressSuggestions(false), 100)} // Hide suggestions on blur with a delay
+                autoComplete='off'
+              />
+              {/* Display address suggestions based on the selected company */}
+              {showAddressSuggestions && filteredAddresses.length > 0 && (
+                <ul className="suggestions-list bg-slate-200 absolute w-full">
+                  {filteredAddresses.map((address, index) => (
+                    <li key={index} onClick={() => handleAddressSelection(address)} className='py-1 px-2'>
+                      {address}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+
+            {/* Hidden Creator Field */}
+            <input
+              className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500"
+              {...register('creator')}
+              type="text"
+              id="creator"
+              value={creator}
+              hidden={true}
+            />
             {/* Contact Detail section in the form */}
             <div className="mb-4">
               <label className="block text-sm mb-2" htmlFor="contactDetail">Contact Detail</label>
@@ -257,6 +409,7 @@ const NewTicket = () => {
                     placeholder='Contact Name'
                     value={contact.name}
                     onChange={(e) => handleContactChange(index, 'name', e.target.value)}
+                    autoComplete='off'
                   />
                   <input
                     className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500"
@@ -264,6 +417,7 @@ const NewTicket = () => {
                     placeholder='Phone Number'
                     value={contact.number}
                     onChange={(e) => handleContactChange(index, 'number', e.target.value)}
+                    autoComplete='off'
                   />
                   {index > 0 && (
                     <div>
@@ -286,9 +440,29 @@ const NewTicket = () => {
             <div className="mb-4">
               <label className="block text-2xl mb-2">Ticket Info</label>
             </div>
-            <div className="mb-4">
-              <label className="block text-sm mb-2" htmlFor="productName">Product Name</label>
-              <input className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500" {...register('productName')} type="text" id="productName" />
+            {/* Product Field */}
+            <div className="mb-4 relative">
+              <label className="block text-sm mb-2" htmlFor="product">Product</label>
+              <input
+                className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500"
+                {...register('productName')}
+                type="text"
+                id="product"
+                value={productInput}
+                onChange={handleProductInputChange}
+                onFocus={() => setShowProductSuggestions(true)} // Show suggestions when focused
+                onBlur={() => setTimeout(() => setShowProductSuggestions(false), 100)} // Hide suggestions on blur with a delay
+              />
+              {/* Display product suggestions based on the selected address */}
+              {showProductSuggestions && filteredProducts.length > 0 && (
+                <ul className="suggestions-list bg-slate-200 absolute w-full">
+                  {filteredProducts.map((product, index) => (
+                    <li key={index} onClick={() => handleProductSelection(product)} className='px-2 py-1'>
+                      {product}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
             <div className="mb-4">
               <label className="block text-sm mb-2" htmlFor="ticketSource">Ticket Source</label>

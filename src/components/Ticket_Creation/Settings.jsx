@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import api from '../modules/Api'
 
 function Settings() {
-  const [topic, setToggle] = useState('Help topic');
+  const [topic, setToggle] = useState('Help');
   const [helpTopics, setHelpTopics] = useState([]);
   const [slaPlans, setSlaPlans] = useState([]);
   const [departments, setDepartments] = useState([]);
@@ -25,13 +25,13 @@ function Settings() {
     const { addTopic } = data;
 
     if (addTopic.trim()) {
-      if (topic === 'Help topic') {
+      if (topic === 'Help') {
         setHelpTopics([...helpTopics, addTopic]);
-      } else if (topic === 'SLA Plan') {
+      } else if (topic === 'SLA') {
         setSlaPlans([...slaPlans, addTopic]);
       } else if (topic === 'Department') {
         setDepartments([...departments, addTopic]);
-      } else if (topic === 'Canned Responses') {
+      } else if (topic === 'Canned') {
         setCannedResponses([...cannedResponses, addTopic]);
       }
       setValue('addTopic', ''); // Clear the input box
@@ -39,35 +39,35 @@ function Settings() {
   };
 
   const getCurrentList = () => {
-    if (topic === 'Help topic') {
+    if (topic === 'Help') {
       return helpTopics;
-    } else if (topic === 'SLA Plan') {
+    } else if (topic === 'SLA') {
       return slaPlans;
     } else if (topic === 'Department') {
       return departments;
-    } else if (topic === 'Canned Responses') {
+    } else if (topic === 'Canned') {
       return cannedResponses;
     }
   };
 
   const handleRemoveTopic = (index) => {
-    if (topic === 'Help topic') {
+    if (topic === 'Help') {
       setHelpTopics(helpTopics.filter((_, i) => i !== index));
-    } else if (topic === 'SLA Plan') {
+    } else if (topic === 'SLA') {
       setSlaPlans(slaPlans.filter((_, i) => i !== index));
     } else if (topic === 'Department') {
       setDepartments(departments.filter((_, i) => i !== index));
-    } else if (topic === 'Canned Responses') {
+    } else if (topic === 'Canned') {
       setCannedResponses(cannedResponses.filter((_, i) => i !== index));
     }
   };
 
   const onSubmit = async () => {
     const settingsData = [
-      ...helpTopics.map(item => ({ type: 'Help topic', data: item })),
-      ...slaPlans.map(item => ({ type: 'SLA Plan', data: item })),
+      ...helpTopics.map(item => ({ type: 'Help', data: item })),
+      ...slaPlans.map(item => ({ type: 'SLA', data: item })),
       ...departments.map(item => ({ type: 'Department', data: item })),
-      ...cannedResponses.map(item => ({ type: 'Canned Responses', data: item })),
+      ...cannedResponses.map(item => ({ type: 'Canned', data: item })),
     ];
 
     try {
@@ -95,17 +95,17 @@ function Settings() {
           <div className='px-2 my-5 flex w-full overflow-auto'>
             <button
               type="button"
-              onClick={() => setToggle('Help topic')}
-              className={`p-2 mx-1 whitespace-nowrap border transition hover:border-none border-gray-400 px-3 rounded-lg ${topic === 'Help topic' ? 'bg-customColor text-white border-none' : 'hover:bg-customColor hover:text-white'}`}
+              onClick={() => setToggle('Help')}
+              className={`p-2 mx-1 whitespace-nowrap border transition hover:border-none border-gray-400 px-3 rounded-lg ${topic === 'Help' ? 'bg-customColor text-white border-none' : 'hover:bg-customColor hover:text-white'}`}
             >
-              Help topic
+              Help
             </button>
             <button
               type="button"
-              onClick={() => setToggle('SLA Plan')}
-              className={`p-2 mx-1 whitespace-nowrap border transition hover:border-none border-gray-400 px-3 rounded-lg ${topic === 'SLA Plan' ? 'bg-customColor text-white border-none' : 'hover:bg-customColor hover:text-white'}`}
+              onClick={() => setToggle('SLA')}
+              className={`p-2 mx-1 whitespace-nowrap border transition hover:border-none border-gray-400 px-3 rounded-lg ${topic === 'SLA' ? 'bg-customColor text-white border-none' : 'hover:bg-customColor hover:text-white'}`}
             >
-              SLA Plan
+              SLA
             </button>
             <button
               type="button"
@@ -116,10 +116,10 @@ function Settings() {
             </button>
             <button
               type="button"
-              onClick={() => setToggle('Canned Responses')}
-              className={`p-2 mx-1 whitespace-nowrap border transition hover:border-none border-gray-400 px-3 rounded-lg ${topic === 'Canned Responses' ? 'bg-customColor text-white border-none' : 'hover:bg-customColor hover:text-white'}`}
+              onClick={() => setToggle('Canned')}
+              className={`p-2 mx-1 whitespace-nowrap border transition hover:border-none border-gray-400 px-3 rounded-lg ${topic === 'Canned' ? 'bg-customColor text-white border-none' : 'hover:bg-customColor hover:text-white'}`}
             >
-              Canned Responses
+              Canned
             </button>
           </div>
         </div>
