@@ -7,7 +7,8 @@ import Allcustomers from '../Customer_DB/Allcustomers'
 import { useNavigate } from 'react-router-dom';
 import Delete from '../../assets/Delete';
 import Clientbranches from '../modules/getClientbranches';
-import api from '../modules/Api'
+import api from '../modules/Api';
+import Search from '../../assets/Search'
 
 function AssetDb() {
   const { register, handleSubmit, control, formState: { errors }, watch } = useForm();
@@ -92,14 +93,17 @@ function AssetDb() {
     <>
       <Nav />
       <div className='w-[90vw] sm:w-1/2 m-auto'>
-        <h1 className='my-6 font-bold text-3xl mx-auto w-fit'>Customer <span className='text-customColor'>DB</span></h1>
+        <h1 className='my-6 font-semibold font-sans text-3xl mx-auto w-fit'>Customer <span className='text-customColor'>DB</span></h1>
         {!showForm ? (
-          <button
-            className='bg-slate-400 py-2 px-3 rounded-xl my-9 fixed bottom-0 right-8 flex justify-between w-20 items-center'
-            onClick={() => setShowForm(true)}
-          >
-            <span className='text-white font-bold text-xl'>+</span> New
-          </button>
+          <div>
+           
+            <button
+              className='bg-slate-400 py-2 px-3 rounded-xl my-9 fixed bottom-0 right-8 flex justify-between w-20 items-center'
+              onClick={() => setShowForm(true)}
+            >
+              <span className='text-white font-bold text-xl'>+</span> New
+            </button>
+          </div>
         ) : null}
         {showForm && (
           <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-6'>

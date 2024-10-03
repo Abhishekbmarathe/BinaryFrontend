@@ -4,6 +4,10 @@ import Ticket from '../assets/Ticket.jsx';
 import Assign from '../assets/Assignticket.jsx';
 import Customerdb from '../assets/Customerdb.jsx';
 import User from '../assets/User.jsx';
+import Home from '../assets/Home.jsx';
+import Arrowup from '../assets/Arrowup.jsx'
+import Arrrowdown from '../assets/Arrowdown.jsx';
+import Bell from '../assets/Bellnotification.jsx'
 
 const BottomNavbar = () => {
     const [cardData, setCardData] = useState([
@@ -68,32 +72,17 @@ const BottomNavbar = () => {
         <div className=' md:hidden'>
             <div className='fixed bg-white /bg-bottom-gradient bottom-0 py-2 overflow-y-auto w-full z-50'>
                 <nav className='w-screen flex items-center justify-between px-16 py-2  '>
-                    <button onClick={home}>
-                        <lord-icon
-                            src="https://cdn.lordicon.com/cnpvyndp.json"
-                            trigger="click"
-                            colors="primary:black"
-                        >
-                        </lord-icon>
-                        <br /><span>Home</span>
+                    <button onClick={home} className='flex flex-col items-center'>
+                        <Home />
+                        <span>Home</span>
                     </button>
-                    <button onClick={popUp}>
-                        <lord-icon
-                            src="https://cdn.lordicon.com/dwoxxgps.json"
-                            trigger="click"
-                            colors="primary:black"
-                        >
-                        </lord-icon>
-                        <br /><span className='opacity-0'>Up</span>
+                    <button onClick={popUp} className='flex flex-col items-center'>
+                        <Arrowup />
+                        <span className='opacity-0'>Up</span>
                     </button>
-                    <button onClick={bahuth}>
-                        <lord-icon
-                            src="https://cdn.lordicon.com/vspbqszr.json"
-                            trigger="hover"
-                            colors="primary:black"
-                        >
-                        </lord-icon>
-                        <br /><span>Updates</span>
+                    <button onClick={bahuth} className='flex flex-col items-center'>
+                        <Bell />
+                        <span>Updates</span>
                     </button>
                 </nav>
                 <div className={`fixed inset-x-0 bottom-0 /bg-neutral-800 bg-white bg-panel-gradient/ border-t-2 border-customColor text-cyan-50 p-4 transition-transform duration-500 rounded-t-3xl ${pop ? 'translate-y-0' : 'translate-y-full'}`}>
@@ -112,12 +101,7 @@ const BottomNavbar = () => {
                     </div>
                     <button onClick={logout} className='text-red-500 font-semibold text-xl mb-8 mt-10 font-sans  m-auto block'> Logout</button>
                     <button onClick={popUp} className='m-auto block p-3 rounded-lg'>
-                        <lord-icon
-                            src="https://cdn.lordicon.com/rmkahxvq.json"
-                            trigger="hover"
-                            colors="primary:black"
-                        >
-                        </lord-icon>
+                        <Arrrowdown />
                     </button>
                 </div>
             </div>

@@ -9,7 +9,7 @@ import Attachment from '../../assets/Attachment';
 import api from '../modules/Api'
 
 const NewTicket = () => {
-  const { handleSubmit, register, setValue } = useForm();
+  const { handleSubmit, register, setValue, getValues } = useForm();
   const [step, setStep] = useState(1);
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -28,6 +28,117 @@ const NewTicket = () => {
   const navigate = useNavigate();
 
   const [ticket, setTicket] = useState(null);
+
+  // suggestions state
+  const extractCompany = getValues('companyName');
+  const extractAddress = getValues('address')
+  const [suggestions, setSuggestions] = useState([]);
+  const [filteredAddresses, setFilteredAddresses] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [companyData, setCompanyData] = useState({});
+  const [selectedCompany, setSelectedCompany] = useState('');
+  const [addressInput, setAddressInput] = useState(extractAddress);
+  const [productInput, setProductInput] = useState('');
+  const [showCompanySuggestions, setShowCompanySuggestions] = useState(false);
+  const [showAddressSuggestions, setShowAddressSuggestions] = useState(false);
+  const [showProductSuggestions, setShowProductSuggestions] = useState(false);
+
+  // setFilteredAddresses("testing")
+
+  // Fetch company data (company names, addresses, and products) from the API
+  useEffect(() => {
+    const fetchCompanyData = async () => {
+      try {
+        const response = await axios.get(api + 'api/optionsForTicketDropdown');
+        const data = response.data;
+
+        // Store the entire response in localStorage
+        localStorage.setItem('companyData', JSON.stringify(data));
+
+        // Extract company names and store them in suggestions
+        const companyNames = Object.keys(data);
+        setSuggestions(companyNames);
+
+
+        // Store the full data in state for later address and product filtering
+        setCompanyData(data);
+      } catch (error) {
+        console.error('Error fetching company data:', error);
+      }
+    };
+
+    fetchCompanyData();
+  }, []);
+
+  // Handle when a company is selected
+  const handleCompanySelection = (companyName) => {
+
+    setSelectedCompany(companyName);
+    setShowCompanySuggestions(false); // Hide the company suggestions list
+
+    // Update the address field based on the selected company
+    if (companyData[companyName]) {
+      const addresses = Object.keys(companyData[companyName]);
+      setFilteredAddresses(addresses);
+    } else {
+      setFilteredAddresses([]);
+    }
+
+    // Clear address and product inputs when a new company is selected
+    setAddressInput('');
+    setProductInput('');
+    setFilteredProducts([]);
+    setValue('companyName', companyName);
+  };
+
+
+  // Handle when an address is selected
+  const handleAddressSelection = (address) => {
+    console.log("address=", address)
+    setAddressInput(address);
+    setShowAddressSuggestions(false); // Hide the address suggestions list
+
+    // Update the product suggestions based on the selected address
+    if (companyData[selectedCompany] && companyData[selectedCompany][address]) {
+      const products = companyData[selectedCompany][address];
+      setFilteredProducts(products);
+    } else {
+      setFilteredProducts([]);
+    }
+
+    setValue('address', address);  // Register selected address in the form
+  };
+
+  // Handle when a product is selected
+  const handleProductSelection = (product) => {
+    setProductInput(product);
+    console.log(product)
+    setShowProductSuggestions(false); // Hide the product suggestions list
+    setValue('productName', product);  // Register selected product in the form
+  };
+
+  const handleCompanyInputChange = (e) => {
+    const value = e.target.value;
+    setSelectedCompany(value);
+    handleCompanySelection(value);  // Filter addresses based on the selected company
+    setShowCompanySuggestions(true); // Show suggestions when typing in the company field
+    setValue('companyName', value); // Register company name field in the form
+  };
+
+  const handleAddressInputChange = (e) => {
+    const value = e.target.value;
+    setAddressInput(value);
+    setShowAddressSuggestions(true); // Show suggestions when typing in the address field
+    setValue('address', value); // Register address field in the form
+  };
+
+  const handleProductInputChange = (e) => {
+    const value = e.target.value;
+    setProductInput(value);
+    setShowProductSuggestions(true); // Show suggestions when typing in the product field
+    setValue('productName', value); // Register product field in the form
+  };
+
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("userDet"));
@@ -135,10 +246,10 @@ const NewTicket = () => {
 
         if (Array.isArray(parsedSettings)) {
           // Filter and set the settings based on type
-          setHelpTopics(parsedSettings.filter(setting => setting.type === 'Help topic').map(setting => setting.data));
+          setHelpTopics(parsedSettings.filter(setting => setting.type === 'Help').map(setting => setting.data));
           setDepartments(parsedSettings.filter(setting => setting.type === 'Department').map(setting => setting.data));
-          setSlaPlans(parsedSettings.filter(setting => setting.type === 'SLA Plan').map(setting => setting.data));
-          setCannedResponses(parsedSettings.filter(setting => setting.type === 'Canned Responses').map(setting => setting.data));
+          setSlaPlans(parsedSettings.filter(setting => setting.type === 'SLA').map(setting => setting.data));
+          setCannedResponses(parsedSettings.filter(setting => setting.type === 'Canned').map(setting => setting.data));
         }
       } catch (error) {
         console.error("Failed to parse settings from localStorage:", error);
@@ -364,8 +475,23 @@ const NewTicket = () => {
                 type="text"
                 className="w-full p-3 border border-gray-300 rounded"
                 {...register('companyName', { required: true })}
-                readOnly={allowEdit}
+                readOnly={true}
+                value={extractCompany}
+                onChange={handleCompanyInputChange}
+                // onFocus={() => setShowCompanySuggestions(true)} // Show suggestions when focused
+                // onBlur={() => setTimeout(() => setShowCompanySuggestions(false), 100)} // Hide suggestions on blur with a delay
+                autoComplete='off'
               />
+              {/* Display company name suggestions */}
+              {showCompanySuggestions && suggestions.length > 0 && (
+                <ul className="suggestions-list bg-slate-200 absolute z-10 w-full">
+                  {suggestions.map((suggestion, index) => (
+                    <li key={index} onClick={() => handleCompanySelection(suggestion)} className='p-1'>
+                      {suggestion}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
 
             {/* Address */}
@@ -376,10 +502,26 @@ const NewTicket = () => {
               <input
                 type="text"
                 id="address"
+                value={addressInput}
                 {...register('address', { required: true })}
                 className="w-full p-3 border border-gray-300 rounded"
                 readOnly={allowEdit}
+                onChange={handleAddressInputChange}
+                onFocus={() => setShowAddressSuggestions(true)} // Show suggestions when focused
+                onBlur={() => setTimeout(() => setShowAddressSuggestions(false), 100)} // Hide suggestions on blur with a delay
+                autoComplete='off'
+                onClick={() => handleCompanySelection(extractCompany)}
               />
+              {/* Display address suggestions based on the selected company */}
+              {showAddressSuggestions && filteredAddresses.length > 0 && (
+                <ul className="suggestions-list bg-slate-200 absolute w-full">
+                  {filteredAddresses.map((address, index) => (
+                    <li key={index} onClick={() => handleAddressSelection(address)} className='py-1 px-2'>
+                      {address}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
 
             {/* Creator */}
@@ -465,7 +607,22 @@ const NewTicket = () => {
                 {...register('productName', { required: true })}
                 className="w-full p-3 border border-gray-300 rounded"
                 readOnly={allowEdit}
+                value={productInput}
+                onChange={handleProductInputChange}
+                onFocus={() => setShowProductSuggestions(true)} // Show suggestions when focused
+                onBlur={() => setTimeout(() => setShowProductSuggestions(false), 100)} // Hide suggestions on blur with a delay
+                autoComplete='off'
               />
+              {/* Display product suggestions based on the selected address */}
+              {showProductSuggestions && filteredProducts.length > 0 && (
+                <ul className="suggestions-list bg-slate-200 absolute w-full">
+                  {filteredProducts.map((product, index) => (
+                    <li key={index} onClick={() => handleProductSelection(product)} className='px-2 py-1'>
+                      {product}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
 
             <div className="mb-4">

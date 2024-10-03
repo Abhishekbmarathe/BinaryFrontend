@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Technician from '../../assets/Techicon';
+import Home from '../../assets/Home';
+import User from '../../assets/User';
 
 function UserProfile() {
     const [allUsers, setAllUsers] = useState([]);
@@ -37,15 +40,17 @@ function UserProfile() {
     };
 
     return (
-        <div className="max-w-md mx-auto mt-10 sm:max-w-[50vw] ">
+        <div className="w-[95%]">
             {allUsers.map((user, index) => (
-                <div key={index} className="shadow-gray-500 shadow-md rounded-lg overflow-hidden mb-4">
+                <div key={index}
+                    className="border-b border-b-gray-500 flex items-center w-[96vw]/ px-2"
+                    onClick={() => handleExpand(user._id)}>
+                    {user.role === "technician" ? (<Technician width='44' height='32'/>) : (<User size={40} color='#00C5FF' />)}
                     <div
-                        className=" w-[90vw] sm:max-w-full rounded-[8px] p-4 cursor-pointer flex gap-4 items-center font-semibold font-sans"
-                        onClick={() => handleExpand(user._id)}
+                        className="  sm:max-w-full w-full px-4 py-2 cursor-pointer flex flex-col  font-semibold font-sans"
                     >
-                        <span className=''>{user.role}</span>
-                        <span className="text-black text-lg ">{user.username}</span>
+                        <span className="text">{user.name}</span>
+                        <span className="text-black text-xs">@{user.username}</span>
                     </div>
                 </div>
             ))}
@@ -53,13 +58,7 @@ function UserProfile() {
             <div className='fixed md:hidden /bg-bottom-gradient bottom-0 py-2 overflow-y-auto w-full -z-10'>
                 <nav className='w-screen flex items-center justify-center px-16 py-2  '>
                     <button onClick={home}>
-                        <lord-icon
-                            src="https://cdn.lordicon.com/cnpvyndp.json"
-                            trigger="click"
-                            colors="primary:black"
-                        >
-                        </lord-icon>
-                        {/* <br /><span>Home</span> */}
+                        <Home />
                     </button>
                 </nav>
             </div>

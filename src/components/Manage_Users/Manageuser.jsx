@@ -39,7 +39,7 @@ function Manageuser() {
     return (
         <><Nav />
             <div className='flex flex-col justify-center items-center sm:w-1/2 sm:m-auto'>
-                <h1 className='my-6 font-bold text-3xl'>Manage <span className='text-customColor'> Users</span></h1>
+                <h1 className='my-6 font-semibold font-sans  text-2xl'>User <span className='text-customColor'> List</span></h1>
                 {!showForm ? (
                     <button className='bg-white shadow-lg shadow-gray-500 py-2 px-3 rounded-xl my-9 fixed bottom-0 right-8 flex justify-between w-20 items-center ' onClick={() => setShowForm(true)}><span className='text-customColor font-bold text-xl'>+</span> New</button>
                 ) : null}

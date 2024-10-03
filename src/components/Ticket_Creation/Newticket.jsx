@@ -39,7 +39,7 @@ const NewTicket = () => {
   useEffect(() => {
     const fetchCompanyData = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/optionsForTicketDropdown');
+        const response = await axios.get(api + 'api/optionsForTicketDropdown');
         const data = response.data;
 
         // Store the entire response in localStorage

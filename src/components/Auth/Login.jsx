@@ -23,60 +23,60 @@ const Login = () => {
         setLoading(true);
         try {
             const response = await axios.post(api + 'api/login', data);
-            // const response = await axios.post('http://localhost:3000/api/login', data);
+            
             if (response.status === 200) {
                 localStorage.clear();
                 if (data.username.trim() === "Master") {
                     await axios.get(api + "api/getallusers")
-                        // await axios.get("http://localhost:3000/api/getallusers")
+                        
                         .then((response) => {
                             ("All Users:", response.data);
                             localStorage.setItem("allUsers", JSON.stringify(response.data));
                         })
                         .catch((error) => {
                             console.error("Error fetching all users:", error);
-                            alert("Something went wrong fetching all users.");
+                            // alert("Something went wrong fetching all users.");
                         });
                     await axios.get(api + "api/getAllAsset")
-                        // await axios.get("http://localhost:3000/api/getAllAsset")
+                        
                         .then((response) => {
                             ("All Assets:", response.data);
                             localStorage.setItem("getAllAssets", JSON.stringify(response.data));
                         })
                         .catch((error) => {
                             console.error("Error fetching all assets:", error);
-                            alert("Something went wrong fetching all assets.");
+                            // alert("Something went wrong fetching all assets.");
                         });
                     await axios.get(api + "api/getAllClients")
-                        // await axios.get("http://localhost:3000/api/getAllAsset")
+                        
                         .then((response) => {
                             ("All customers:", response.data);
                             localStorage.setItem("AllClients", JSON.stringify(response.data));
                         })
                         .catch((error) => {
                             console.error("Error fetching all assets:", error);
-                            alert("Something went wrong fetching all assets.");
+                            // alert("Something went wrong fetching all assets.");
                         });
                     await axios.post(api + "api/getAllTickets", { username: data.username })
-                        // await axios.post("http://localhost:3000/api/getAlltickets",{username : data.username})
+                        
                         .then((response) => {
                             // ("All customers:", response.data);
                             localStorage.setItem("AllTickets", JSON.stringify(response.data));
                         })
                         .catch((error) => {
                             console.error("Error fetching all tickets:", error);
-                            alert("Something went wrong fetching all Tickets.");
+                            // alert("Something went wrong fetching all Tickets.");
                         });
 
                 }
                 await axios.get(api + "api/getOptionUsers")
-                    // await axios.post("http://localhost:3000/api/getAlltickets",{username : data.username})
+                    
                     .then((response) => {
                         localStorage.setItem("onlyUsers", JSON.stringify(response.data));
                     })
                     .catch((error) => {
                         console.error("Error fetching only users:", error);
-                        alert("Something went wrong fetching only users.");
+                        // alert("Something went wrong fetching only users.");
                     });
                 localStorage.setItem("userDet", JSON.stringify(response.data));
                 navigate('/server/Home');

@@ -31,7 +31,6 @@ function AssetDetail() {
             if (conf) {
                 const payload = { ...asset, id: asset._id };
                 const response = await axios.post(api + 'api/updateAsset', payload);
-                // const response = await axios.post('http://localhost:3000/api/updateAsset', payload);
                 fetchAndStoreassets();
                 alert("Saved successfully...");
                 navigate('/asset-db');
