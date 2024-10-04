@@ -416,7 +416,7 @@ const NewTicket = () => {
   if (!ticket) return <div>Loading...</div>; // Show a loading message until the ticket is fetched
 
   return (
-    <div className="min-h-screen bg-gray-100 p-3">
+    <div className="min-h-screen p-3">
       <div className='flex items-center justify-between px-2'>
         <h1 className='my-3 font-bold text-2xl text-center sticky top-0 z-10 bg-[#f5f5f5]'>Edit <span className='text-customColor'>Ticket</span></h1>
         <div className='flex gap-2'>
@@ -457,24 +457,14 @@ const NewTicket = () => {
       </div>
       <form onSubmit={handleSubmit(onSubmit)} className="max-w-3xl mx-auto p-8 rounded">
         {/* Step Indicators */}
-        <div className="flex justify-between mb-8">
-          <div className={`w-1/3 text-center pb-2 ${step === 1 ? 'border-b-4 border-blue-600 text-blue-600' : 'text-gray-500'}`}>
-            Customer Info
-          </div>
-          <div className={`w-1/3 text-center pb-2 ${step === 2 || step === 3 ? 'border-b-4 border-blue-600 text-blue-600' : 'text-gray-500'}`}>
-            Ticket Info
-          </div>
-          <div className={`w-1/3 text-center pb-2 ${step === 4 ? 'border-b-4 border-blue-600 text-blue-600' : 'text-gray-500'}`}>
-            Response
-          </div>
-        </div>
+
 
         {/* Step 1: Customer Info */}
         {step === 1 && (
           <div>
             {/* Company Type */}
             <div className="mb-6">
-              <label className="block text-lg font-medium mb-2">Company Type</label>
+              <label className="block text-xl text-customColor font-sans  font-medium mb-2">Company Type</label>
               <div className="flex items-center">
                 <span className="mr-4">Call Based</span>
                 <label className="relative inline-flex items-center cursor-pointer">
@@ -493,18 +483,16 @@ const NewTicket = () => {
 
             {/* Company Name */}
             <div className="mb-6">
-              <label htmlFor="companyName" className="block text-lg font-medium mb-2">
+              <label htmlFor="companyName" className="block text-xl text-customColor  font-sans font-medium mb-2">
                 Company Name
               </label>
               <input
                 type="text"
-                className="w-full p-3 border border-gray-300 rounded"
+                className="w-full p-3 border-2 border-gray-400 bg-transparent rounded"
                 {...register('companyName', { required: true })}
                 readOnly={true}
                 value={extractCompany}
                 onChange={handleCompanyInputChange}
-                // onFocus={() => setShowCompanySuggestions(true)} // Show suggestions when focused
-                // onBlur={() => setTimeout(() => setShowCompanySuggestions(false), 100)} // Hide suggestions on blur with a delay
                 autoComplete='off'
               />
               {/* Display company name suggestions */}
@@ -520,8 +508,8 @@ const NewTicket = () => {
             </div>
 
             {/* Address */}
-            <div className="mb-6">
-              <label htmlFor="address" className="block text-lg font-medium mb-2">
+            <div className="mb-6 relative">
+              <label htmlFor="address" className="block text-xl text-customColor  font-sans font-medium mb-2">
                 Address
               </label>
               <input
@@ -529,7 +517,7 @@ const NewTicket = () => {
                 id="address"
                 value={addressInput}
                 {...register('address', { required: true })}
-                className="w-full p-3 border border-gray-300 rounded"
+                className="w-full p-3 border-2 border-gray-400 bg-transparent rounded"
                 // readOnly={allowEdit}
                 disabled={!toggleEdit} // if toggleedit is false then only we can edit
                 onChange={handleAddressInputChange}
@@ -542,7 +530,7 @@ const NewTicket = () => {
               {toggleEdit && (
                 <>
                   {showAddressSuggestions && filteredAddresses.length > 0 && (
-                    <ul className="suggestions-list bg-slate-200 absolute w-full">
+                    <ul className="suggestions-list bg-slate-600 text-white absolute w-full">
                       {filteredAddresses.map((address, index) => (
                         <li key={index} onClick={() => handleAddressSelection(address)} className='py-1 px-2'>
                           {address}
@@ -571,21 +559,20 @@ const NewTicket = () => {
 
             {/* Contacts */}
             <div className="mb-6">
-              <label className="block text-lg font-medium mb-2">Contacts</label>
+              <label className="block text-xl text-customColor  font-medium font-sans mb-2">Contacts</label>
               {contacts.map((contact, index) => (
                 <div key={index} className="flex items-center mb-4">
                   <input
                     type="text"
-                    className="w-1/2 p-3 border border-gray-300 rounded mr-4"
+                    className="w-1/2 p-3 border-2 border-gray-400 bg-transparent rounded mr-4"
                     value={contact.name}
                     onChange={(e) => handleContactChange(index, 'name', e.target.value)}
                     placeholder="Name"
-                    // readOnly={allowEdit}
                     disabled={!toggleEdit} // if toggleedit is false then only we can edit
                   />
                   <input
                     type="text"
-                    className="w-1/2 p-3 border border-gray-300 rounded mr-4"
+                    className="w-1/2 p-3 border-2 border-gray-400 bg-transparent rounded mr-4"
                     value={contact.number}
                     onChange={(e) => handleContactChange(index, 'number', e.target.value)}
                     placeholder="Number"
@@ -638,15 +625,15 @@ const NewTicket = () => {
         {step === 2 && (
           <div>
             {/* Product Name */}
-            <div className="mb-6">
-              <label htmlFor="productName" className="block text-lg font-medium mb-2">
+            <div className="mb-6 relative">
+              <label htmlFor="productName" className="block text-xl text-customColor  font-sans font-medium mb-2">
                 Product Name
               </label>
               <input
                 type="text"
                 id="productName"
                 {...register('productName', { required: true })}
-                className="w-full p-3 border border-gray-300 rounded"
+                className="w-full p-3 border-2 border-gray-400 bg-transparent rounded"
                 // readOnly={allowEdit}
                 // readOnly={!toggleEdit}
                 disabled={!toggleEdit} // if toggleedit is false then only we can edit
@@ -673,9 +660,9 @@ const NewTicket = () => {
 
             </div>
 
-            <div className="mb-4">
-              <label className="block text-sm mb-2" htmlFor="ticketSource">Ticket Source</label>
-              <select className='w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500' {...register('ticketSource')}
+            <div className="mb-6">
+              <label className="block text-xl text-customColor  font-sans font-medium mb-2" htmlFor="ticketSource">Ticket Source</label>
+              <select className='w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500' {...register('ticketSource')}
                 disabled={!toggleEdit}
               >
                 <option value="">Select source</option>
@@ -687,9 +674,9 @@ const NewTicket = () => {
             </div>
 
             {/* Help Topic */}
-            <div className="mb-4">
-              <label className="block text-sm mb-2" htmlFor="helpTopic">Help Topic</label>
-              <select className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500" {...register('helpTopic')} id="helpTopic" disabled={!toggleEdit}>
+            <div className="mb-6">
+              <label className="block text-xl text-customColor  font-sans font-medium mb-2" htmlFor="helpTopic">Help Topic</label>
+              <select className="w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500" {...register('helpTopic')} id="helpTopic" disabled={!toggleEdit}>
                 <option value="">Select Help Topic</option>
                 {helpTopics.map((topic, index) => (
                   <option key={index} value={topic}>{topic}</option>
@@ -698,9 +685,9 @@ const NewTicket = () => {
             </div>
 
             {/* Department */}
-            <div className="mb-4">
-              <label className="block text-sm mb-2" htmlFor="department">Department</label>
-              <select className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500" {...register('department')} id="department" disabled={!toggleEdit}>
+            <div className="mb-6">
+              <label className="block text-xl text-customColor  font-sans font-medium mb-2" htmlFor="department">Department</label>
+              <select className="w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500" {...register('department')} id="department" disabled={!toggleEdit}>
                 <option value="">Select Department</option>
                 {departments.map((department, index) => (
                   <option key={index} value={department}>{department}</option>
@@ -709,9 +696,9 @@ const NewTicket = () => {
             </div>
 
             {/* SLA Plan */}
-            <div className="mb-4">
-              <label className="block text-sm mb-2" htmlFor="slaPlan">SLA</label>
-              <select className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500" {...register('slaPlan')} id="slaPlan"
+            <div className="mb-6">
+              <label className="block text-xl text-customColor  font-sans font-medium mb-2" htmlFor="slaPlan">SLA</label>
+              <select className="w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500" {...register('slaPlan')} id="slaPlan"
                 disabled={!toggleEdit}>
                 <option value="">Select SLA</option>
                 {slaPlans.map((sla, index) => (
@@ -759,7 +746,7 @@ const NewTicket = () => {
           <div className="flex flex-col gap-6">
             {/* Priority */}
             <div className="mb-4">
-              <label className="block mb-2 text-lg font-medium" htmlFor="priority">Priority</label>
+              <label className="block mb-2 font-sans text-xl text-customColor  font-medium" htmlFor="priority">Priority</label>
               <div className="flex gap-3 items-center">
                 <label className="inline-flex items-center">
                   <input
@@ -794,8 +781,8 @@ const NewTicket = () => {
               </div>
             </div>
             <div className="mb-4">
-              <label className="block text-sm mb-2" htmlFor="">Assign Technician</label>
-              <select className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500" {...register('assignedTo')} id=""
+              <label className="block text-xl text-customColor  font-sans font-medium mb-2" htmlFor="">Assign Technician</label>
+              <select className="w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500" {...register('assignedTo')} id=""
                 onChange={(e) => checkStatus(e.target.value)}
                 disabled={!toggleEdit}
               >
@@ -806,9 +793,9 @@ const NewTicket = () => {
               </select>
             </div>
             <div className="mb-4 relative">
-              <label className="block mb-2 text-lg font-medium" htmlFor="collaborators">Collaborators</label>
+              <label className="block mb-2 text-xl text-customColor  font-sans font-medium" htmlFor="collaborators">Collaborators</label>
               <div
-                className={`w-full p-2 bg-transparent border border-gray-600 rounded cursor-pointer ${!toggleEdit ? 'pointer-events-none' : 'pointer-events-auto'} `}
+                className={`w-full p-3 bg-transparent border-2 border-gray-400 rounded cursor-pointer ${!toggleEdit ? 'pointer-events-none' : 'pointer-events-auto'} `}
                 onClick={toggleDropdown}
               >
                 {selectedUsers.length > 0 ? selectedUsers.join(", ") : "Select Collaborators"}
@@ -859,8 +846,8 @@ const NewTicket = () => {
           <div>
             {/* Canned Response */}
             <div className="mb-4">
-              <label className="block text-sm mb-2" htmlFor="cannedResponse">Canned Response</label>
-              <select className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500" {...register('cannedResponse')} id="cannedResponse"
+              <label className="block text-xl text-customColor  font-sans font-medium mb-2" htmlFor="cannedResponse">Canned Response</label>
+              <select className="w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500" {...register('cannedResponse')} id="cannedResponse"
                 disabled={!toggleEdit}
               >
                 <option value="">Select Canned</option>
@@ -871,15 +858,25 @@ const NewTicket = () => {
               </select>
             </div>
             <div className="mb-4">
-              <label className="block text-sm mb-2" htmlFor="issueDescription">Issue Description</label>
-              <textarea className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500" {...register('issueDescription')} id="issueDescription" readOnly={!toggleEdit}></textarea>
+              <label className="block text-xl text-customColor  font-sans font-medium mb-2" htmlFor="issueDescription">Issue Description</label>
+              <textarea className="w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500" {...register('issueDescription')} id="issueDescription" readOnly={!toggleEdit}></textarea>
             </div>
             <div className="mb-4">
-              <label className="block text-sm mb-2" htmlFor="">Additional Info</label>
-              <textarea className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500" {...register('additionalInfo')} id="" readOnly={!toggleEdit}></textarea>
+              <label className="block text-xl text-customColor  font-sans font-medium  mb-2" htmlFor="">Additional Info</label>
+              <textarea className="w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500" {...register('additionalInfo')} id="" readOnly={!toggleEdit}></textarea>
             </div>
 
-            <div>
+
+            <div className='mb-6'>
+              <button
+                className="flex items-center gap-1 bg-blue-500 text-white px-3 h-fit py-2 rounded-lg"
+                type="button"
+              >
+                <Attachment />
+                View Attached Files
+              </button>
+            </div>
+            <div className='mb-6'>
               {toggleEdit && (
                 <>
                   <input
@@ -892,7 +889,7 @@ const NewTicket = () => {
                   {!allowEdit && (
 
                     <button
-                      className="flex items-center gap-1 bg-blue-400 text-white p-3 rounded-lg"
+                      className="flex items-center gap-1 bg-blue-500 text-white px-3 h-fit py-2 rounded-lg"
                       type="button"
                       onClick={() => document.getElementById('fileInput').click()}
                     >
@@ -941,7 +938,7 @@ const NewTicket = () => {
             <div className="flex justify-between">
               <button
                 type="button"
-                className="px-6 py-3 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
+                className="px-6 h-fit py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
                 onClick={() => setStep(3)}
               >
                 Previous
@@ -951,7 +948,7 @@ const NewTicket = () => {
                   {!allowEdit && (
                     <button
                       type="submit"
-                      className="px-6 py-3 bg-blue-600 text-white rounded hover:bg-blue-700"
+                      className="px-6 h-fit py-2 bg-blue-500 text-white rounded hover:bg-blue-700"
                     >
                       update
                     </button>
