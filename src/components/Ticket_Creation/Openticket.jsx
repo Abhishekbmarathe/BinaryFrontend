@@ -130,6 +130,38 @@ const NewTicket = () => {
   };
 
 
+  // delete a attached file
+  const handleFileDeletion = async (fileUrl) => {
+    if (confirm('Are you sure to delete this file ?')) {
+      try {
+        const response = await axios.post(`${api}api/deleteFile`, {
+          fileUrl, // Send the file URL in the request body
+        });
+
+        if (response.status === 200) {
+          alert('File deleted successfully')
+          // Handle success, possibly by updating the state to remove the file from the list
+          setGetattachedfiles(prevFiles => {
+            const updatedFiles = { ...prevFiles };
+            // Find the key associated with the fileUrl and delete it
+            for (const key in updatedFiles) {
+              if (updatedFiles[key] === fileUrl) {
+                delete updatedFiles[key];
+              }
+            }
+            return updatedFiles;
+          });
+
+          console.log('File deleted successfully')
+        }
+      } catch (error) {
+        console.error('Error deleting the file:', error);
+        alert('Something went wrong...')
+
+      }
+    }
+  };
+
   // Handle when an address is selected
   const handleAddressSelection = (address) => {
     console.log("address=", address)
@@ -1031,8 +1063,13 @@ const NewTicket = () => {
                             >
                               <div className='w-fit flex items-center gap-1'>
                                 <File />
-                                <p className='text-gray-300 text-sm max-w-[240px] break-words'>{fileName}</p>
+                                {/* Truncate on small screens, allow normal word breaking on medium screens and up */}
+                                <p className='text-gray-300 text-sm max-w-[190px]  md:max-w-full truncate md:overflow-visible md:whitespace-normal /md:break-words'>
+                                  {fileName}
+                                </p>
                               </div>
+
+
                             </a>
 
 
@@ -1040,7 +1077,7 @@ const NewTicket = () => {
                             {toggleEdit && (
                               <button
                                 type='button'
-                                onClick={() => {/* handle delete logic */ }} // Placeholder for the delete function
+                                onClick={() => handleFileDeletion(fileUrl)}
                               >
                                 <Delete />
                               </button>
