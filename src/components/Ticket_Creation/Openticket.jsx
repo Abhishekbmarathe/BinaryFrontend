@@ -8,6 +8,8 @@ import Delete from '../../assets/Delete';
 import Attachment from '../../assets/Attachment';
 import api from '../modules/Api';
 import Edit from '../../assets/Edit';
+import Close from '../../assets/Close';
+import File from '../../assets/File';
 
 const NewTicket = () => {
   const { handleSubmit, register, setValue, getValues } = useForm();
@@ -24,10 +26,12 @@ const NewTicket = () => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [toggleEdit, setToggleedit] = useState(false);
   const [collaborators, setCollaborators] = useState([]);
+  const [showFiles, setShowfiles] = useState(false);
+  const [getAttachedfiles, setGetattachedfiles] = useState([]);
+  const [ticketFileId, setTicketFileId] = useState();
 
-  console.log("current collab", collaborators)
 
-
+  console.log("attached files === ", getAttachedfiles)
   const location = useLocation();
   const { ticketId } = location.state; // Get ticketId from state
   const navigate = useNavigate();
@@ -74,6 +78,35 @@ const NewTicket = () => {
 
     fetchCompanyData();
   }, []);
+
+
+  // get attached files
+  useEffect(() => {
+    if (!ticketFileId) {
+      console.log("ticketFileId is undefined at the initial load");
+      return; // Exit early if ticketFileId is not available yet
+    }
+
+    console.log("Fetching files for ticketFileId === ", ticketFileId);
+
+    const fetchFiles = async () => {
+      try {
+        const response = await axios.post(`${api}api/getFiles`, {
+          ticketFileId,  // Sending the ticketId as ticketFileId
+        });
+
+        // Assuming response.data contains an array of files
+        if (response.status === 200) {
+          setGetattachedfiles(response.data);
+          console.log("Fetched files:", response.data);
+        }
+      } catch (error) {
+        console.error('Error fetching files:', error);
+      }
+    };
+
+    fetchFiles();
+  }, [ticketFileId]);  // Run only when ticketFileId changes
 
   // Handle when a company is selected
   const handleCompanySelection = (companyName) => {
@@ -144,7 +177,6 @@ const NewTicket = () => {
     setValue('productName', value); // Register product field in the form
   };
 
-
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("userDet"));
 
@@ -153,12 +185,15 @@ const NewTicket = () => {
     }
 
     // Fetch the ticket from local storage
+
     const allTickets = JSON.parse(localStorage.getItem('AllTickets'));
     const currentTicket = allTickets.find(ticket => ticket._id === ticketId);
 
     if (currentTicket) {
       setTicket(currentTicket);
       setTicketOC(currentTicket.ticketStatus);
+      setTicketFileId(currentTicket.ticketNumber);
+      console.log("current ticket number = ", currentTicket.ticketNumber)
 
       // Populate form fields with existing ticket data
       Object.keys(currentTicket).forEach((key) => {
@@ -180,15 +215,10 @@ const NewTicket = () => {
 
       // Set edit based on conditions
       setEdit(isNotCreator && isNotAdmin && isNotCollaborator);
-
-      console.log("actual collab == ", currentTicket.collaborators);
     }
   }, [ticketId, setValue]); // Keep your dependencies here
 
-  // Optional: If you want to track collaborators changing
-  useEffect(() => {
-    console.log("Collaborators updated: ", collaborators);
-  }, [collaborators]);
+
 
 
   const handleCompanyTypeToggle = (e) => {
@@ -416,8 +446,8 @@ const NewTicket = () => {
   if (!ticket) return <div>Loading...</div>; // Show a loading message until the ticket is fetched
 
   return (
-    <div className="min-h-screen p-3">
-      <div className='flex items-center justify-between px-2'>
+    <div className="min-h-screen py-3">
+      <div className='flex items-center justify-between px-3'>
         <h1 className='my-3 font-bold text-2xl text-center sticky top-0 z-10 bg-[#f5f5f5]'>Edit <span className='text-customColor'>Ticket</span></h1>
         <div className='flex gap-2'>
           {isAdmin && (
@@ -606,6 +636,16 @@ const NewTicket = () => {
                   )}
                 </>
               )}
+            </div>
+
+            <div className="">
+              <button
+                type="button"
+                className="px-6 py-2 float-start bg-blue-400 text-white rounded hover:bg-blue-700"
+                onClick={() => setStep(4)}
+              >
+                Last
+              </button>
             </div>
 
             <div className="">
@@ -871,10 +911,12 @@ const NewTicket = () => {
               <button
                 className="flex items-center gap-1 bg-blue-500 text-white px-3 h-fit py-2 rounded-lg"
                 type="button"
+                onClick={() => setShowfiles(true)}
               >
                 <Attachment />
                 View Attached Files
               </button>
+
             </div>
             <div className='mb-6'>
               {toggleEdit && (
@@ -956,7 +998,70 @@ const NewTicket = () => {
                 </>
               )}
             </div>
+
+            {/* display attached files */}
+            {showFiles && (
+              <>
+                <div className='absolute md:w-1/2 h-[70vh] overflow-auto w-[80%] rounded-xl top-1/2 bg-slate-600 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 text-white p-4 pt-0'>
+                  <div className='flex justify-between sticky top-0 bg-inherit py-4'>
+                    <h1 className='text-customColor text-xl'>Attached Files</h1>
+                    <button type='button'
+                      className='bg-red-500 p-1 rounded-full'
+                      onClick={() => setShowfiles(false)}
+                    >
+                      <Close />
+                    </button>
+                  </div>
+
+                  <div className='mt-5'>
+                    {/* Render attached files here */}
+                    {Object.keys(getAttachedfiles).length > 0 ? (
+                      Object.entries(getAttachedfiles).map(([fileNameWithId, fileUrl], index) => {
+                        // Extract the file name by splitting the string at '____'
+                        const fileName = fileNameWithId.split('____')[0];
+
+                        return (
+                          <div key={index} className="p-2  border-b border-gray-400 flex justify-between items-center">
+                            {/* Create a clickable link for file URL and display the file name*/}
+                            <a
+                              href={fileUrl} // Use the URL from the dynamic object
+                              target="_blank" // Open the link in a new tab
+                              rel="noopener noreferrer" // Security feature
+                              className=""
+                            >
+                              <div className='w-fit flex items-center gap-1'>
+                                <File />
+                                <p className='text-gray-300 text-sm max-w-[240px] break-words'>{fileName}</p>
+                              </div>
+                            </a>
+
+
+                            {/* Add Delete Button */}
+                            {toggleEdit && (
+                              <button
+                                type='button'
+                                onClick={() => {/* handle delete logic */ }} // Placeholder for the delete function
+                              >
+                                <Delete />
+                              </button>
+                            )}
+                          </div>
+                        );
+                      })
+                    ) : (
+                      <p>No files attached</p>
+                    )}
+                  </div>
+                </div>
+              </>
+            )}
+
+
+
+
           </div>
+
+
         )}
       </form>
     </div>
