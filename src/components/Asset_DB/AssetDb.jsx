@@ -33,10 +33,10 @@ function AssetDb() {
     <>
       <Nav />
       <div className='w-[90vw] sm:w-1/2 m-auto'>
-        <h1 className='my-6 font-bold text-3xl mx-auto w-fit'>Asset <span className='text-customColor'>DB</span></h1>
+        <h1 className='my-6 font-semibold font-sans text-2xl mx-auto w-fit'>Asset <span className='text-customColor'>DB</span></h1>
         {!showForm ? (
           <button
-            className='bg-neutral-500 py-2 px-3 rounded-xl my-9 fixed bottom-0 right-8 flex justify-between w-20 items-center'
+            className='bg-white shadow-[0px_10px_20px_gray] py-2 px-3 rounded-xl my-9 fixed bottom-0 right-8 flex justify-between w-20 items-center'
             onClick={() => setShowForm(true)}
           >
             <span className='text-customColor text-xl font-bold' >+</span> New
@@ -45,32 +45,35 @@ function AssetDb() {
         {showForm && (
           <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-6'>
             <div>
-              <label className='block'>Brand Name</label>
+              <label className='block text-xl text-customColor font-sans  font-medium mb-2'>Brand Name</label>
               <input
                 {...register('brandName', { required: true })}
-                className='border-2 rounded p-3 w-full bg-transparent'
+                className='border-2 border-gray-400 rounded p-3 w-full bg-transparent'
+                placeholder='Enter brand name'
               />
               {errors.brandName && <span className='text-red-500'>Brand Name is required</span>}
             </div>
             <div>
-              <label className='block '>Product Name</label>
+              <label className='block text-xl text-customColor font-sans  font-medium mb-2'>Product Name</label>
               <input
                 {...register('productName', { required: true })}
-                className='border-2 rounded p-3 w-full bg-transparent'
+                className='border-2 border-gray-400 rounded p-3 w-full bg-transparent'
+                placeholder='Enter product name'
               />
               {errors.productName && <span className='text-red-500'>Product Name is required</span>}
             </div>
             <div>
-              <label className='block '>Category</label>
+              <label className='block text-xl text-customColor font-sans  font-medium mb-2 '>Category</label>
               <input
                 {...register('category', { required: true })}
-                className='border-2 rounded p-3 w-full bg-transparent'
+                className='border-2 rounded p-3 w-full bg-transparent border-gray-400'
+                placeholder='Enter category'
               />
               {errors.category && <span className='text-red-500'>Category is required</span>}
             </div>
             <button
               type="submit"
-              className="w-full p-2 bg-slate-200 text-purple-500 rounded-md hover:bg-slate-100"
+              className="w-3/4 m-auto mt-6 p-2 bg-blue-500 text-white rounded-md"
               disabled={isLoading} // Disable button when loading
             >
               {isLoading ? (

@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import fetchAndStoreassets from '../modules/getAllAssets';
 import api from '../modules/Api'
+import Delete from '../../assets/Delete';
 
 function AssetDetail() {
     const { assetId } = useParams();
@@ -67,9 +68,17 @@ function AssetDetail() {
 
     return (
         <>
-            <div className="max-w-md mx-auto mt-10 sm:max-w-[50vw]">
+            <div className="max-w-md mx-auto mt-6 sm:max-w-[50vw]">
                 <nav />
-                <div className="shadow-md rounded-lg overflow-hidden mb-4">
+                <div className="overflow-auto mb-4">
+                    <div className='flex justify-between px-4 mb-6'>
+                        <h1 className='font-sans w-fit font-semibold text-2xl'>Edit <span className='text-customColor '>Asset</span></h1>
+                        <button
+                            onClick={handleDelete}
+                        >
+                            <Delete />
+                        </button>
+                    </div>
                     <div className="p-4">
                         {isLoading && (
                             <div className="flex justify-center items-center gap-3">
@@ -85,27 +94,27 @@ function AssetDetail() {
                                             {typeof asset[key] === 'boolean' ? (
                                                 <div className="flex items-center">
                                                     <input
-                                                        className="mr-2 leading-tight w-6 h-6 cursor-pointer"
+                                                        className="mr-2 leading-tight w-6 h-6 cursor-pointer text-black"
                                                         type="checkbox"
                                                         id={`${key}-${idx}`}
                                                         name={key}
                                                         checked={asset[key]}
                                                         onChange={handleChange}
                                                     />
-                                                    <span className="text-white">{key.charAt(0).toUpperCase() + key.slice(1)}</span>
+                                                    <span className="">{key.charAt(0).toUpperCase() + key.slice(1)}</span>
                                                 </div>
                                             ) : (
                                                 <>
-                                                    <label className="block text-white text-sm font-bold mb-2" htmlFor={`${key}-${idx}`}>
+                                                    <label className="block text-xl text-customColor font-sans  font-medium mb-2" htmlFor={`${key}-${idx}`}>
                                                         {key.charAt(0).toUpperCase() + key.slice(1)}
                                                     </label>
                                                     <input
-                                                        className="shadow appearance-none border-2  rounded w-full py-4 px-3 bg-transparent text-white leading-tight focus:outline-none focus:shadow-outline sm:py-4 sm:rounded-xl"
+                                                        className="border-2 border-gray-600 rounded w-full py-4 px-3 bg-transparent text-black  focus:outline-none sm:py-4 sm:rounded-xl"
                                                         type="text"
                                                         id={`${key}-${idx}`}
                                                         name={key}
                                                         value={asset[key]}
-                                                         onChange={handleChange}
+                                                        onChange={handleChange}
                                                     />
                                                 </>
                                             )}
@@ -113,19 +122,19 @@ function AssetDetail() {
                                     )
                                 ))}
                                 <button
-                                    className="w-full block bg-slate-200 hover:bg-slate-100 text-purple-600 py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                    className="w-3/4 m-auto mt-10 block bg-blue-500 text-white px-4 py-2 rounded focus:outline-none focus:shadow-outline"
                                     type="button"
                                     onClick={handleSave}
                                 >
                                     UPDATE
                                 </button><br />
-                                <button
+                                {/* <button
                                     className="block bg-slate-200 hover:bg-slate-100 text-red-400 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                                     type="button"
                                     onClick={handleDelete}
                                 >
                                     DELETE
-                                </button>
+                                </button> */}
                             </form>
                         )}
                     </div>

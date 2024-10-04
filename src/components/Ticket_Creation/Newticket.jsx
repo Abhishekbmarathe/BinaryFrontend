@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import ticketSettings from '../modules/getTicketSetting';
 import Attachment from '../../assets/Attachment';
 import api from '../modules/Api';
+import Remove from '../../assets/Close';
+import File from '../../assets/File';
 
 const NewTicket = () => {
 
@@ -294,13 +296,13 @@ const NewTicket = () => {
 
   return (
     <div className="min-h-screen">
-      <h1 className='my-6 font-bold text-3xl  text-center sticky top-0 z-10 bg-[#f5f5f5]'>New<span className='text-customColor'>Ticket</span></h1>
+      <h1 className='mt-6 font-bold text-2xl text-center sticky top-0 z-10'>New<span className='text-customColor'>Ticket</span></h1>
       <form onSubmit={handleSubmit(onSubmit)} className="">
         {step === 1 && (
           <div className="w-full max-w-md p-8 rounded-lg mb-2">
-            <label className="block text-2xl mb-6">Customer Info</label>
+            <label className="block text-2xl mb-6 text-customColor">Customer Info</label>
             <div className="mb-4">
-              <label htmlFor="" className='font-semibold'>Company Type:</label>
+              <label htmlFor="" className='block text-xl text-customColor font-sans  font-medium mb-2'>Company Type:</label>
               <div className="flex items-center mb-2">
                 <span className="mr-2">Call Based</span>
                 <input
@@ -340,9 +342,9 @@ const NewTicket = () => {
             </div>
             {/* Company Name Field */}
             <div className="mb-4 relative">
-              <label className="block text-sm mb-2" htmlFor="companyName">Company Name</label>
+              <label className="block text-xl text-customColor font-sans  font-medium mb-2" htmlFor="companyName">Company Name</label>
               <input
-                className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500"
+                className="w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500"
                 type="text"
                 id="companyName"
                 value={selectedCompany}
@@ -365,9 +367,9 @@ const NewTicket = () => {
 
             {/* Address Field */}
             <div className="mb-4 relative">
-              <label className="block text-sm mb-2" htmlFor="address">Address</label>
+              <label className="block text-xl text-customColor font-sans  font-medium mb-2" htmlFor="address">Address</label>
               <input
-                className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500"
+                className="w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500"
                 {...register('address')}
                 type="text"
                 id="address"
@@ -400,11 +402,11 @@ const NewTicket = () => {
             />
             {/* Contact Detail section in the form */}
             <div className="mb-4">
-              <label className="block text-sm mb-2" htmlFor="contactDetail">Contact Detail</label>
+              <label className="block text-xl text-customColor font-sans  font-medium mb-2" htmlFor="contactDetail">Contact Detail</label>
               {contacts.map((contact, index) => (
-                <div key={index} className="mb-4 flex gap-1">
+                <div key={index} className="mb-4 flex gap-2">
                   <input
-                    className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500"
+                    className="w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500"
                     type="text"
                     placeholder='Contact Name'
                     value={contact.name}
@@ -412,7 +414,7 @@ const NewTicket = () => {
                     autoComplete='off'
                   />
                   <input
-                    className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500"
+                    className="w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500"
                     type="text"
                     placeholder='Phone Number'
                     value={contact.number}
@@ -429,7 +431,7 @@ const NewTicket = () => {
               ))}
               <button type="button" className="text-blue-500" onClick={handleAddContact}>+ Add Contact</button>
             </div>
-            <button type="button" onClick={() => setStep(2)} className="w-full py-2 bg-transparent hover:bg-gray-700 rounded text-blue-400 hover:text-blue-500 font-semibold">
+            <button type="button" onClick={() => setStep(2)} className="py-1 bg-blue-500 hover:bg-gray-700 text-white w-20 rounded float-end hover:text-blue-500 font-semibold">
               Next
             </button>
           </div>
@@ -438,16 +440,17 @@ const NewTicket = () => {
         {step === 2 && (
           <div className="w-full max-w-md p-8 rounded-lg  mb-2">
             <div className="mb-4">
-              <label className="block text-2xl mb-2">Ticket Info</label>
+              <label className="block text-2xl mb-2 text-customColor">Ticket Info</label>
             </div>
             {/* Product Field */}
             <div className="mb-4 relative">
-              <label className="block text-sm mb-2" htmlFor="product">Product</label>
+              <label className="block text-xl text-customColor font-sans  font-medium mb-2" htmlFor="product">Product</label>
               <input
-                className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500"
+                className="w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500"
                 {...register('productName')}
                 type="text"
                 id="product"
+                placeholder='Select product'
                 value={productInput}
                 onChange={handleProductInputChange}
                 onFocus={() => setShowProductSuggestions(true)} // Show suggestions when focused
@@ -465,8 +468,8 @@ const NewTicket = () => {
               )}
             </div>
             <div className="mb-4">
-              <label className="block text-sm mb-2" htmlFor="ticketSource">Ticket Source</label>
-              <select className='w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500' {...register('ticketSource')} >
+              <label className="block text-xl text-customColor font-sans  font-medium mb-2" htmlFor="ticketSource">Ticket Source</label>
+              <select className='w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500' {...register('ticketSource')} >
                 <option value="">Select source</option>
                 <option value="Email">Email</option>
                 <option value="Call">Call</option>
@@ -476,8 +479,8 @@ const NewTicket = () => {
             </div>
 
             <div className="mb-4">
-              <label className="block text-sm mb-2" htmlFor="helpTopic">Help Topic</label>
-              <select className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500" {...register('helpTopic')} id="helpTopic">
+              <label className="block text-xl text-customColor font-sans  font-medium mb-2" htmlFor="helpTopic">Help Topic</label>
+              <select className="w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500" {...register('helpTopic')} id="helpTopic">
                 <option value="">Select Help Topic</option>
                 {helpTopics.map((topic, index) => (
                   <option key={index} value={topic}>{topic}</option>
@@ -486,8 +489,8 @@ const NewTicket = () => {
             </div>
 
             <div className="mb-4">
-              <label className="block text-sm mb-2" htmlFor="department">Department</label>
-              <select className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500" {...register('department')} id="department">
+              <label className="block text-xl text-customColor font-sans  font-medium mb-2" htmlFor="department">Department</label>
+              <select className="w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500" {...register('department')} id="department">
                 <option value="">Select Department</option>
                 {departments.map((department, index) => (
                   <option key={index} value={department}>{department}</option>
@@ -496,8 +499,8 @@ const NewTicket = () => {
             </div>
 
             <div className="mb-4">
-              <label className="block text-sm mb-2" htmlFor="slaPlan">SLA</label>
-              <select className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500" {...register('slaPlan')} id="slaPlan">
+              <label className="block text-xl text-customColor font-sans  font-medium mb-2" htmlFor="slaPlan">SLA</label>
+              <select className="w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500" {...register('slaPlan')} id="slaPlan">
                 <option value="">Select SLA</option>
                 {slaPlans.map((sla, index) => (
                   <option key={index} value={sla}>{sla}</option>
@@ -513,11 +516,11 @@ const NewTicket = () => {
             </div>
 
 
-            <div className="flex justify-between">
-              <button type="button" onClick={() => setStep(1)} className="py-2 bg-transparent hover:bg-gray-700 rounded text-blue-400 hover:text-blue-500 font-semibold">
+            <div className="flex justify-between mt-16">
+              <button type="button" onClick={() => setStep(1)} className=" h-fit py-2 font-sans w-20 bg-blue-500  rounded text-white font-semibold">
                 Previous
               </button>
-              <button type="button" onClick={() => setStep(3)} className="py-2 bg-transparent hover:bg-gray-700 rounded text-blue-400 hover:text-blue-500 font-semibold">
+              <button type="button" onClick={() => setStep(3)} className="h-fit py-2 font-sans w-20 bg-blue-500  rounded text-white font-semibold">
                 Next
               </button>
             </div>
@@ -526,7 +529,7 @@ const NewTicket = () => {
         {step === 3 && (
           <div className='w-full max-w-md p-8 rounded-lg  mb-2'>
             <div className="mb-4">
-              <label className="block text-sm mb-2" htmlFor="priority">Priority</label>
+              <label className="block text-xl text-customColor font-sans  font-medium mb-2" htmlFor="priority">Priority</label>
               <div className="flex gap-3 items-center">
                 <label className="inline-flex items-center">
                   <input
@@ -560,8 +563,8 @@ const NewTicket = () => {
 
 
             <div className="mb-4">
-              <label className="block text-sm mb-2" htmlFor="">Assign Technician</label>
-              <select className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500" {...register('assignedTo')} id=""
+              <label className="block text-xl text-customColor font-sans  font-medium mb-2" htmlFor="">Assign Technician</label>
+              <select className="w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500" {...register('assignedTo')} id=""
                 onChange={(e) => checkStatus(e.target.value)}
               >
                 <option value="">Select</option>
@@ -571,9 +574,9 @@ const NewTicket = () => {
               </select>
             </div>
             <div className="mb-4 relative">
-              <label className="block text-sm mb-2" htmlFor="collaborators">Collaborators</label>
+              <label className="block text-xl text-customColor font-sans  font-medium mb-2" htmlFor="collaborators">Collaborators</label>
               <div
-                className="w-full p-2 bg-transparent border border-gray-600 rounded cursor-pointer"
+                className="w-full p-3 bg-transparent border-2 border-gray-400 rounded cursor-pointer"
                 onClick={toggleDropdown}
               >
                 {selectedUsers.length > 0 ? selectedUsers.join(", ") : "Select Collaborators"}
@@ -599,11 +602,11 @@ const NewTicket = () => {
 
               )}
             </div>
-            <div className="flex justify-between">
-              <button type="button" onClick={() => setStep(2)} className="py-2 bg-transparent hover:bg-gray-700 rounded text-blue-400 hover:text-blue-500 font-semibold">
+            <div className="flex justify-between mt-16">
+              <button type="button" onClick={() => setStep(2)} className="h-fit py-1 font-sans w-20 bg-blue-500  rounded text-white font-semibold">
                 Previous
               </button>
-              <button type="button" onClick={() => setStep(4)} className="py-2 bg-transparent hover:bg-gray-700 rounded text-blue-400 hover:text-blue-500 font-semibold">
+              <button type="button" onClick={() => setStep(4)} className="h-fit py-1 font-sans w-20 bg-blue-500  rounded text-white font-semibold">
                 Next
               </button>
             </div>
@@ -615,11 +618,11 @@ const NewTicket = () => {
         {step === 4 && (
           <div className="w-full max-w-md p-8 rounded-lg  mb-2">
             <div className="mb-4">
-              <label className="block text-2xl mb-2">Response</label>
+              <label className="block text-xl text-customColor font-sans  font-medium mb-2">Response</label>
             </div>
             <div className="mb-4">
-              <label className="block text-sm mb-2" htmlFor="cannedResponse">Canned Response</label>
-              <select className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500" {...register('cannedResponse')} id="cannedResponse">
+              <label className="block text-xl text-customColor font-sans  font-medium mb-2" htmlFor="cannedResponse">Canned Response</label>
+              <select className="w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500" {...register('cannedResponse')} id="cannedResponse">
                 <option value="">Select Canned</option>
                 {cannedResponse.map((canned, index) => (
                   <option key={index} value={canned}>{canned}</option>
@@ -628,12 +631,12 @@ const NewTicket = () => {
               </select>
             </div>
             <div className="mb-4">
-              <label className="block text-sm mb-2" htmlFor="issueDescription">Issue Description</label>
-              <textarea className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500" {...register('issueDescription')} id="issueDescription"></textarea>
+              <label className="block text-xl text-customColor font-sans  font-medium mb-2" htmlFor="issueDescription">Issue Description</label>
+              <textarea className="w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500" {...register('issueDescription')} id="issueDescription"></textarea>
             </div>
             <div className="mb-4">
-              <label className="block text-sm mb-2" htmlFor="">Additional Info</label>
-              <textarea className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500" {...register('additionalInfo')} id=""></textarea>
+              <label className="block text-xl text-customColor font-sans  font-medium mb-2" htmlFor="">Additional Info</label>
+              <textarea className="w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500" {...register('additionalInfo')} id=""></textarea>
             </div>
 
             <div>
@@ -656,17 +659,20 @@ const NewTicket = () => {
               <div className="mt-2">
                 {selectedFiles.length > 0 && (
                   <div>
-                    <h4>Selected Files:</h4>
-                    <ul>
+                    <h4 className='block text-xl text-customColor font-sans  font-medium mb-2'>Selected Files:</h4>
+                    <ul className='mt-4'>
                       {selectedFiles.map((file, index) => (
-                        <li key={index} className="flex items-center justify-between mb-1">
+                        <li key={index} className="flex items-center justify-between mb-1 p-2 border-b border-gray-400">
+                          <div className='mr-2'>
+                            <File />
+                          </div>
                           {file.name}
                           <button
-                            className="text-red-500 ml-2"
+                            className="text-red-500 ml-2 p-1 bg-red-500 rounded"
                             type="button"
                             onClick={() => removeFile(index, selectedFiles, setSelectedFiles)}
                           >
-                            Remove
+                            <Remove />
                           </button>
                         </li>
                       ))}
@@ -710,10 +716,10 @@ const NewTicket = () => {
             {/* hidden fields end */}
 
             <div className="flex justify-between">
-              <button type="button" onClick={() => setStep(2)} className="py-2 bg-transparent hover:bg-gray-700 rounded text-blue-400 hover:text-blue-500 font-semibold">
+              <button type="button" onClick={() => setStep(2)} className="h-fit py-1 font-sans w-20 bg-blue-500  rounded text-white font-semibold">
                 Previous
               </button>
-              <button type="submit" className="py-2 bg-transparent  rounded text-blue-400 hover:text-blue-500 font-semibold">
+              <button type="submit" className="h-fit py-1 font-sans w-20 bg-blue-500  rounded text-white font-semibold">
                 Save
               </button>
             </div>

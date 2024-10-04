@@ -9,6 +9,7 @@ import Delete from '../../assets/Delete';
 import Clientbranches from '../modules/getClientbranches';
 import api from '../modules/Api';
 import Search from '../../assets/Search'
+import Home from '../../assets/Home';
 
 function AssetDb() {
   const { register, handleSubmit, control, formState: { errors }, watch } = useForm();
@@ -96,7 +97,7 @@ function AssetDb() {
         <h1 className='my-6 font-semibold font-sans text-3xl mx-auto w-fit'>Customer <span className='text-customColor'>DB</span></h1>
         {!showForm ? (
           <div>
-           
+
             <button
               className='bg-slate-400 py-2 px-3 rounded-xl my-9 fixed bottom-0 right-8 flex justify-between w-20 items-center'
               onClick={() => setShowForm(true)}
@@ -246,13 +247,7 @@ function AssetDb() {
         <div className='fixed md:hidden /bg-bottom-gradient bottom-0 py-2 overflow-y-auto w-full -z-10'>
           <nav className='w-screen flex items-center justify-center px-16 py-2  '>
             <button onClick={home}>
-              <lord-icon
-                src="https://cdn.lordicon.com/cnpvyndp.json"
-                trigger="click"
-                colors="primary:black"
-              >
-              </lord-icon>
-              {/* <br /><span>Home</span> */}
+              <Home />
             </button>
           </nav>
         </div>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Home from '../../assets/Home';
 
 
 function AssetProfile() {
@@ -35,23 +36,40 @@ function AssetProfile() {
         navigate(`/asset/${assetId}`);
     };
 
+    const home = () => {
+        navigate('/Server/home')
+    }
+
     if (!allassets.length) {
         return <div>Loading...</div>;
     }
 
     return (
-            <div className="max-w-md mx-auto mt-10 sm:max-w-[50vw]">
-                {allassets.map((asset, index) => (
-                    <div key={index} className="shadow-md rounded-lg overflow-hidden mb-4">
-                        <div
-                            className="border-slate-300 border-2 w-[90vw] sm:max-w-full rounded-[8px] p-4 cursor-pointer flex gap-4 items-center"
-                            onClick={() => handleExpand(asset._id)}
-                        >
-                            <span>{asset.category}</span>
+        <div className="max-w-md mx-auto mt-10 sm:max-w-[50vw]">
+            {allassets.map((asset, index) => (
+                <div key={index} className="overflow-hidden mb-2">
+                    <div
+                        className="border-gray-600 border-2 w-[90vw] sm:max-w-full cursor-pointer flex items-center"
+                        onClick={() => handleExpand(asset._id)}
+                    >
+                        <div className='text-customColor text-3xl font-sans font-bold px-5 py-2'>
+                            {index + 1}
+                        </div>
+                        <div className='flex  flex-col'>
+                            <span className='font-bold font-sans'>{asset.productName}</span>
+                            <span className='font-sans text-sm'>Brand: {asset.brandName}</span>
                         </div>
                     </div>
-                ))}
+                </div>
+            ))}
+            <div className='fixed md:hidden bottom-0 py-2 overflow-y-auto w-full z-90 bg-inherit'>
+                <nav className='w-screen flex items-center justify-center px-16 py-2'>
+                    <button onClick={home}>
+                        <Home />
+                    </button>
+                </nav>
             </div>
+        </div>
     );
 }
 
