@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import axios from 'axios';
 import getAllcustomers from '../modules/getAllcustomers';
@@ -11,6 +11,7 @@ import api from '../modules/Api';
 import Search from '../../assets/Search'
 import Home from '../../assets/Home';
 import Recycle from '../../assets/Recycle';
+import useAdminStatus from '../modules/IsAdmin';
 
 function AssetDb() {
   const { register, handleSubmit, control, formState: { errors }, watch } = useForm();
@@ -23,9 +24,13 @@ function AssetDb() {
   const [step, setStep] = useState(1);
   const [branches, setBranches] = useState([]);
 
+
+
+
   Clientbranches();
   getAllcustomers();
 
+  const ismAdmin = useAdminStatus();
   const navigate = useNavigate();
 
   const handleAddBranch = () => {
@@ -97,9 +102,11 @@ function AssetDb() {
       <div className='w-[90vw] sm:w-1/2 m-auto'>
         <div className='flex items-center justify-between my-6'>
           <h1 className='font-semibold font-sans text-3xl w-fit'>Customer <span className='text-customColor'>DB</span></h1>
-          <Link to='/recycle-bin'>
-            <Recycle />
-          </Link>
+          {ismAdmin && (
+            <Link to='/recycle-bin'>
+              <Recycle />
+            </Link>
+          )}
         </div>
         {!showForm ? (
           <div>

@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Search from '../../assets/Search';
 
+
 function CustomerProfile() {
     const [allcustomers, setAllcustomers] = useState([]);
     const [filteredCustomers, setFilteredCustomers] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [firstLetter, setFirstLetter] = useState([]); // To store the first letters
-
+ 
     const navigate = useNavigate();
 
     useEffect(() => {

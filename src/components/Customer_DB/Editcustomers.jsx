@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import api from '../modules/Api'
 import Delete from '../../assets/Delete';
+import useAdminStatus from '../modules/IsAdmin';
 
 function CustomerEdit() {
     const { customerId } = useParams();
@@ -12,7 +13,8 @@ function CustomerEdit() {
     const [step, setStep] = useState(1);
     const [branches, setBranches] = useState([]);
 
- 
+    const ismAdmin = useAdminStatus();
+
 
     useEffect(() => {
         const allCustomers = JSON.parse(localStorage.getItem("AllClients"));
@@ -159,9 +161,11 @@ function CustomerEdit() {
                 <div className="rounded-lg overflow-hidden mb-4 p-4">
                     <div className='flex items-center justify-between mb-5'>
                         <h2 className="text-3xl font-semibold font-sans">Edit <span className='text-customColor'>Company</span></h2>
-                        <button onClick={() => companyDelete(customer.companyName)}>
-                            <Delete />
-                        </button>
+                        {ismAdmin && (
+                            <button onClick={() => companyDelete(customer.companyName)}>
+                                <Delete />
+                            </button>
+                        )}
                     </div>
                     {step === 1 && (
                         <div>

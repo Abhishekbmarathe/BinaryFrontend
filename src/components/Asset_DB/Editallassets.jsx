@@ -4,12 +4,15 @@ import axios from 'axios';
 import fetchAndStoreassets from '../modules/getAllAssets';
 import api from '../modules/Api'
 import Delete from '../../assets/Delete';
+import useAdminStatus from '../modules/IsAdmin';
 
 function AssetDetail() {
     const { assetId } = useParams();
     const [asset, setAsset] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
+    const ismAdmin = useAdminStatus();
+
 
     useEffect(() => {
         const assetDetails = JSON.parse(localStorage.getItem("getAllAssets"));
@@ -73,11 +76,13 @@ function AssetDetail() {
                 <div className="overflow-auto mb-4">
                     <div className='flex justify-between px-4 mb-6'>
                         <h1 className='font-sans w-fit font-semibold text-2xl'>Edit <span className='text-customColor '>Asset</span></h1>
-                        <button
-                            onClick={handleDelete}
-                        >
-                            <Delete />
-                        </button>
+                        {ismAdmin && (
+                            <button
+                                onClick={handleDelete}
+                            >
+                                <Delete />
+                            </button>
+                        )}
                     </div>
                     <div className="p-4">
                         {isLoading && (
