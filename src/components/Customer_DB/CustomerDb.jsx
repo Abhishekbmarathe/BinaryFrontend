@@ -4,12 +4,13 @@ import axios from 'axios';
 import getAllcustomers from '../modules/getAllcustomers';
 import Nav from '../TopNav';
 import Allcustomers from '../Customer_DB/Allcustomers'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import Delete from '../../assets/Delete';
 import Clientbranches from '../modules/getClientbranches';
 import api from '../modules/Api';
 import Search from '../../assets/Search'
 import Home from '../../assets/Home';
+import Recycle from '../../assets/Recycle';
 
 function AssetDb() {
   const { register, handleSubmit, control, formState: { errors }, watch } = useForm();
@@ -23,6 +24,7 @@ function AssetDb() {
   const [branches, setBranches] = useState([]);
 
   Clientbranches();
+  getAllcustomers();
 
   const navigate = useNavigate();
 
@@ -51,7 +53,6 @@ function AssetDb() {
     setIsLoading(true);
     try {
       const response = await axios.post(api + 'api/addClient', data);
-      // const response = await axios.post('http://localhost:3000/api/addClient', data);
       submitBranches(data.companyName); // Pass companyName to submitBranches
       getAllcustomers();
       alert('Customer added successfully...');
@@ -94,7 +95,12 @@ function AssetDb() {
     <>
       <Nav />
       <div className='w-[90vw] sm:w-1/2 m-auto'>
-        <h1 className='my-6 font-semibold font-sans text-3xl mx-auto w-fit'>Customer <span className='text-customColor'>DB</span></h1>
+        <div className='flex items-center justify-between my-6'>
+          <h1 className='font-semibold font-sans text-3xl w-fit'>Customer <span className='text-customColor'>DB</span></h1>
+          <Link to='/recycle-bin'>
+            <Recycle />
+          </Link>
+        </div>
         {!showForm ? (
           <div>
 

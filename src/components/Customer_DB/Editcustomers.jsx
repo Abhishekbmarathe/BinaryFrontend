@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import api from '../modules/Api'
+import Delete from '../../assets/Delete';
 
 function CustomerEdit() {
     const { customerId } = useParams();
@@ -10,6 +11,8 @@ function CustomerEdit() {
     const [loading, setLoading] = useState(false);
     const [step, setStep] = useState(1);
     const [branches, setBranches] = useState([]);
+
+ 
 
     useEffect(() => {
         const allCustomers = JSON.parse(localStorage.getItem("AllClients"));
@@ -112,6 +115,35 @@ function CustomerEdit() {
         setBranches(newBranches);
     };
 
+    const companyDelete = async (companyName) => {
+        const cnfdelete = "Delete Company " + companyName;
+        const cnf = prompt('Are you sure to delete ? This will delete the entire company details including its assets, images and private data. Please type "' + cnfdelete + '"')
+
+        if (cnfdelete === cnf) {
+            console.log("prompt matched ", cnf)
+            try {
+                const response = await axios.post(api + 'api/deleteClient', {
+                    companyName // Sending companyName in the request body
+                });
+                // Handle success response
+                console.log('Company deleted successfully:', response.data);
+                alert('Company deleted successfully')
+                navigate(-2);
+                return response.data; // or handle as needed
+
+            } catch (error) {
+                // Handle error
+                console.error('Error deleting company:', error.response ? error.response.data : error.message);
+                throw error; // or handle as needed
+            }
+        } else {
+            console.log("prompt not matched ", cnf)
+            alert("prompt not matched ")
+        }
+    };
+
+
+
     if (!customer) {
         return <div>Loading...</div>;
     }
@@ -125,8 +157,12 @@ function CustomerEdit() {
                 </div>
             ) : (
                 <div className="rounded-lg overflow-hidden mb-4 p-4">
-                    <h2 className="text-3xl m-auto w-fit mb-4 font-semibold font-sans">Edit <span className='text-customColor'>Customer</span></h2>
-
+                    <div className='flex items-center justify-between mb-5'>
+                        <h2 className="text-3xl font-semibold font-sans">Edit <span className='text-customColor'>Company</span></h2>
+                        <button onClick={() => companyDelete(customer.companyName)}>
+                            <Delete />
+                        </button>
+                    </div>
                     {step === 1 && (
                         <div>
                             <div className="mb-4">

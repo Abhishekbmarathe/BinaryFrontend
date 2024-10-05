@@ -39,10 +39,6 @@ function CustomerProfile() {
         navigate(`/customer/${customerId}`);
     };
 
-    if (!filteredCustomers.length && searchQuery === '') {
-        return <div>Loading...</div>;
-    }
-
     return (
         <div className="max-w-md mx-auto sm:max-w-[50vw] ">
             <div className='flex relative mb-8'>
@@ -65,7 +61,7 @@ function CustomerProfile() {
                             <h1>{firstLetter[index]}</h1>
                         </div>
                         <div
-                            className="w-[90vw] sm:max-w-full rounded-[8px] p-4 cursor-pointer  items-center"
+                            className="w-[90vw] sm:max-w-full rounded-[8px] p-4 py-2 cursor-pointer  items-center"
                             onClick={() => handleExpand(customer._id)}
                         >
                             <span className='font-bold text-[19px] font-sans '>{customer.companyName}</span><br />

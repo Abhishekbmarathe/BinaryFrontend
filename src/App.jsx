@@ -26,6 +26,7 @@ import NewTicket from './components/Ticket_Creation/Newticket';
 import Alltickets from './components/Ticket_Creation/Alltickets';
 import Settings from './components/Ticket_Creation/Settings';
 import Openticket from './components/Ticket_Creation/Openticket';
+import Recyclepage from './components/Customer_DB/Recyclepage';
 
 
 
@@ -65,6 +66,8 @@ function App() {
         <Route path="/create-ticket" element={<Alltickets />} />
         <Route path="/openSettings" element={<Settings />} />
         <Route path="/open-ticket" element={<Openticket />} />
+
+        <Route path="/recycle-bin" element={<Recyclepage/>}/>
 
 
       </Routes>
