@@ -295,7 +295,7 @@ const NewTicket = () => {
 
 
   return (
-    <div className="min-h-screen">
+    <div className="md:w-1/2 m-auto">
       <h1 className='mt-6 font-bold text-2xl text-center sticky top-0 z-10'>New<span className='text-customColor'>Ticket</span></h1>
       <form onSubmit={handleSubmit(onSubmit)} className="">
         {step === 1 && (

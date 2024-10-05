@@ -103,7 +103,7 @@ function UserDetail() {
     return (
         <div className="max-w-md mx-auto mt-10 sm:max-w-[50vw]">
             <h1 className='m-auto w-fit text-2xl'>Edit <span className='text-customColor'>Profile</span></h1>
-            <div className="shadow-md shadow-gray-400 rounded-lg overflow-hidden mb-4">
+            <div className="rounded-lg overflow-hidden mb-4">
                 <div className="p-4">
                     {isLoading &&
                         <div className="flex justify-center items-center gap-3">
@@ -127,7 +127,7 @@ function UserDetail() {
                                                     {key.charAt(0).toUpperCase() + key.slice(1)}
                                                 </label>
                                                 <input
-                                                    className="shadow-md shadow-gray-400 appearance-none border rounded w-full py-2 px-3 bg-transparent text-black leading-tight focus:outline-none focus:shadow-outline sm:py-4 sm:rounded-xl"
+                                                    className="appearance-none border-2 border-gray-400 rounded w-full p-3 px-3 bg-transparent text-black leading-tight focus:outline-none focus:shadow-outline sm:py-4 sm:rounded-xl"
                                                     type="text"
                                                     id={`${key}-${idx}`}
                                                     name={key}

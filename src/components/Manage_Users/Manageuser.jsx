@@ -44,14 +44,14 @@ function Manageuser() {
                     <button className='bg-white shadow-lg shadow-gray-500 py-2 px-3 rounded-xl my-9 fixed bottom-0 right-8 flex justify-between w-20 items-center ' onClick={() => setShowForm(true)}><span className='text-customColor font-bold text-xl'>+</span> New</button>
                 ) : null}
                 {showForm && (
-                    <div className="mx-auto p-4 w-full text-black shadow-md rounded-lg">
+                    <div className="mx-auto p-4 w-full text-black rounded-lg">
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <div className="mb-4">
                                 <label className="block text-black">Name</label>
                                 <input
                                     type="text"
                                     {...register('name', { required: true })}
-                                    className="bg-gray outline-none mt-1 p-2 w-full border rounded-md"
+                                    className="bg-g border-gray-400 outline-none mt-1 p-2 w-full border-2 rounded-md"
                                 />
                                 {errors.name && <span className="text-red-500">Name is required</span>}
                             </div>
@@ -61,7 +61,7 @@ function Manageuser() {
                                 <input
                                     type="text"
                                     {...register('phoneNum', { required: true })}
-                                    className="bg-gray outline-none mt-1 p-2 w-full border rounded-md"
+                                    className="bg-g border-gray-400 outline-none mt-1 p-2 w-full border-2 rounded-md"
                                 />
                                 {errors.phoneNum && <span className="text-red-500">Phone Number is required</span>}
                             </div>
@@ -71,7 +71,7 @@ function Manageuser() {
                                 <input
                                     type="text"
                                     {...register('email', { required: true })}
-                                    className="mt-1 bg-gray outline-none p-2 w-full border rounded-md"
+                                    className="mt-1 border-gray-400  outline-none p-2 w-full border-2 rounded-md"
                                 />
                                 {errors.email && <span className="text-red-500">Email is required</span>}
                             </div>
@@ -80,7 +80,7 @@ function Manageuser() {
                                 <input
                                     type="text"
                                     {...register('username', { required: true })}
-                                    className="mt-1 bg-gray outline-none p-2 w-full border rounded-md"
+                                    className="mt-1 border-gray-400  outline-none p-2 w-full border-2 rounded-md"
                                 />
                                 {errors.username && <span className="text-red-500">Username is required</span>}
                             </div>
@@ -91,7 +91,7 @@ function Manageuser() {
                                     <input
                                         type={passwordVisible ? "text" : "password"}
                                         {...register('password', { required: true })}
-                                        className="mt-1 bg-gray outline-none p-2 w-full border rounded-md"
+                                        className="mt-1 border-gray-400  outline-none p-2 w-full border-2 rounded-md"
                                     />
                                     <button
                                         type="button"

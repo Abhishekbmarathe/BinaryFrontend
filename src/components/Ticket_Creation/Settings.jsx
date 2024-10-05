@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
-import getTicketSetting from '../modules/getTicketSetting';
 import { useNavigate } from 'react-router-dom';
-import api from '../modules/Api'
+import api from '../modules/Api';
 
 function Settings() {
   const [topic, setToggle] = useState('Help');
@@ -13,55 +12,77 @@ function Settings() {
   const [cannedResponses, setCannedResponses] = useState([]);
 
   const navigate = useNavigate();
+  const { register, handleSubmit, setValue } = useForm();
+
+  // Function to navigate to Home
   const home = () => {
-    navigate('/Server/Home')
-    navigator.vibrate(60);
+    navigate('/Server/Home');
+    navigator.vibrate(60); // Vibrates for 60ms (may not work in all browsers)
   };
 
+  // Fetch settings from the API on component mount
+  useEffect(() => {
+    const fetchSettingsData = async () => {
+      try {
+        const response = await axios.get(api + 'api/getTicketSetting');
+        
+        const settingsData = response.data || [];
+        
+        // Filter the settings data based on the 'type' field
+        const helpTopics = settingsData.filter(item => item.type === 'Help').map(item => item.data);
+        const slaPlans = settingsData.filter(item => item.type === 'SLA').map(item => item.data);
+        const departments = settingsData.filter(item => item.type === 'Department').map(item => item.data);
+        const cannedResponses = settingsData.filter(item => item.type === 'Canned').map(item => item.data);
+  
+        // Set state with the filtered data
+        setHelpTopics(helpTopics);
+        setSlaPlans(slaPlans);
+        setDepartments(departments);
+        setCannedResponses(cannedResponses);
+      } catch (error) {
+        console.error('Error fetching settings data:', error);
+      }
+    };
+  
+    fetchSettingsData();
+  }, []);
+  
+  
+  
 
-  const { register, handleSubmit, setValue, reset } = useForm();
-
+  // Function to handle adding topics dynamically
   const handleAddTopic = (data) => {
     const { addTopic } = data;
-
     if (addTopic.trim()) {
-      if (topic === 'Help') {
-        setHelpTopics([...helpTopics, addTopic]);
-      } else if (topic === 'SLA') {
-        setSlaPlans([...slaPlans, addTopic]);
-      } else if (topic === 'Department') {
-        setDepartments([...departments, addTopic]);
-      } else if (topic === 'Canned') {
-        setCannedResponses([...cannedResponses, addTopic]);
-      }
+      if (topic === 'Help') setHelpTopics([...helpTopics, addTopic]);
+      if (topic === 'SLA') setSlaPlans([...slaPlans, addTopic]);
+      if (topic === 'Department') setDepartments([...departments, addTopic]);
+      if (topic === 'Canned') setCannedResponses([...cannedResponses, addTopic]);
+
       setValue('addTopic', ''); // Clear the input box
     }
   };
 
+  // Get the current list of topics based on selected category
   const getCurrentList = () => {
-    if (topic === 'Help') {
-      return helpTopics;
-    } else if (topic === 'SLA') {
-      return slaPlans;
-    } else if (topic === 'Department') {
-      return departments;
-    } else if (topic === 'Canned') {
-      return cannedResponses;
+    switch (topic) {
+      case 'Help': return helpTopics;
+      case 'SLA': return slaPlans;
+      case 'Department': return departments;
+      case 'Canned': return cannedResponses;
+      default: return [];
     }
   };
 
+  // Remove topic from the selected category list
   const handleRemoveTopic = (index) => {
-    if (topic === 'Help') {
-      setHelpTopics(helpTopics.filter((_, i) => i !== index));
-    } else if (topic === 'SLA') {
-      setSlaPlans(slaPlans.filter((_, i) => i !== index));
-    } else if (topic === 'Department') {
-      setDepartments(departments.filter((_, i) => i !== index));
-    } else if (topic === 'Canned') {
-      setCannedResponses(cannedResponses.filter((_, i) => i !== index));
-    }
+    if (topic === 'Help') setHelpTopics(helpTopics.filter((_, i) => i !== index));
+    if (topic === 'SLA') setSlaPlans(slaPlans.filter((_, i) => i !== index));
+    if (topic === 'Department') setDepartments(departments.filter((_, i) => i !== index));
+    if (topic === 'Canned') setCannedResponses(cannedResponses.filter((_, i) => i !== index));
   };
 
+  // Handle form submission to append new settings data
   const onSubmit = async () => {
     const settingsData = [
       ...helpTopics.map(item => ({ type: 'Help', data: item })),
@@ -71,67 +92,51 @@ function Settings() {
     ];
 
     try {
-      const response = await axios.post(api + 'api/updateTicketSettings', settingsData);
-      // const response = await axios.post('http://localhost:3000/api/updateTicketSettings', settingsData);
-      console.log('Settings updated successfully:', response.data);
-      alert("Settings updated successfully...");
-      window.location.reload();
-      // reset();
+      // Use POST to append new data while keeping the existing settings intact
+      await axios.post(api + 'api/updateTicketSettings', settingsData);
+      alert('Settings updated successfully!');
+      window.location.reload(); // Refresh after submission
     } catch (error) {
       console.error('Error updating settings:', error);
     }
   };
 
-  getTicketSetting();
-
   return (
     <div>
       <h1 className='my-6 font-semibold text-3xl font-sans text-center sticky top-0 z-10 bg-[#f5f5f5]'>
-        Ticket<span className='text-customColor'> Settings</span>
+        Ticket <span className='text-customColor'>Settings</span>
       </h1>
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className='text-customColor font-semibold font-sans flex gap-3 relative justify-center px-3'>
           <div className='px-2 my-5 flex w-full overflow-auto'>
-            <button
-              type="button"
-              onClick={() => setToggle('Help')}
-              className={`p-2 mx-1 whitespace-nowrap border transition hover:border-none border-gray-400 px-3 rounded-lg ${topic === 'Help' ? 'bg-customColor text-white border-none' : 'hover:bg-customColor hover:text-white'}`}
-            >
-              Help
-            </button>
-            <button
-              type="button"
-              onClick={() => setToggle('SLA')}
-              className={`p-2 mx-1 whitespace-nowrap border transition hover:border-none border-gray-400 px-3 rounded-lg ${topic === 'SLA' ? 'bg-customColor text-white border-none' : 'hover:bg-customColor hover:text-white'}`}
-            >
-              SLA
-            </button>
-            <button
-              type="button"
-              onClick={() => setToggle('Department')}
-              className={`p-2 mx-1 whitespace-nowrap border transition hover:border-none border-gray-400 px-3 rounded-lg ${topic === 'Department' ? 'bg-customColor text-white border-none' : 'hover:bg-customColor hover:text-white'}`}
-            >
-              Department
-            </button>
-            <button
-              type="button"
-              onClick={() => setToggle('Canned')}
-              className={`p-2 mx-1 whitespace-nowrap border transition hover:border-none border-gray-400 px-3 rounded-lg ${topic === 'Canned' ? 'bg-customColor text-white border-none' : 'hover:bg-customColor hover:text-white'}`}
-            >
-              Canned
-            </button>
+            {['Help', 'SLA', 'Department', 'Canned'].map((type) => (
+              <button
+                key={type}
+                type="button"
+                onClick={() => setToggle(type)}
+                className={`p-2 mx-1 whitespace-nowrap border transition hover:border-none border-gray-400 px-3 rounded-lg ${topic === type ? 'bg-customColor text-white border-none' : 'hover:bg-customColor hover:text-white'}`}
+              >
+                {type}
+              </button>
+            ))}
           </div>
         </div>
 
-        <div className='border border-gray-400 w-11/12 m-auto rounded-md hover:border-customColor flex items-center gap-3'>
+        <div className='border border-gray-400 w-11/12 m-auto rounded-md flex items-center gap-3'>
           <input
             type="text"
-            className='bg-transparent border-none border-gray-400 p-3 w-11/12 block rounded-md focus:border-customColor outline-none'
+            className='bg-transparent border-none p-3 w-11/12 block rounded-md focus:border-customColor outline-none'
             placeholder={`Enter ${topic}`}
             {...register('addTopic')}
           />
-          <button type="button" onClick={handleSubmit(handleAddTopic)} className="p-2 px-5 text-customColor rounded-md">+</button>
+          <button
+            type="button"
+            onClick={handleSubmit(handleAddTopic)}
+            className="p-2 px-5 text-customColor rounded-md"
+          >
+            +
+          </button>
         </div>
 
         <hr className='w-1/2 h-1 bg-gray-500 m-auto my-6 rounded-lg' />
@@ -139,32 +144,28 @@ function Settings() {
         <p className='px-5'>{topic}</p>
         <ul className='px-5'>
           {getCurrentList().map((item, index) => (
-            <li
-              key={index}
-              className='bg-gray-400 my-1 p-2 w-36 text-slate-900 rounded-lg'
-            >
+            <li key={index} className='bg-gray-400 my-1 p-2 w-36 text-slate-900 rounded-lg flex justify-between items-center'>
               {item}
-              <button type="button" onClick={() => handleRemoveTopic(index)} className='text-white float-end text-xl '>
+              <button
+                type="button"
+                onClick={() => handleRemoveTopic(index)}
+                className='text-white text-xl'
+              >
                 x
               </button>
             </li>
           ))}
         </ul>
 
-        <button type="submit" className='bg-slate-400 py-2 px-3 rounded-xl my-9 fixed bottom-0 right-8  w-20 items-center text-white'>
+        <button type="submit" className='bg-slate-400 py-2 px-3 rounded-xl my-9 fixed bottom-0 right-8 w-20 items-center text-white'>
           Save
         </button>
       </form>
-      <div className='fixed md:hidden /bg-bottom-gradient bottom-0 py-2 overflow-y-auto w-full -z-10'>
-        <nav className='w-screen flex items-center justify-center px-16 py-2  '>
+
+      <div className='fixed md:hidden bottom-0 py-2 w-full'>
+        <nav className='w-screen flex items-center justify-center px-16 py-2'>
           <button onClick={home}>
-            <lord-icon
-              src="https://cdn.lordicon.com/cnpvyndp.json"
-              trigger="click"
-              colors="primary:black"
-            >
-            </lord-icon>
-            {/* <br /><span>Home</span> */}
+            <lord-icon src="https://cdn.lordicon.com/cnpvyndp.json" trigger="click" colors="primary:black" />
           </button>
         </nav>
       </div>
