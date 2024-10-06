@@ -9,6 +9,7 @@ import api from '../modules/Api';
 function App() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [formData, setFormData] = useState({ companyName: '', data: {}, permissions: {} });
+    const [tempData, setTempData] = useState({ key: '', value: '', sensitive: false });
     // const [tempData, setTempData] = useState({ key: '', value: '', sensitive: false });
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);  // Loading state
@@ -21,7 +22,7 @@ function App() {
 
     const location = useLocation();
     const { companyName, customerId } = location.state || {};
-
+    // const api = 'https://binarysystemsbackend-mtt8.onrender.com/api/';
 
     // Fetch existing data
     useEffect(() => {
@@ -48,12 +49,13 @@ function App() {
     };
 
 
-    const [tempData, setTempData] = useState({ key: '', value: '', sensitive: false, id: null });
+    // const [tempData, setTempData] = useState({ key: '', value: '', sensitive: false, id: null });
 
     // Open modal for creating or editing data
     const openModal = (key = null) => {
         if (key) {
             setSelectedKey(key);
+            setTempData({ key, value: formData.data[key]?.value || '', sensitive: formData.data[key]?.sensitive || false });
             setTempData({
                 key: key,
                 value: formData.data[key]?.value || '',
@@ -64,6 +66,8 @@ function App() {
         } else {
             setTempData({ key: '', value: '', sensitive: false });
         }
+        setErrors({ key: '', value: '' }); // Reset errors
+        setIsModalOpen(true);
         setErrors({ key: '', value: '' }); // Reset any previous errors
         setIsModalOpen(true); // Open the modal
     };
@@ -126,12 +130,27 @@ function App() {
         }
 
         setFlag(true);
+        const existingKeys = Object.keys(formData.data);
+        // Check if key already exists, excluding the original key being edited
+        if (existingKeys.includes(tempData.key) && selectedKey !== tempData.key) {
+            alert("Key already exists. Please enter a unique key.");
+            return;
+        }
 
+        setFormData((prevData) => ({
+            ...prevData,
+            data: {
+                ...prevData.data,
+                [tempData.key]: {
+                    value: tempData.value,
+                    sensitive: tempData.sensitive,
+                },
+            },
+        }));
         // Directly modify the existing formData
         setFormData((prevData) => {
             // Clone the previous data
             const updatedData = { ...prevData };
-            console.log(tempData.data)
 
             // Find the specific card using the key and update its value and sensitive fields
             if (updatedData.data[tempData.key]) {
@@ -139,7 +158,6 @@ function App() {
                 updatedData.data[tempData.key].sensitive = tempData.sensitive; // Update sensitive flag
             }
 
-            console.log(updatedData)
             return updatedData; // Return the updated data without creating new entries
         });
 
@@ -168,16 +186,17 @@ function App() {
             setLoading(true); // Start loading
             axios.post(api + "api/updateGlobalData", formData)
                 .then(() => {
-                    console.log(formData)
                     return axios.post(api + "api/getGlobalData", { companyName });
                 })
                 .then(response => {
                     const fetchedArray = response.data;
                     const fetchedData = fetchedArray.reduce((acc, obj) => ({ ...acc, ...obj.data }), {});
 
+
                     // Updating only the existing keys and adding new ones
                     setFormData(prevData => {
                         const updatedData = { ...prevData.data };
+
 
                         // Loop through fetchedData to either update or add new keys
                         Object.keys(fetchedData).forEach(key => {
@@ -192,12 +211,14 @@ function App() {
                             }
                         });
 
+
                         return {
                             ...prevData,
                             companyName,
                             data: updatedData
                         };
                     });
+
 
                     alert("Changes saved successfully");
                     setFlag(false);
@@ -210,14 +231,11 @@ function App() {
         }
     };
 
-
-
-
-
+    // State variables
     const [isPermissionModalOpen, setIsPermissionModalOpen] = useState(false);
     const [permissionData, setPermissionData] = useState({ username: '', key: '' });
     const [grantedPermissions, setGrantedPermissions] = useState([]);
-    const [editIndex, setEditIndex] = useState(null); // To track which permission is being edited
+
 
     // Handle input change
     const handlePermissionInputChange = (e) => {
@@ -228,42 +246,35 @@ function App() {
         }));
     };
 
-    // Open permission modal for editing
-    const openPermissionModal = (index = null) => {
-        if (index !== null && grantedPermissions[index]) {
-            // Editing existing permission
-            setPermissionData(grantedPermissions[index]); // Pre-fill with existing data
-            setEditIndex(index); // Track the index being edited
-        } else {
-            // Adding new permission
-            setPermissionData({ username: '', key: '' }); // Reset form fields
-            setEditIndex(null); // No edit, it's new
-        }
+    // Open permission modal
+    const openPermissionModal = () => {
+        setPermissionData({ username: '', key: '' }); // Reset form fields
         setIsPermissionModalOpen(true);
     };
-
 
     // Close permission modal
     const closePermissionModal = () => {
         setIsPermissionModalOpen(false);
-        setEditIndex(null); // Reset editing state when closed
     };
 
-    // Handle grant permission (add or update)
+    // Handle grant permission
     const handleGrantPermission = () => {
+        // Logic to grant permission to the user
+        console.log("Granting permission to user", permissionData);
         // Ensure username and key are provided
-        if (!permissionData.username.trim() || !permissionData.key.trim()) {
-            alert("Username and key are required to grant permission.");
-            return; // Stop execution if validation fails
+        if (permissionData.username && permissionData.key) {
+            // Add the new permission to grantedPermissions array
+            setGrantedPermissions((prevPermissions) => [
+                ...prevPermissions,
+                { ...permissionData, grantedAt: new Date().toLocaleString() },
+            ]);
+
+            setpPflag(true)
+
+            console.log(`Permission granted to user ${permissionData.username} for key ${permissionData.key} at ${new Date().toLocaleString()}`);
+        } else {
+            console.log("Username and key are required to grant permission.");
         }
-
-        // Add the new permission to grantedPermissions array
-        setGrantedPermissions((prevPermissions) => [
-            ...prevPermissions,
-            { ...permissionData, grantedAt: new Date().toLocaleString() },
-        ]);
-
-        console.log(`Permission granted to user ${permissionData.username} for key ${permissionData.key} at ${new Date().toLocaleString()}`);
 
         // Close the permission modal
         closePermissionModal();
@@ -271,10 +282,9 @@ function App() {
 
 
 
-
     return (
         <div>
-            <div className='flex justify-between items-center mb-10 p-4 font-sans'>
+            <div className='flex justify-between items-center mb-5 p-4 font-sans'>
                 <h2 className="text-2xl w-fit font-semibold">Global <span className='text-customColor'>Data</span></h2>
 
                 <div>
@@ -317,12 +327,10 @@ function App() {
                 <div>
                     {/* Permission Cards */}
                     {grantedPermissions.map((permission, index) => (
-                        <div
-                            key={index}
-                            className='bg-cyan-100 px-4 py-3 m-auto rounded border font-sans border-cyan-400 w-[95%] mb-2 cursor-pointer'
-                            onClick={() => openPermissionModal(index)} // Open modal with the clicked card data
-                        >
+                        <div key={index} className='bg-cyan-100 px-4 py-3 m-auto rounded border font-sans border-cyan-400 w-[95%] mb-2'>
                             <div className='flex justify-between'>
+                                <span className='font-medium'>{permission.username}</span>
+                                <span>{permission.key}</span>
                                 <span className='font-medium'>User: {permission.username}</span>
                                 <span>Key: {permission.key}</span>
                                 <span>Granted At: {permission.grantedAt}</span>
@@ -335,7 +343,7 @@ function App() {
                         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
                             <div className="bg-white p-6 rounded shadow-lg w-[88%]">
                                 <h2 className="text-xl font-semi-bold mb-4 font-sans">
-                                    {editIndex !== null ? "Edit Permission" : "Grant Permission to User"}
+                                    Grant Permission to User
                                 </h2>
 
                                 <div className="mb-4">
@@ -359,7 +367,8 @@ function App() {
                                         onChange={handlePermissionInputChange}
                                         className="mt-1 block w-full border border-gray-500 rounded shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                         placeholder="Enter key"
-                                        list="key-suggestions"
+                                        list="key-suggestions" // Adding a datalist for suggestions
+                                        // list="key-suggestions"
                                         autoComplete="off"
                                     />
                                     {/* Suggestions for keys */}
@@ -381,10 +390,12 @@ function App() {
                                         className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
                                         onClick={handleGrantPermission}
                                     >
-                                        {editIndex !== null ? "Update" : "Grant"}
+                                        Grant
                                     </button>
                                 </div>
                             </div>
+
+
                         </div>
                     )}
 
@@ -415,12 +426,15 @@ function App() {
                         <div>
                             {/* Display Existing and Newly Added Data */}
                             {Object.entries(formData.data).map(([key, { value, sensitive }], index) => (
-                                <div key={index} className='bg-cyan-100 px-4 py-3 m-auto rounded border font-sans border-cyan-400 w-[95%] mb-2'
+                                <div key={index} className='px-4 py-2 m-auto rounded border font-sans border-cyan-400/ border-black w-[95%] mb-2'
                                     onClick={() => openModal(key)} // Open modal on click with existing data
                                 >
-                                    <div className='flex justify-between'>
-                                        <span className='font-medium'>{key}</span>
-                                        <span>{value}</span>
+                                    <div className='flex flex-col font-sans'>
+                                        <span className='font-semibold text-xl text-customColor'>{key}</span>
+                                        <div className='flex gap-1'>
+                                            <span className='font-semibold'>Value : </span>
+                                            <span>{value}</span>
+                                        </div>
                                     </div>
                                 </div>
                             ))}
