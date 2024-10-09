@@ -400,6 +400,26 @@ const NewTicket = () => {
               value={creator}
               hidden={true}
             />
+            <div className='mb-4'>
+              <label className="block text-xl text-customColor font-sans  font-medium mb-2" htmlFor="contactDetail">Email</label>
+              <input
+                className="w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500"
+                {...register('email')}
+                type="email"
+                id="email"
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-xl text-customColor font-sans  font-medium mb-2" htmlFor="ticketSource">Ticket Source</label>
+              <select className='w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500' {...register('ticketSource')} >
+                <option value="">Select source</option>
+                <option value="Email">Email</option>
+                <option value="Call">Call</option>
+                <option value="Whatsapp">Whatsapp</option>
+                <option value="Whatsapp">others</option>
+              </select>
+            </div>
             {/* Contact Detail section in the form */}
             <div className="mb-4">
               <label className="block text-xl text-customColor font-sans  font-medium mb-2" htmlFor="contactDetail">Contact Detail</label>
@@ -467,16 +487,7 @@ const NewTicket = () => {
                 </ul>
               )}
             </div>
-            <div className="mb-4">
-              <label className="block text-xl text-customColor font-sans  font-medium mb-2" htmlFor="ticketSource">Ticket Source</label>
-              <select className='w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500' {...register('ticketSource')} >
-                <option value="">Select source</option>
-                <option value="Email">Email</option>
-                <option value="Call">Call</option>
-                <option value="Whatsapp">Whatsapp</option>
-                <option value="Whatsapp">others</option>
-              </select>
-            </div>
+
 
             <div className="mb-4">
               <label className="block text-xl text-customColor font-sans  font-medium mb-2" htmlFor="helpTopic">Help Topic</label>
@@ -561,18 +572,11 @@ const NewTicket = () => {
               </div>
             </div>
 
-
             <div className="mb-4">
-              <label className="block text-xl text-customColor font-sans  font-medium mb-2" htmlFor="">Assign Technician</label>
-              <select className="w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500" {...register('assignedTo')} id=""
-                onChange={(e) => checkStatus(e.target.value)}
-              >
-                <option value="">Select</option>
-                {ticketAss.map((user, index) => (
-                  <option key={index} value={user}>{user}</option>
-                ))}
-              </select>
+              <label className="block text-xl text-customColor font-sans  font-medium mb-2" htmlFor="issueDescription">Issue Description</label>
+              <textarea className="w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500" {...register('issueDescription')} id="issueDescription"></textarea>
             </div>
+
             <div className="mb-4 relative">
               <label className="block text-xl text-customColor font-sans  font-medium mb-2" htmlFor="collaborators">Collaborators</label>
               <div
@@ -631,8 +635,15 @@ const NewTicket = () => {
               </select>
             </div>
             <div className="mb-4">
-              <label className="block text-xl text-customColor font-sans  font-medium mb-2" htmlFor="issueDescription">Issue Description</label>
-              <textarea className="w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500" {...register('issueDescription')} id="issueDescription"></textarea>
+              <label className="block text-xl text-customColor font-sans  font-medium mb-2" htmlFor="">Assign Technician</label>
+              <select className="w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500" {...register('assignedTo')} id=""
+                onChange={(e) => checkStatus(e.target.value)}
+              >
+                <option value="">Select</option>
+                {ticketAss.map((user, index) => (
+                  <option key={index} value={user}>{user}</option>
+                ))}
+              </select>
             </div>
             <div className="mb-4">
               <label className="block text-xl text-customColor font-sans  font-medium mb-2" htmlFor="">Additional Info</label>
@@ -716,7 +727,7 @@ const NewTicket = () => {
             {/* hidden fields end */}
 
             <div className="flex justify-between">
-              <button type="button" onClick={() => setStep(2)} className="h-fit py-1 font-sans w-20 bg-blue-500  rounded text-white font-semibold">
+              <button type="button" onClick={() => setStep(3)} className="h-fit py-1 font-sans w-20 bg-blue-500  rounded text-white font-semibold">
                 Previous
               </button>
               <button type="submit" className="h-fit py-1 font-sans w-20 bg-blue-500  rounded text-white font-semibold">

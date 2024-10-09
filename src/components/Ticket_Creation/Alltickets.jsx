@@ -143,7 +143,7 @@ function Alltickets() {
                                             {ticket.ticketStatus}
                                         </span>
                                         <span className='flex gap-[2px] items-center'>
-                                            {ticket.ticketStatus === "Assigned" && (
+                                            {(ticket.ticketStatus === "Assigned" || ticket.ticketStatus === "Reopened") && (
                                                 <>
                                                     <Technician /> {ticket.assignedTo}
                                                 </>

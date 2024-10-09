@@ -130,23 +130,23 @@ function Userdetails() {
     const renderCard = (title, count1, label1, count2, label2, count3, label3, navLink) => {
         // Conditionally wrap the div in a Link only if navLink is provided
         const cardContent = (
-            <div className="w-full /md:fit bg-cardcolor shadow-lg border-b-[5px] border-customColor text-black rounded-lg transition-transform duration-300 transform rotate-0 z-30 p-2 font-semibold font-sans whitespace-nowrap">
+            <div className="w-full md:w-[400px] bg-cardcolor shadow-lg border-b-[5px] border-customColor text-black rounded-lg z-30 p-2 font-semibold font-sans">
                 <h2 className='mt-1 italic w-fit /text-xl'>{title}</h2>
-                <div className="p-5 text-center flex gap-8 ">
+                <div className="p-5 text-center flex gap whitespace-nowrap">
                     <div className='flex flex-col items-center justify-center rounded mx-auto'>
                         <h1 className='text-5xl mb-5 text-customColor font-bold'>{count1}</h1>
-                        <span className='text-md '>{label1}</span>
+                        <span className='text-sm '>{label1}</span>
                     </div>
                     {count2 !== undefined && (
                         <div className='flex flex-col items-center justify-center my-2 rounded mx-auto'>
                             <h1 className='text-5xl mb-5 text-customColor font-bold'>{count2}</h1>
-                            <span className='text-md'>{label2}</span>
+                            <span className='text-sm'>{label2}</span>
                         </div>
                     )}
                     {count3 !== undefined && (
                         <div className='flex flex-col items-center justify-center rounded mx-auto'>
                             <h1 className='text-5xl mb-5 text-customColor font-bold'>{count3}</h1>
-                            <span className='text-md'>{label3}</span>
+                            <span className='text-sm'>{label3}</span>
                         </div>
                     )}
                 </div>
@@ -167,7 +167,7 @@ function Userdetails() {
     
     const renderCards = () => {
         return (
-            <div className='flex md:gap-20 gap-10 justify-center md:justify-start flex-wrap items-center mt-8 m-auto w-fit'>
+            <div className='flex md:gap-40 gap-10 justify-center md:justify-start flex-wrap items-center mt-8 m-auto w-full'>
                 {/* If user is "Master", render all cards without conditions */}
                 {userName === "Master" ? (
                     <>

@@ -5,6 +5,7 @@ import HidePasswordIcon from '../../assets/Eyeclose';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Loader from '../Loader';
 import api from '../modules/Api';
+import Close from '../../assets/Close';
 
 function App() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -328,12 +329,10 @@ function App() {
                     {/* Permission Cards */}
                     {grantedPermissions.map((permission, index) => (
                         <div key={index} className='bg-cyan-100 px-4 py-3 m-auto rounded border font-sans border-cyan-400 w-[95%] mb-2'>
-                            <div className='flex justify-between'>
+                            <div className='flex flex-col'>
                                 <span className='font-medium'>{permission.username}</span>
                                 <span>{permission.key}</span>
                                 <span className='font-medium'>User: {permission.username}</span>
-                                <span>Key: {permission.key}</span>
-                                <span>Granted At: {permission.grantedAt}</span>
                             </div>
                         </div>
                     ))}
@@ -384,7 +383,7 @@ function App() {
                                         className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded"
                                         onClick={closePermissionModal}
                                     >
-                                        Cancel
+                                        <Close />
                                     </button>
                                     <button
                                         className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
@@ -444,7 +443,7 @@ function App() {
                     {/* Modal Popup */}
                     {isModalOpen && (
                         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-                            <div className="bg-white p-6 rounded shadow-lg w-[88%]">
+                            <div className="bg-white p-6 rounded shadow-lg w-[88%] relative">
                                 <h2 className="text-xl font-semi-bold mb-4 font-sans">
                                     {selectedKey ? 'Update Key-Value Pair' : 'Enter Key-Value Pair'}
                                 </h2>
@@ -491,12 +490,12 @@ function App() {
                                     />
                                 </div>
 
-                                <div className="flex justify-between">
+                                <div className="flex justify-end gap-3">
                                     <button
-                                        className="bg-gray-500 text-white px-4 py-2 rounded"
+                                        className="bg-red-500 text-white p-2 absolute right-2 top-3 rounded-full"
                                         onClick={closeModal}
                                     >
-                                        Cancel
+                                        <Close />
                                     </button>
                                     {selectedKey && (
                                         <button

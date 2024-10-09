@@ -29,7 +29,13 @@ const NewTicket = () => {
   const [showFiles, setShowfiles] = useState(false);
   const [getAttachedfiles, setGetattachedfiles] = useState([]);
   const [ticketFileId, setTicketFileId] = useState();
+  
 
+
+  const checkStatus = (val) => {
+    console.log(val)
+    setTicketStatus('Assigned')
+  }
 
   console.log("attached files === ", getAttachedfiles)
   const location = useLocation();
@@ -259,7 +265,7 @@ const NewTicket = () => {
 
   const handleAssignedToChange = (e) => {
     const value = e.target.value;
-    setTicketStatus(value ? 'Assigned' : 'Not Assigned');
+    setTicketStatus(value ? 'Assigned' : 'Open');
   };
 
   const handleAddContact = () => {
@@ -356,7 +362,7 @@ const NewTicket = () => {
 
 
       setClosedata(formData)
-      // console.log(formData);
+      console.log("ticket status === ",formData.ticketStatus);
 
       axios
         .post(api + 'api/updateTicket', formData)
@@ -618,6 +624,29 @@ const NewTicket = () => {
                 hidden={true}
               />
             </div>
+            <div className='mb-4'>
+              <label className="block text-xl text-customColor font-sans  font-medium mb-2" htmlFor="contactDetail">Email</label>
+              <input
+                className="w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500"
+                {...register('email')}
+                type="email"
+                id="email"
+                disabled={!toggleEdit}
+              />
+            </div>
+
+            <div className="mb-6">
+              <label className="block text-xl text-customColor  font-sans font-medium mb-2" htmlFor="ticketSource">Ticket Source</label>
+              <select className='w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500' {...register('ticketSource')}
+                disabled={!toggleEdit}
+              >
+                <option value="">Select source</option>
+                <option value="Email">Email</option>
+                <option value="Call">Call</option>
+                <option value="Whatsapp">Whatsapp</option>
+                <option value="Whatsapp">others</option>
+              </select>
+            </div>
 
             {/* Contacts */}
             <div className="mb-6">
@@ -732,18 +761,7 @@ const NewTicket = () => {
 
             </div>
 
-            <div className="mb-6">
-              <label className="block text-xl text-customColor  font-sans font-medium mb-2" htmlFor="ticketSource">Ticket Source</label>
-              <select className='w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500' {...register('ticketSource')}
-                disabled={!toggleEdit}
-              >
-                <option value="">Select source</option>
-                <option value="Email">Email</option>
-                <option value="Call">Call</option>
-                <option value="Whatsapp">Whatsapp</option>
-                <option value="Whatsapp">others</option>
-              </select>
-            </div>
+
 
             {/* Help Topic */}
             <div className="mb-6">
@@ -853,17 +871,10 @@ const NewTicket = () => {
               </div>
             </div>
             <div className="mb-4">
-              <label className="block text-xl text-customColor  font-sans font-medium mb-2" htmlFor="">Assign Technician</label>
-              <select className="w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500" {...register('assignedTo')} id=""
-                onChange={(e) => checkStatus(e.target.value)}
-                disabled={!toggleEdit}
-              >
-                <option value="">Select</option>
-                {ticketAss.map((user, index) => (
-                  <option key={index} value={user}>{user}</option>
-                ))}
-              </select>
+              <label className="block text-xl text-customColor  font-sans font-medium mb-2" htmlFor="issueDescription">Issue Description</label>
+              <textarea className="w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500" {...register('issueDescription')} id="issueDescription" readOnly={!toggleEdit}></textarea>
             </div>
+
             <div className="mb-4 relative">
               <label className="block mb-2 text-xl text-customColor  font-sans font-medium" htmlFor="collaborators">Collaborators</label>
               <div
@@ -930,9 +941,25 @@ const NewTicket = () => {
               </select>
             </div>
             <div className="mb-4">
-              <label className="block text-xl text-customColor  font-sans font-medium mb-2" htmlFor="issueDescription">Issue Description</label>
-              <textarea className="w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500" {...register('issueDescription')} id="issueDescription" readOnly={!toggleEdit}></textarea>
+              <label className="block text-xl text-customColor  font-sans font-medium mb-2" htmlFor="">Assign Technician</label>
+              <select className="w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500" {...register('assignedTo')} id=""
+                onChange={(e) => checkStatus(e.target.value)}
+                disabled={!toggleEdit}
+              >
+                {/* <option value="">Select</option> */}
+                {ticketAss.map((user, index) => (
+                  <option key={index} value={user}>{user}</option>
+                ))}
+              </select>
             </div>
+            {/* <input
+                className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500"
+                {...register('ticketStatus')}
+                type="text"
+                value={ticketStatus}
+                hidden={true}
+                contentEditable="false"
+              /> */}
             <div className="mb-4">
               <label className="block text-xl text-customColor  font-sans font-medium  mb-2" htmlFor="">Additional Info</label>
               <textarea className="w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500" {...register('additionalInfo')} id="" readOnly={!toggleEdit}></textarea>
