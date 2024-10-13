@@ -37,7 +37,7 @@ const NewTicket = () => {
     setTicketStatus('Assigned')
   }
 
-  console.log("attached files === ", getAttachedfiles)
+  
   const location = useLocation();
   const { ticketId } = location.state; // Get ticketId from state
   const navigate = useNavigate();
@@ -170,7 +170,7 @@ const NewTicket = () => {
 
   // Handle when an address is selected
   const handleAddressSelection = (address) => {
-    console.log("address=", address)
+    
     setAddressInput(address);
     setShowAddressSuggestions(false); // Hide the address suggestions list
 
@@ -188,7 +188,7 @@ const NewTicket = () => {
   // Handle when a product is selected
   const handleProductSelection = (product) => {
     setProductInput(product);
-    console.log(product)
+    
     setShowProductSuggestions(false); // Hide the product suggestions list
     setValue('productName', product);  // Register selected product in the form
   };
@@ -231,7 +231,7 @@ const NewTicket = () => {
       setTicket(currentTicket);
       setTicketOC(currentTicket.ticketStatus);
       setTicketFileId(currentTicket.ticketNumber);
-      console.log("current ticket number = ", currentTicket.ticketNumber)
+      
 
       // Populate form fields with existing ticket data
       Object.keys(currentTicket).forEach((key) => {
@@ -362,14 +362,13 @@ const NewTicket = () => {
 
 
       setClosedata(formData)
-      console.log("ticket status === ",formData.ticketStatus);
+      console.log("contactDetails === ",formData.contactDetails);
 
       axios
         .post(api + 'api/updateTicket', formData)
         .then((response) => {
           alert('Ticket updated successfully');
           const ticketNumber = formData.ticketNumber;
-          console.log("ticketnumber =", ticketNumber);
           // Instead of reloading the page, consider navigating to another page or updating the state
           submitFiles(selectedFiles, ticketNumber);
 
@@ -406,7 +405,6 @@ const NewTicket = () => {
 
   const changeStatus = (status) => {
     const mv = status.split('ed')[0]
-    console.log(mv);
     const conf = confirm("Are you sure want to " + (mv === "Clos" ? "Close" : mv) + " the ticket ?")
     if (conf) {
       const currentDateTime = new Date();
@@ -423,14 +421,11 @@ const NewTicket = () => {
         updatedDate: formattedDate // Only the date portion  
       };
 
-
-      console.log("formdata", formData);
-
       axios
         .post(api + 'api/updateTicket', formData)
         .then((response) => {
           alert('Ticket ' + status + ' successfully');
-          console.log(response);
+
           // Instead of reloading the page, consider navigating to another page or updating the state
           window.location.reload();
           navigate(-1); // Replace '/some-page' with the actual route you want to navigate to
@@ -656,6 +651,7 @@ const NewTicket = () => {
                   <input
                     type="text"
                     className="w-1/2 p-3 border-2 border-gray-400 bg-transparent rounded mr-4"
+                    {...register('name')}
                     value={contact.name}
                     onChange={(e) => handleContactChange(index, 'name', e.target.value)}
                     placeholder="Name"
@@ -664,6 +660,7 @@ const NewTicket = () => {
                   <input
                     type="text"
                     className="w-1/2 p-3 border-2 border-gray-400 bg-transparent rounded mr-4"
+                    {...register('number')}
                     value={contact.number}
                     onChange={(e) => handleContactChange(index, 'number', e.target.value)}
                     placeholder="Number"
