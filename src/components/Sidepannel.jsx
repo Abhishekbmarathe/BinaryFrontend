@@ -57,8 +57,8 @@ function Sidepannel() {
                                 className="card p-3 rounded-md text-center flex items-center gap-2"
                                 onClick={() => navigate(card.endpoint)}
                             >
-                                <span className="icon w-6 h-6 mr-2">{card.icon}</span>
-                                <p className="text-[20px] text-left font-semibold font-sans ">{card.content}</p>
+                                <span className="icon w- h- mr-2">{card.icon}</span>
+                                <p className="text-[15px] text-left font-semibold font-sans ">{card.content}</p>
                             </button>
                         ))}
                     </div>
@@ -66,7 +66,7 @@ function Sidepannel() {
                 <ul className='w-fit text-left px-4 mt-28 font-semibold font-sans'>
                     <div className='flex items-center gap-2'>
                         <Edit />
-                        <li className=' '><Link to="/Server/Home">Edit Profile</Link></li>
+                        <li className=' '><Link to="/Edit-profile">Edit Profile</Link></li>
                     </div>
                 </ul>
             </div>

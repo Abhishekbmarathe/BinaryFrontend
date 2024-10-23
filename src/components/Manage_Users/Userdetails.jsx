@@ -130,7 +130,7 @@ function Userdetails() {
     const renderCard = (title, count1, label1, count2, label2, count3, label3, navLink) => {
         // Conditionally wrap the div in a Link only if navLink is provided
         const cardContent = (
-            <div className="w-full md:w-[400px] bg-cardcolor shadow-lg border-b-[5px] border-customColor text-black rounded-lg z-30 p-2 font-semibold font-sans">
+            <div className="w-full md:w-[400px] bg-cardcolor shadow-lg border-b-[2px] border-customColor text-black rounded-lg z-30 p-2 font-semibold font-sans">
                 <h2 className='mt-1 italic w-fit /text-xl'>{title}</h2>
                 <div className="p-5 text-center flex gap whitespace-nowrap">
                     <div className='flex flex-col items-center justify-center rounded mx-auto'>
@@ -152,10 +152,10 @@ function Userdetails() {
                 </div>
             </div>
         );
-    
+
         // If navLink is provided, wrap cardContent in a Link, otherwise return the cardContent
         return navLink ? (
-            <Link to={navLink} className="relative w-full md:w-72 px-2">
+            <Link to={navLink} className="relative w-full md:w-fit px-2">
                 {cardContent}
             </Link>
         ) : (
@@ -164,10 +164,10 @@ function Userdetails() {
             </div>
         );
     };
-    
+
     const renderCards = () => {
         return (
-            <div className='flex md:gap-40 gap-10 justify-center md:justify-start flex-wrap items-center mt-8 m-auto w-full'>
+            <div className='flex md:gap-10 gap-10 justify-center md:justify-start flex-wrap items-center mt-8 m-auto w-full'>
                 {/* If user is "Master", render all cards without conditions */}
                 {userName === "Master" ? (
                     <>
@@ -184,19 +184,33 @@ function Userdetails() {
                         {createAsset && renderCard('Asset Details', assets, 'Products Created', undefined, undefined, undefined, undefined, '/asset-db')}
                     </>
                 )}
+                {role === "technician" && (
+                    <div className='text-black w-3/4 m-auto flex items-center gap-3 md:m-0'>
+                        <div className=''>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" stroke="orange" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="48px" height="48px">
+                                <path d="M12 2L1 21h22L12 2z" />
+                                <line x1="12" y1="8" x2="12" y2="13" />
+                                <circle cx="12" cy="17" r="1" />
+                            </svg>
+                        </div>
+                        <p>
+                            kindly contact master admin for the android app
+                        </p>
+                    </div>
+                )}
             </div>
         );
     };
-    
+
 
 
     return (
-        <div className='text-gray-300 md:mx-[40%] lg:mx-[30%] md:w-[70%] mb-24 md:mb-0'>
+        <div className='text-gray-300 md:mx-[40%] lg:mx-[30%] md:w-[900px] mb-24 md:mb-0'>
             <div className='md:hidden gap-2 flex justify-between items-center bg-white sticky top-0 z-30'>
                 <img src="/src/assets/logo.jpeg" alt="Logo..." className='w-24' />
                 <div className='flex gap-2 items-center px-3'>
                     <Edit />
-                    <span className='text-black'><Link to="/Server/Home">Edit Profile</Link></span>
+                    <span className='text-black'><Link to="/Edit-profile">Edit Profile</Link></span>
                 </div>
             </div>
 
@@ -210,15 +224,15 @@ function Userdetails() {
                         </div>
                     </div>
                     <div className=''>
-                        <div className='flex md:flex-row md:text-2xl md:my-4'>
+                        <div className='flex md:flex-row md:text-xl md:my-4'>
                             <label className='text-black'>Name:</label>
                             <span className='text-customColor'>{currentUser}</span>
                         </div>
-                        <div className='flex md:flex-row md:text-2xl md:my-4'>
+                        <div className='flex md:flex-row md:text-xl md:my-4'>
                             <label className='text-black whitespace-nowrap'>Phone no:</label>
                             <span className='text-customColor'>{phone}</span>
                         </div>
-                        <div className='flex md:flex-row md:text-2xl md:my-4'>
+                        <div className='flex md:flex-row md:text-xl md:my-4'>
                             <label className='text-black'>Email:</label>
                             <span className='whitespace-nowrap text-customColor'>{email}</span>
                         </div>

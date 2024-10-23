@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import api from '../modules/Api';
+import Close from '../../assets/Close';
 
 function Settings() {
   const [topic, setToggle] = useState('Help');
@@ -25,15 +26,15 @@ function Settings() {
     const fetchSettingsData = async () => {
       try {
         const response = await axios.get(api + 'api/getTicketSetting');
-        
+
         const settingsData = response.data || [];
-        
+
         // Filter the settings data based on the 'type' field
         const helpTopics = settingsData.filter(item => item.type === 'Help').map(item => item.data);
         const slaPlans = settingsData.filter(item => item.type === 'SLA').map(item => item.data);
         const departments = settingsData.filter(item => item.type === 'Department').map(item => item.data);
         const cannedResponses = settingsData.filter(item => item.type === 'Canned').map(item => item.data);
-  
+
         // Set state with the filtered data
         setHelpTopics(helpTopics);
         setSlaPlans(slaPlans);
@@ -43,12 +44,12 @@ function Settings() {
         console.error('Error fetching settings data:', error);
       }
     };
-  
+
     fetchSettingsData();
   }, []);
-  
-  
-  
+
+
+
 
   // Function to handle adding topics dynamically
   const handleAddTopic = (data) => {
@@ -107,9 +108,9 @@ function Settings() {
         Ticket <span className='text-customColor'>Settings</span>
       </h1>
 
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className='text-customColor font-semibold font-sans flex gap-3 relative justify-center px-3'>
-          <div className='px-2 my-5 flex w-full overflow-auto'>
+      <form onSubmit={handleSubmit(onSubmit)} className='px-3 md:w-1/2 md:m-auto w-full'>
+        <div className='text-customColor font-semibold font-sans flex gap-3 relative justify-center'>
+          <div className='my-5 flex w-full overflow-auto'>
             {['Help', 'SLA', 'Department', 'Canned'].map((type) => (
               <button
                 key={type}
@@ -123,35 +124,35 @@ function Settings() {
           </div>
         </div>
 
-        <div className='border border-gray-400 w-11/12 m-auto rounded-md flex items-center gap-3'>
+        <div className='border border-gray-400 rounded-md flex items-center gap-3'>
           <input
             type="text"
-            className='bg-transparent border-none p-3 w-11/12 block rounded-md focus:border-customColor outline-none'
+            className='bg-transparent border-none p-3  w-11/12 block rounded-md focus:border-customColor outline-none'
             placeholder={`Enter ${topic}`}
             {...register('addTopic')}
           />
           <button
             type="button"
             onClick={handleSubmit(handleAddTopic)}
-            className="p-2 px-5 text-customColor rounded-md"
+            className="p-2 px-5 text-white text-3xl rounded-md bg-blue-400"
           >
             +
           </button>
         </div>
 
-        <hr className='w-1/2 h-1 bg-gray-500 m-auto my-6 rounded-lg' />
+        <hr className='w-1/2 h-[2px] bg-gray-500 m-auto my-6 rounded-lg' />
 
         <p className='px-5'>{topic}</p>
         <ul className='px-5'>
           {getCurrentList().map((item, index) => (
-            <li key={index} className='bg-gray-400 my-1 p-2 w-36 text-slate-900 rounded-lg flex justify-between items-center'>
+            <li key={index} className='border my-1 p-2 border-gray-500 rounded-lg flex justify-between items-center w-1/2'>
               {item}
               <button
                 type="button"
                 onClick={() => handleRemoveTopic(index)}
-                className='text-white text-xl'
+                className='text-white text-xl bg-red-600 rounded-[3px]'
               >
-                x
+                <Close />
               </button>
             </li>
           ))}

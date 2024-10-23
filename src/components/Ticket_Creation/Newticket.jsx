@@ -182,7 +182,6 @@ const NewTicket = () => {
       const parsedData = JSON.parse(data);
       const adminUsers = parsedData.filter((item) => item.role === "admin").map((item) => item.username);
       const technicianUsers = parsedData.filter((item) => item.role === "technician").map((item) => item.username);
-
       setUsers(adminUsers);
       setAssign(technicianUsers);
     }
@@ -221,7 +220,6 @@ const NewTicket = () => {
 
 
     axios.post(api + 'api/createTicket', formData)
-      // axios.post('http://localhost:3000/api/createTicket', formData)
       .then((response) => {
         const ticketNumber = response.data.ticketNumber;
         if (ticketNumber) {

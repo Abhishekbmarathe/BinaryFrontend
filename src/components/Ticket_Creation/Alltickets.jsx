@@ -100,7 +100,7 @@ function Alltickets() {
     return (
         <div className='mb-16'>
             <Nav />
-            <div className='my-6 flex items-center justify-between px-3 relative '>
+            <div className='my-6 flex items-center justify-between md:justify-start md:gap-16 px-3 relative '>
                 <h1 className='font-semibold font-sans text-3xl sticky top-0 z-10 bg-[#f5f5f5]'>
                     Manage<span className='text-customColor'>Ticket</span>
                 </h1>
@@ -112,10 +112,10 @@ function Alltickets() {
                 )}
             </div>
             {/* Search Input */}
-            <div className='px-3 flex relative'>
+            <div className='px-3 flex relative md:max-w-[700px] md:px-0 md:rounded-lg md:mx-3 md:shadow-inner shadow- md:shadow-gray-400 md:bg-white'>
                 <input
                     type="text"
-                    className='bg-transparent border border-t-0 border-l-0 border-r-0 border-b-gray-500 p-2 outline-none w-full'
+                    className='bg-transparent border border-t-0 border-l-0 border-r-0 border-b-gray-500 md:border-none p-2 outline-none w-full'
                     placeholder="Search by company name or ticket number"
                     value={searchInput}
                     onChange={handleSearchInputChange} // Handle input change
@@ -130,7 +130,7 @@ function Alltickets() {
                         {filteredTickets.map((ticket, index) => (
                             <li
                                 key={index}
-                                className='my-4 bg-white py-4 px-5 rounded-lg shadow-md flex items-center justify-between cursor-pointer min-w-80'
+                                className='my-4 bg-white py-4 px-5 rounded-lg shadow-md flex items-center justify-between cursor-pointer min-w-80 transition-all'
                                 onClick={() => openTicket(ticket._id)}
                             >
                                 <div className='text-[16px] font-sans'>

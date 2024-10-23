@@ -20,7 +20,7 @@ function TopNav() {
                 <img src="/src/assets/logo2.jpeg" alt="Logo..." className='w-[300px]'/>
             </div>
             <div>
-                <ul className='flex gap-12 items-center font-semibold font-sans text-xl mr-14'>
+                <ul className='flex gap-12 items-center font-semibold font-sans mr-14'>
                     <li><Link to="/server/Home">Home</Link></li>
                     <li><Link to="/updates">Updates</Link></li>
                     <div className='flex items-center gap-2'>

@@ -12,9 +12,7 @@ function CustomerEdit() {
     const [loading, setLoading] = useState(false);
     const [step, setStep] = useState(1);
     const [branches, setBranches] = useState([]);
-
     const ismAdmin = useAdminStatus();
-
 
     useEffect(() => {
         const allCustomers = JSON.parse(localStorage.getItem("AllClients"));

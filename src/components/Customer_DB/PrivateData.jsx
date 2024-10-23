@@ -233,7 +233,7 @@ function App() {
     };
 
     return (
-        <div>
+        <div className='md:w-1/2 m-auto'>
             <div className='flex justify-between items-center mb-5 p-4 font-sans'>
                 <h2 className="text-2xl w-fit font-semibold">Global <span className='text-customColor'>Data</span></h2>
 

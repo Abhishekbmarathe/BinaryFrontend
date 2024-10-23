@@ -2,36 +2,75 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import api from '../modules/Api';
 
+// MultiCheckbox component for multiple key selection
+const MultiCheckbox = ({ options, selectedValues, onChange }) => {
+    const handleCheckboxChange = (option) => {
+        const updatedValues = selectedValues.includes(option)
+            ? selectedValues.filter((value) => value !== option)
+            : [...selectedValues, option];
+
+        onChange(updatedValues);
+    };
+
+    return (
+        <div className="flex flex-col">
+            {options.map((option) => (
+                <label key={option} className="flex items-center mb-2">
+                    <input
+                        type="checkbox"
+                        value={option}
+                        checked={selectedValues.includes(option)}
+                        onChange={() => handleCheckboxChange(option)}
+                        className="mr-2"
+                    />
+                    {option}
+                </label>
+            ))}
+        </div>
+    );
+};
+
 const Permissions = ({ companyName }) => {
     const [formData, setFormData] = useState({
         companyName: companyName || '',
-        data: {},  // Will store the key-value pairs like key1, key2, etc.
-        permissions: {},  // Will store username with keys they have access to
+        data: {},
+        permissions: {},
     });
     const [isPermissionModalOpen, setIsPermissionModalOpen] = useState(false);
     const [grantedPermissions, setGrantedPermissions] = useState([]);
     const [editIndex, setEditIndex] = useState(null);
-    const [permissionData, setPermissionData] = useState({ username: '', key: '' });
+    const [permissionData, setPermissionData] = useState({ username: '', key: [] });
+    const [availableKeys] = useState(['Key1', 'Key2', 'Key3', 'Key4']); // Example keys
+    const [suggestions] = useState(['s1', 's2', 's3', 's4', 's5']); // Custom suggestions
+    const [filteredSuggestions, setFilteredSuggestions] = useState([]);
+    const [showSuggestionBox, setShowSuggestionBox] = useState(false);
 
     useEffect(() => {
-        // setLoading(true); // Start loading
         axios.post(api + "api/getGlobalData", { companyName })
             .then(response => {
                 const fetchedArray = response.data;
                 const fetchedData = fetchedArray.reduce((acc, obj) => ({ ...acc, ...obj.data }), {});
+                const fetchedPermissions = fetchedArray.reduce((acc, obj) => ({ ...acc, ...obj.permissions }), {});
 
                 setFormData(prevData => ({
                     ...prevData,
                     companyName,
-                    data: { ...prevData.data, ...fetchedData }
+                    data: { ...prevData.data, ...fetchedData },
+                    permissions: { ...prevData.permissions, ...fetchedPermissions }
                 }));
+
+                const permissionsArray = Object.entries(fetchedPermissions).map(([username, keys]) => ({
+                    username,
+                    key: Array.isArray(keys) ? keys : [keys],
+                    grantedAt: new Date().toLocaleString()
+                }));
+
+                setGrantedPermissions(permissionsArray);
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
-            })
-        // .finally(() => setLoading(false)); // End loading
+            });
     }, [companyName]);
-    console.log("initial form data === ", formData)
 
     const openPermissionModal = (index) => {
         if (index !== null && grantedPermissions[index]) {
@@ -39,73 +78,82 @@ const Permissions = ({ companyName }) => {
             setPermissionData(grantedPermissions[index]);
         } else {
             setEditIndex(null);
-            setPermissionData({ username: '', key: '' });
+            setPermissionData({ username: '', key: [] });
         }
         setIsPermissionModalOpen(true);
     };
 
     const closePermissionModal = () => {
         setIsPermissionModalOpen(false);
+        setShowSuggestionBox(false);
     };
 
-    const handlePermissionInputChange = (e) => {
-        const { name, value } = e.target;
-        setPermissionData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }));
-    };
+    const handleUsernameChange = (e) => {
+        const inputValue = e.target.value;
+        setPermissionData({ ...permissionData, username: inputValue });
 
-    // Submits data in the required format
-    const submitToApi = async () => {
-        try {
-            // Create the permissions map from grantedPermissions
-            const permissionsMap = grantedPermissions.reduce((acc, permission) => {
-                const { username, key } = permission;
-                if (!acc[username]) {
-                    acc[username] = [];
-                }
-                if (!acc[username].includes(key)) {
-                    acc[username].push(key); // Add key to the user's permission array
-                }
-                return acc;
-            }, {});
-
-            // Check if formData contains the data and log it
-            console.log("FormData:", formData); // Check the full formData before submission
-            console.log("Data being submitted:", formData.data); // Specifically check the 'data' field
-
-            // Wrap everything into the 'data' variable
-            const payload = {
-                companyName: formData.companyName,
-                data: formData.data,  // Ensure this contains your data
-                permissions: permissionsMap,  // Permissions map constructed from grantedPermissions
-            };
-
-            console.log('Payload submitted:', payload);  // Log the full payload
-
-            // Await the response from the API
-            const response = await axios.post(api + 'api/updateGlobalData', payload);
-
-            console.log('Response from API:', response.data);  // Check the response from the API
-
-            if (response.data.status) {
-                console.log('Permissions successfully submitted:', response.data.message || 'Success');
-            } else {
-                console.log('Failed to submit permissions:', response.data.message || 'Failure');
-            }
-
-        } catch (error) {
-            console.error('Error submitting permissions:', error);
+        // Filter suggestions based on input
+        if (inputValue) {
+            const filtered = suggestions.filter(suggestion =>
+                suggestion.toLowerCase().includes(inputValue.toLowerCase())
+            );
+            setFilteredSuggestions(filtered);
+        } else {
+            setFilteredSuggestions(suggestions);
         }
     };
 
+    const handleUsernameFocus = () => {
+        setFilteredSuggestions(suggestions);
+        setShowSuggestionBox(true);
+    };
 
+    const handleSuggestionSelect = (suggestion) => {
+        setPermissionData({ ...permissionData, username: suggestion });
+        setShowSuggestionBox(false);
+        setFilteredSuggestions([]);
+    };
 
+    const handleKeyInputChange = (e) => {
+        const value = e.target.value;
+        const newKeys = value.split(',').map(k => k.trim()).filter(k => k); // Split by comma and trim
 
+        setPermissionData(prevData => ({
+            ...prevData,
+            key: newKeys
+        }));
+
+        // Update checkboxes based on input
+        const checkedKeys = availableKeys.filter(key => newKeys.includes(key));
+        setPermissionData(prevData => ({
+            ...prevData,
+            key: checkedKeys
+        }));
+    };
+
+    const handleKeyCheckboxChange = (updatedKeys) => {
+        // Update key state based on checkbox selection
+        setPermissionData(prevData => ({
+            ...prevData,
+            key: updatedKeys
+        }));
+    };
+
+    const handleBackspace = (e) => {
+        if (e.key === 'Backspace') {
+            const currentKeys = permissionData.key;
+            if (currentKeys.length > 0) {
+                const newKeys = currentKeys.slice(0, -1); // Remove last key
+                setPermissionData(prevData => ({
+                    ...prevData,
+                    key: newKeys
+                }));
+            }
+        }
+    };
 
     const handleSavePermission = () => {
-        if (permissionData.username && permissionData.key) {
+        if (permissionData.username && permissionData.key.length > 0) {
             const newPermission = {
                 ...permissionData,
                 grantedAt: new Date().toLocaleString(),
@@ -125,32 +173,76 @@ const Permissions = ({ companyName }) => {
             }
             setIsPermissionModalOpen(false);
         } else {
-            console.log('Username and key are required.');
+            console.log('Username and at least one key are required.');
+        }
+    };
+
+    const submitToApi = async () => {
+        try {
+            const permissionsMap = grantedPermissions.reduce((acc, permission) => {
+                const { username, key } = permission;
+                if (!acc[username]) {
+                    acc[username] = [];
+                }
+                key.forEach(k => {
+                    if (!acc[username].includes(k)) {
+                        acc[username].push(k);
+                    }
+                });
+                return acc;
+            }, {});
+
+            const payload = {
+                companyName: formData.companyName,
+                data: formData.data,
+                permissions: permissionsMap,
+            };
+
+            const response = await axios.post(api + 'api/updateGlobalData', payload);
+
+            if (response.data.status) {
+                console.log('Permissions successfully submitted:', response.data.message || 'Success');
+            } else {
+                console.log('Failed to submit permissions:', response.data.message || 'Failure');
+            }
+        } catch (error) {
+            console.error('Error submitting permissions:', error);
         }
     };
 
     return (
         <div>
-            <button
-                className='rounded-xl flex justify-center w-fit items-center font-sans text-green-500'
-                onClick={submitToApi}
-            >
-                Save Changes<span className='text-xs'>&nbsp;●</span>
-            </button>
-
             <div className="mb-4">
-                <h3 className="text-lg font-bold">Granted Permissions:</h3>
-                <ul>
+                <div className='flex justify-between md:px-12 px-2 mb-3'>
+                    <h3 className="text-lg font-bold">Granted Permissions</h3>
+                    <div className='flex'>
+                        <button
+                            className='rounded-xl flex justify-center w-fit items-center text-blue-500 mr-2'
+                            onClick={() => openPermissionModal(null)}
+                        >
+                            Add Permission
+                        </button>
+                        <button
+                            className='rounded-xl flex justify-center w-fit items-center text-green-500'
+                            onClick={submitToApi}
+                        >
+                            Save Changes<span className='text-xs'>&nbsp;●</span>
+                        </button>
+                    </div>
+                </div>
+                <ul className='font-sans'>
                     {grantedPermissions.map((permission, index) => (
-                        <li key={index} className="flex justify-between p-2 border bg-cyan-100">
-                            <span>{permission.username}</span>
-                            <span>{permission.key}</span>
-                            <button
-                                onClick={() => openPermissionModal(index)}
-                                className="text-blue-500 hover:underline"
-                            >
-                                Edit
-                            </button>
+                        <li key={index}
+                            onClick={() => openPermissionModal(index)}
+                            className="flex flex-col p-4 border border-black rounded cursor-pointer mb-2 bg-gray-100">
+                            <div className="flex justify-between mb-2">
+                                <div className="text-customColor text-xl font-semibold">{permission.username}</div>
+                            </div>
+                            <div className="flex flex-wrap">
+                                {permission.key.map((k, i) => (
+                                    <span key={i} className="mr-2 p-2 bg-blue-500 text-white rounded-lg">{k}</span>
+                                ))}
+                            </div>
                         </li>
                     ))}
                 </ul>
@@ -158,56 +250,58 @@ const Permissions = ({ companyName }) => {
 
             {isPermissionModalOpen && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-                    <div className="bg-white p-6 rounded shadow-lg w-[88%]">
-                        <h2 className="text-xl font-semi-bold mb-4 font-sans">
+                    <div className="bg-white p-6 rounded shadow-lg w-[88%] md:w-1/2">
+                        <h2 className="text-xl font-semibold mb-4">
                             {editIndex !== null ? 'Edit Permission' : 'Grant Permission to User'}
                         </h2>
                         <div className="mb-4">
-                            <label className="block mb-1">Username</label>
                             <input
                                 type="text"
-                                name="username"
+                                placeholder="Username"
                                 value={permissionData.username}
-                                onChange={handlePermissionInputChange}
-                                className="border rounded w-full p-2"
-                                placeholder="Enter username"
+                                onChange={handleUsernameChange}
+                                onFocus={handleUsernameFocus}
+                                className="border rounded p-2 w-full"
                             />
+                            {showSuggestionBox && filteredSuggestions.length > 0 && (
+                                <ul className="border border-gray-300 bg-white">
+                                    {filteredSuggestions.map((suggestion, idx) => (
+                                        <li key={idx}
+                                            onClick={() => handleSuggestionSelect(suggestion)}
+                                            className="p-2 hover:bg-gray-100 cursor-pointer"
+                                        >
+                                            {suggestion}
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
                         </div>
                         <div className="mb-4">
-                            <label className="block mb-1">Key</label>
                             <input
                                 type="text"
-                                name="key"
-                                value={permissionData.key}
-                                onChange={handlePermissionInputChange}
-                                className="border rounded w-full p-2"
-                                placeholder="Enter permission key"
+                                placeholder="Keys (comma separated)"
+                                value={permissionData.key.join(', ')}
+                                onChange={handleKeyInputChange}
+                                onKeyDown={handleBackspace}
+                                className="border rounded p-2 w-full"
                             />
                         </div>
-                        <div className="flex justify-end">
-                            <button
-                                onClick={handleSavePermission}
-                                className="bg-blue-500 text-white py-2 px-4 rounded mr-2"
-                            >
-                                {editIndex !== null ? 'Update' : 'Grant'}
-                            </button>
-                            <button
-                                onClick={closePermissionModal}
-                                className="bg-gray-300 text-gray-700 py-2 px-4 rounded"
-                            >
+                        <MultiCheckbox
+                            options={availableKeys}
+                            selectedValues={permissionData.key}
+                            onChange={handleKeyCheckboxChange}
+                        />
+                        <div className="flex justify-end mt-4">
+                            <button className="bg-gray-300 text-black px-4 py-2 rounded mr-2" onClick={closePermissionModal}>
                                 Cancel
+                            </button>
+                            <button className="bg-blue-500 text-white px-4 py-2 rounded" onClick={handleSavePermission}>
+                                {editIndex !== null ? 'Update' : 'Add Permission'}
                             </button>
                         </div>
                     </div>
                 </div>
             )}
-
-            <button
-                className='bg-slate-400 py-2 px-3 rounded-xl my-9 fixed bottom-12 right-8 flex justify-between w-20 items-center'
-                onClick={() => openPermissionModal(null)}
-            >
-                <span className='text-white text-xl font-bold'>+</span> New
-            </button>
         </div>
     );
 };

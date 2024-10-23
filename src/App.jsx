@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './components/Home'
 import Login from './components/Auth/Login'
 import Manageuser from './components/Manage_Users/Manageuser';
+import Editprofile from './components/Manage_Users/Editprofile';
 import EditUserdetails from './components/Manage_Users/EditUserProfile';
 import AssetDb from './components/Asset_DB/AssetDb';
 import CreateTicket from './components/Ticket_Creation/Alltickets'
@@ -47,6 +48,7 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/server/Home" element={<Home />} />
         <Route path="/manage-user" element={<Manageuser />} />
+        <Route path="/Edit-profile" element={<Editprofile />} />
         <Route path="/asset-db" element={<AssetDb />} />
         <Route path="/customer-db" element={<CustomerDb />} />
         <Route path="/create-ticket" element={<CreateTicket />} />
