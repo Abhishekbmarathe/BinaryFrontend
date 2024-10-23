@@ -29,7 +29,7 @@ const NewTicket = () => {
   const [showFiles, setShowfiles] = useState(false);
   const [getAttachedfiles, setGetattachedfiles] = useState([]);
   const [ticketFileId, setTicketFileId] = useState();
-  
+
 
 
   const checkStatus = (val) => {
@@ -37,7 +37,7 @@ const NewTicket = () => {
     setTicketStatus('Assigned')
   }
 
-  
+
   const location = useLocation();
   const { ticketId } = location.state; // Get ticketId from state
   const navigate = useNavigate();
@@ -170,7 +170,7 @@ const NewTicket = () => {
 
   // Handle when an address is selected
   const handleAddressSelection = (address) => {
-    
+
     setAddressInput(address);
     setShowAddressSuggestions(false); // Hide the address suggestions list
 
@@ -188,7 +188,7 @@ const NewTicket = () => {
   // Handle when a product is selected
   const handleProductSelection = (product) => {
     setProductInput(product);
-    
+
     setShowProductSuggestions(false); // Hide the product suggestions list
     setValue('productName', product);  // Register selected product in the form
   };
@@ -231,7 +231,7 @@ const NewTicket = () => {
       setTicket(currentTicket);
       setTicketOC(currentTicket.ticketStatus);
       setTicketFileId(currentTicket.ticketNumber);
-      
+
 
       // Populate form fields with existing ticket data
       Object.keys(currentTicket).forEach((key) => {
@@ -242,9 +242,11 @@ const NewTicket = () => {
       setContacts(currentTicket.contact || [{ name: '', number: '' }]);
       setSelectedUsers(currentTicket.collaborators || []);
       setCollaborators(currentTicket.collaborators || []); // Ensure collaborators are set
-      setCompanyType(prevType => (prevType === 'Call' ? 'Contract' : 'Call'));
+      // setCompanyType(prevType => (prevType === 'Call' ? 'Contract' : 'Call'));
       setTicketStatus(currentTicket.ticketStatus || 'Not Assigned');
       setTicketnumber(currentTicket.ticketNumber);
+      setCompanyType(currentTicket.senderCompanyType);
+      // console.log(currentTicket.senderCompanyType) 
 
       // Check edit option based on user role and collaborators
       const isNotCreator = user.username !== currentTicket.creator;
@@ -259,6 +261,7 @@ const NewTicket = () => {
 
 
 
+  // console.log(companyType)
   const handleCompanyTypeToggle = (e) => {
     setCompanyType(e.target.checked ? 'Contract' : 'Call');
   };
@@ -354,7 +357,7 @@ const NewTicket = () => {
         ...data,
         contactDetails: contacts,
         collaborators: selectedUsers,
-        companyType,
+        senderCompanyType: companyType,
         ticketStatus,
         ticketNumber,
         updatedDate: formattedDate // Only the date portion  
@@ -362,7 +365,7 @@ const NewTicket = () => {
 
 
       setClosedata(formData)
-      console.log("contactDetails === ",formData.contactDetails);
+      console.log("contactDetails === ", formData.contactDetails);
 
       axios
         .post(api + 'api/updateTicket', formData)

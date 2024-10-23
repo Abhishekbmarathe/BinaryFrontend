@@ -15,7 +15,7 @@ const NewTicket = () => {
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [ticketStatus, setStatus] = useState('Open')
-  const [companyType, setCompanyType] = useState('Call Based');
+  const [companyType, setCompanyType] = useState('Call');
 
   const [helpTopics, setHelpTopics] = useState([]);
   const [departments, setDepartments] = useState([]);
@@ -157,7 +157,7 @@ const NewTicket = () => {
 
 
   const checkCompany = (isChecked) => {
-    const type = isChecked ? 'Contract Based' : 'Call Based';
+    const type = isChecked ? 'Contract' : 'Call';
     console.log(type)
     setCompanyType(type);
   };
