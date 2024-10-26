@@ -130,7 +130,7 @@ function Alltickets() {
                         {filteredTickets.map((ticket, index) => (
                             <li
                                 key={index}
-                                className='my-4 bg-white py-4 px-5 rounded-lg shadow-md flex items-center justify-between cursor-pointer min-w-80 transition-all'
+                                className='my-4 bg-white py-4 px-5 rounded-lg shadow-md shadow-gray-400 flex items-center justify-between cursor-pointer min-w-80 transition-all'
                                 onClick={() => openTicket(ticket._id)}
                             >
                                 <div className='text-[16px] font-sans'>

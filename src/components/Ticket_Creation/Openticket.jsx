@@ -242,7 +242,6 @@ const NewTicket = () => {
       setContacts(currentTicket.contact || [{ name: '', number: '' }]);
       setSelectedUsers(currentTicket.collaborators || []);
       setCollaborators(currentTicket.collaborators || []); // Ensure collaborators are set
-      // setCompanyType(prevType => (prevType === 'Call' ? 'Contract' : 'Call'));
       setTicketStatus(currentTicket.ticketStatus || 'Not Assigned');
       setTicketnumber(currentTicket.ticketNumber);
       setCompanyType(currentTicket.senderCompanyType);
@@ -285,6 +284,7 @@ const NewTicket = () => {
       i === index ? { ...contact, [field]: value } : contact
     );
     setContacts(updatedContacts);
+    console.log(updatedContacts)
   };
 
   const toggleDropdown = () => {
