@@ -63,7 +63,15 @@ function UserDetail() {
         try {
             const conf = confirm("Are you sure to save the changes ?");
             if (conf) {
-                const response = await axios.post(api + 'api/updateUser', user);
+                const response = await axios.post(api + 'api/updateUser',
+                    user,
+                    {
+                        headers: {
+                            'Content-Type': 'application/json', // Specify the content type
+                            'UpdatedBy': 'Master' // Add the `creater` value in the headers
+                        }
+                    }
+                );
                 console.log('Saved user details:', response.data);
                 fetchAndStoreUsers();
                 alert("Saved successfully...");

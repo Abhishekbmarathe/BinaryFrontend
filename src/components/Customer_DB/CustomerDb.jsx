@@ -23,8 +23,8 @@ function AssetDb() {
   const [showForm, setShowForm] = useState(false); // Form visibility state
   const [step, setStep] = useState(1);
   const [branches, setBranches] = useState([]);
-
-
+  const [creator, setCreator] = useState(JSON.parse(localStorage.getItem('userDet')).username);
+  
 
 
   Clientbranches();
@@ -57,7 +57,14 @@ function AssetDb() {
   const onSubmit = async (data) => {
     setIsLoading(true);
     try {
-      const response = await axios.post(api + 'api/addClient', data);
+      const response = await axios.post(api + 'api/addClient', data,
+        {
+          headers: {
+            'Content-Type': 'application/json', // Specify the content type
+            'updatedby': creator // Add the `creater` value in the headers
+          }
+        }
+      );
       submitBranches(data.companyName); // Pass companyName to submitBranches
       getAllcustomers();
       alert('Customer added successfully...');

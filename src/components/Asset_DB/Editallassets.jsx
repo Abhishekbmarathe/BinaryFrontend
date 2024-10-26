@@ -12,6 +12,8 @@ function AssetDetail() {
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
     const ismAdmin = useAdminStatus();
+    const [creator, setCreator] = useState(JSON.parse(localStorage.getItem('userDet')).username);
+
 
 
     useEffect(() => {
@@ -34,7 +36,14 @@ function AssetDetail() {
             const conf = confirm("Are you sure to save the changes ?");
             if (conf) {
                 const payload = { ...asset, id: asset._id };
-                const response = await axios.post(api + 'api/updateAsset', payload);
+                const response = await axios.post(api + 'api/updateAsset', payload,
+                    {
+                        headers: {
+                            'Content-Type': 'application/json', // Specify the content type
+                            'updatedby': creator // Add the `creater` value in the headers
+                        }
+                    }
+                );
                 fetchAndStoreassets();
                 alert("Saved successfully...");
                 navigate('/asset-db');
@@ -52,7 +61,14 @@ function AssetDetail() {
         try {
             const conf = confirm("Are you sure to delete this asset ?");
             if (conf) {
-                await axios.post(api + 'api/deleteAsset', { id: asset._id });
+                await axios.post(api + 'api/deleteAsset', { id: asset._id },
+                    {
+                        headers: {
+                            'Content-Type': 'application/json', // Specify the content type
+                            'updatedby': creator // Add the `creater` value in the headers
+                        }
+                    }
+                );
                 fetchAndStoreassets();
                 alert("Asset deleted successfully...");
                 navigate('/asset-db');

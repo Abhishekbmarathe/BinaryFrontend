@@ -368,7 +368,14 @@ const NewTicket = () => {
       console.log("contactDetails === ", formData.contactDetails);
 
       axios
-        .post(api + 'api/updateTicket', formData)
+        .post(api + 'api/updateTicket', formData,
+          {
+            headers: {
+              'Content-Type': 'application/json', // Specify the content type
+              'updatedby': creator // Add the `creater` value in the headers
+            }
+          }
+        )
         .then((response) => {
           alert('Ticket updated successfully');
           const ticketNumber = formData.ticketNumber;
@@ -388,7 +395,14 @@ const NewTicket = () => {
   const handleDelete = () => {
     const conf = confirm("Are sure to delete this ticket?");
     if (conf) {
-      axios.post(api + 'api/deleteTicket', { ticketNumber })
+      axios.post(api + 'api/deleteTicket', { ticketNumber },
+        {
+          headers: {
+            'Content-Type': 'application/json', // Specify the content type
+            'updatedby': creator // Add the `creater` value in the headers
+          }
+        }
+      )
         .then((response) => {
           alert("Ticket deleted successfully");
           navigate(-1);

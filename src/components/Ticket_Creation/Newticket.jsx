@@ -219,12 +219,20 @@ const NewTicket = () => {
     };
 
 
-    axios.post(api + 'api/createTicket', formData)
+    axios.post(api + 'api/createTicket', formData,
+      {
+        headers: {
+          'Content-Type': 'application/json', // Specify the content type
+          'updatedby': creator // Add the `creater` value in the headers
+        }
+      }
+    )
       .then((response) => {
         const ticketNumber = response.data.ticketNumber;
         if (ticketNumber) {
           submitFiles(selectedFiles, ticketNumber);
           alert('Ticket Created Successfully');
+          navigate(-1)
         } else {
           throw new Error('No ticket number returned from API');
         }

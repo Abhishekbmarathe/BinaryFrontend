@@ -11,14 +11,22 @@ function AssetDb() {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [isLoading, setIsLoading] = useState(false); // Loading state
   const [showForm, setShowForm] = useState(false); // Form visibility state
+  const [creator, setCreator] = useState(JSON.parse(localStorage.getItem('userDet')).username);
+
 
 
   const onSubmit = async (data) => {
     setIsLoading(true);
     try {
 
-      const response = await axios.post(api + 'api/addAsset', data)
-      // const response = await axios.post('http://localhost:3000/api/addAsset', data)
+      const response = await axios.post(api + 'api/addAsset', data,
+        {
+          headers: {
+            'Content-Type': 'application/json', // Specify the content type
+            'updatedby': creator // Add the `creater` value in the headers
+          }
+        }
+      )
       console.log(response.data)
       getAllAsset();
       setIsLoading(false);

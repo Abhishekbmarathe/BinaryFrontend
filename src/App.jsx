@@ -29,6 +29,8 @@ import Settings from './components/Ticket_Creation/Settings';
 import Openticket from './components/Ticket_Creation/Openticket';
 import Recyclepage from './components/Customer_DB/Recyclepage';
 
+import Logs from './components/Logs';
+
 
 
 function App() {
@@ -70,6 +72,7 @@ function App() {
         <Route path="/open-ticket" element={<Openticket />} />
 
         <Route path="/recycle-bin" element={<Recyclepage/>}/>
+        <Route path="/Logs" element={<Logs/>}/>
 
 
       </Routes>

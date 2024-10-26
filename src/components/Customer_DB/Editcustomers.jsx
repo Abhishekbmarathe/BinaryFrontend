@@ -13,6 +13,8 @@ function CustomerEdit() {
     const [step, setStep] = useState(1);
     const [branches, setBranches] = useState([]);
     const ismAdmin = useAdminStatus();
+    const [creator, setCreator] = useState(JSON.parse(localStorage.getItem('userDet')).username);
+
 
     useEffect(() => {
         const allCustomers = JSON.parse(localStorage.getItem("AllClients"));
@@ -61,15 +63,21 @@ function CustomerEdit() {
                 const response = await axios.post(api + 'api/updateClient', {
                     id: customerId,
                     ...customer
-                });
+                },
+                    {
+                        headers: {
+                            'Content-Type': 'application/json', // Specify the content type
+                            'updatedby': creator // Add the `creater` value in the headers
+                        }
+                    }
+                );
 
                 if (response.status === 200) {
                     alert('Updated customer details successfully');
                     // After updating customer details, update the branches
                     await handleBranchUpdate();
                     // navigate(`/customer/${customerId}`); // Navigate back to the customer detail page after saving
-                    navigate(-1); // Navigate back to the customer detail page after saving
-                    window.location.reload();
+                    navigate(-2); // Navigate back to the customer detail page after saving
                 } else {
                     alert('Failed to update customer details');
                 }
@@ -124,7 +132,14 @@ function CustomerEdit() {
             try {
                 const response = await axios.post(api + 'api/deleteClient', {
                     companyName // Sending companyName in the request body
-                });
+                },
+                    {
+                        headers: {
+                            'Content-Type': 'application/json', // Specify the content type
+                            'updatedby': creator // Add the `creater` value in the headers
+                        }
+                    }
+                );
                 // Handle success response
                 console.log('Company deleted successfully:', response.data);
                 alert('Company deleted successfully')

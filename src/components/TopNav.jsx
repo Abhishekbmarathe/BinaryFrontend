@@ -22,7 +22,7 @@ function TopNav() {
             <div>
                 <ul className='flex gap-12 items-center font-semibold font-sans mr-14'>
                     <li><Link to="/server/Home">Home</Link></li>
-                    <li><Link to="/updates">Updates</Link></li>
+                    <li><Link to="/Logs">Logs</Link></li>
                     <div className='flex items-center gap-2'>
                         <User size={28} color={color} />
                         <li className='my-5 text-red-500 '><Link to="/">Logout</Link></li>
