@@ -90,7 +90,14 @@ function UserDetail() {
         try {
             const conf = confirm("Are you sure to delete this user?");
             if (conf) {
-                await axios.post(api + 'api/deleteUser', { username: user.username });
+                await axios.post(api + 'api/deleteUser', { username: user.username },
+                    {
+                        headers: {
+                            'Content-Type': 'application/json', // Specify the content type
+                            'UpdatedBy': 'Master' // Add the `creater` value in the headers
+                        }
+                    }
+                );
                 console.log('User deleted:', user.username);
                 fetchAndStoreUsers();
                 alert("User deleted successfully...");

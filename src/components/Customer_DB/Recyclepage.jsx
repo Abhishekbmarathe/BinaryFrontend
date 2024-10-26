@@ -8,6 +8,8 @@ import Delete from '../../assets/Delete';
 const Recyclepage = () => {
     const [companys, setCompanys] = useState([]);
     const [firstLetters, setFirstLetters] = useState([]); // To store the first letters
+    const [creator, setCreator] = useState(JSON.parse(localStorage.getItem('userDet')).username);
+
 
     // Function to fetch deleted companies
     const fetchDeletedCompanies = async () => {
@@ -33,7 +35,14 @@ const Recyclepage = () => {
     const restoreCompany = async (companyName) => {
         if (confirm("Are sure you want to restore the company ?")) {
             try {
-                const response = await axios.post(api + 'api/restoreClient', { companyName });
+                const response = await axios.post(api + 'api/restoreClient', { companyName },
+                    {
+                        headers: {
+                            'Content-Type': 'application/json', // Specify the content type
+                            'updatedby': creator // Add the `creater` value in the headers
+                        }
+                    }
+                );
                 console.log('Company restored successfully:', response.data);
                 // Optionally refetch the deleted companies to update the list
                 fetchDeletedCompanies();

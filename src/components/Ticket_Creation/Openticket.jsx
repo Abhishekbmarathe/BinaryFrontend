@@ -439,7 +439,14 @@ const NewTicket = () => {
       };
 
       axios
-        .post(api + 'api/updateTicket', formData)
+        .post(api + 'api/updateTicket', formData,
+          {
+            headers: {
+              'Content-Type': 'application/json', // Specify the content type
+              'updatedby': creator // Add the `creater` value in the headers
+            }
+          }
+        )
         .then((response) => {
           alert('Ticket ' + status + ' successfully');
 

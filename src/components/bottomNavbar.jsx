@@ -56,7 +56,7 @@ const BottomNavbar = () => {
     };
 
     const bahuth = () => {
-        alert("You clicked Notifications ting ting ting");
+        navigate('/Logs')
         navigator.vibrate(60);
     };
 
