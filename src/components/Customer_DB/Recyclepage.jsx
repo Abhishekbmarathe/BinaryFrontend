@@ -57,7 +57,14 @@ const Recyclepage = () => {
     const handleDeleteClick = async (companyName) => {
         if (confirm("Are your sure you want to delete company from recycle bin ?")) {
             try {
-                const response = await axios.post(api + 'api/deleteClientRecycle', { companyName });
+                const response = await axios.post(api + 'api/deleteClientRecycle', { companyName },
+                    {
+                        headers: {
+                            'Content-Type': 'application/json', // Specify the content type
+                            'updatedby': creator // Add the `creater` value in the headers
+                        }
+                    }
+                );
                 console.log('Company deleted successfully:', response.data);
                 // Optionally refetch the deleted companies to update the list
                 fetchDeletedCompanies();

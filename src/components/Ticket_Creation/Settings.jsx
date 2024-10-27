@@ -11,6 +11,8 @@ function Settings() {
   const [slaPlans, setSlaPlans] = useState([]);
   const [departments, setDepartments] = useState([]);
   const [cannedResponses, setCannedResponses] = useState([]);
+  const [creator, setCreator] = useState(JSON.parse(localStorage.getItem('userDet')).username);
+
 
   const navigate = useNavigate();
   const { register, handleSubmit, setValue } = useForm();
@@ -94,7 +96,14 @@ function Settings() {
 
     try {
       // Use POST to append new data while keeping the existing settings intact
-      await axios.post(api + 'api/updateTicketSettings', settingsData);
+      await axios.post(api + 'api/updateTicketSettings', settingsData,
+        {
+          headers: {
+              'Content-Type': 'application/json', // Specify the content type
+              'updatedby': creator // Add the `creater` value in the headers
+          }
+      }
+      );
       alert('Settings updated successfully!');
       window.location.reload(); // Refresh after submission
     } catch (error) {

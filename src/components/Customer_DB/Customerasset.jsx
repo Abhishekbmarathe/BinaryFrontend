@@ -11,6 +11,8 @@ function NewCustomerForm() {
     const navigate = useNavigate();
     const location = useLocation();
     const { companyName, customerId } = location.state || {};
+    const [creator, setCreator] = useState(JSON.parse(localStorage.getItem('userDet')).username);
+
     
     const [scanningIndex, setScanningIndex] = useState(null);
     const scannerRef = useRef(null);
@@ -55,7 +57,14 @@ function NewCustomerForm() {
     const onSubmit = async (data) => {
         console.log(data);
         try {
-            const response = await axios.post(api + 'api/updateClientAsset', data);
+            const response = await axios.post(api + 'api/updateClientAsset', data,
+                {
+                    headers: {
+                        'Content-Type': 'application/json', // Specify the content type
+                        'updatedby': creator // Add the `creater` value in the headers
+                    }
+                }
+            );
             console.log(response.data);
             alert('Asset created successfully');
             navigate(`/customer/${customerId}`); // Navigate back to the customer list after creating the asset

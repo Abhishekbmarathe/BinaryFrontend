@@ -12,6 +12,8 @@ function AssetUpdate() {
     const { state } = useLocation();
     const { productName, brand, category, _id, location, department, serialNo = '', additionalData = '' } = state || {};
     const navigate = useNavigate();
+    const [creator, setCreator] = useState(JSON.parse(localStorage.getItem('userDet')).username);
+
 
     const { register, handleSubmit, formState: { errors }, reset, getValues } = useForm({
         defaultValues: {
@@ -26,7 +28,7 @@ function AssetUpdate() {
         }
     });
     localStorage.setItem("assetId", _id);
-    
+
 
     const [scanningIndex, setScanningIndex] = useState(null);
     const scannerRef = useRef(null);
@@ -72,7 +74,14 @@ function AssetUpdate() {
         delete updatedData._id;
 
         try {
-            await axios.post(api + 'api/updateClientAsset', updatedData);
+            await axios.post(api + 'api/updateClientAsset', updatedData,
+                {
+                    headers: {
+                        'Content-Type': 'application/json', // Specify the content type
+                        'updatedby': creator // Add the `creater` value in the headers
+                    }
+                }
+            );
             alert('Asset updated successfully');
             navigate(-1);
         } catch (error) {
@@ -85,7 +94,14 @@ function AssetUpdate() {
     const handleDelete = async (data) => {
         if (confirm("Are you sure you want to delete this asset?")) {
             try {
-                await axios.post(api + 'api/deleteClientAsset', { id: data.id });
+                await axios.post(api + 'api/deleteClientAsset', { id: data.id },
+                    {
+                        headers: {
+                            'Content-Type': 'application/json', // Specify the content type
+                            'updatedby': creator // Add the `creater` value in the headers
+                        }
+                    }
+                );
                 alert('Asset deleted successfully');
                 navigate(-1);
             } catch (error) {
@@ -121,6 +137,7 @@ function AssetUpdate() {
                     <input type="hidden" {...register("id")} value={_id} />
 
                     {/* Location Field */}
+                   
                     <div className='mb-4'>
                         <label className="block mb-1">Location</label>
                         <input

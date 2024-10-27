@@ -13,6 +13,7 @@ const Logs = () => {
     const [filteredRecords, setFilteredRecords] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
 
+
     useEffect(() => {
         const fetchRecords = async () => {
             try {
@@ -54,6 +55,7 @@ const Logs = () => {
             case "created": return <Created />
             case "deleted": return <Delete color="red" height='18' />
             case "restored": return <Restored size='18' />
+            case "Final": return <Delete color="red" height='18' />
 
             default: return <Update />
         }
@@ -64,6 +66,7 @@ const Logs = () => {
             case "created": return "bg-blue-50 border-blue-200"
             case "deleted": return "bg-red-50 border-red-200"
             case "restored": return "bg-cyan-50 border-cyan-200"
+            case "Final": return "bg-red-100 border-red-200"
 
             default: return "bg-white"
         }
@@ -102,30 +105,36 @@ const Logs = () => {
                                     const { initials, color } = getInitials(record.updatedBy);
                                     return (
                                         <tr key={index} className={`hover:bg-gray-100 border font-semibold text-sm ${bg(record.action)}`}>
-                                            <td className="px-4 py-2 border-b">
-                                                <div className="flex gap-1 justify-center align-middle">
+                                            <td className="px-4 py-2 ">
+                                                <div className="flex gap-1 justify-center items-center">
                                                     <Calender color={"gray"} />
                                                     <span>{record.updatedDate}</span>
                                                 </div>
                                             </td>
-                                            <td className="px-4 py-2 border-b text-center flex items-center justify-start space-x-2">
+                                            <td className="px-4 py-2 text-center flex items-center justify-start space-x-2">
                                                 <div className={`w-8 h-8 flex items-center justify-center text-white rounded-full ${color}`}>
                                                     {initials}
                                                 </div>
                                                 <span>{record.updatedBy}</span>
                                             </td>
-                                            <td className="px-4 py-2 border-b text-left capitalize">
+                                            <td className="px-4 py-2 text-left capitalize">
                                                 <div className="flex items-center">
                                                     <Icon action={record.action} />
                                                     <span className="ml-2">{record.action}</span>
                                                 </div>
                                             </td>
-                                            <td className="px-4 py-2 border-b text-left">
+                                            <td className="px-4 py-2 text-left">
                                                 {Object.entries(record.data).map(([key, value]) => (
                                                     <div key={key} className="text-sm text-gray-600">
-                                                        <strong>{key}:</strong> {value}
+                                                        <strong>
+                                                            {key === 'ticketNumber' ? 'Ticket Number'
+                                                                : key === 'ticketSettings' ? 'Ticket Settings'
+                                                                    : key}:
+                                                        </strong> {value}
                                                     </div>
                                                 ))}
+
+
                                             </td>
                                         </tr>
                                     );
