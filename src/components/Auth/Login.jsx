@@ -6,6 +6,7 @@ import User from '../../assets/User'
 import Logo from '../../assets/Logo'
 import api from '../modules/Api'
 
+
 const Login = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const navigate = useNavigate();
@@ -23,12 +24,12 @@ const Login = () => {
         setLoading(true);
         try {
             const response = await axios.post(api + 'api/login', data);
-            
+
             if (response.status === 200) {
                 localStorage.clear();
                 if (data.username.trim() === "Master") {
                     await axios.get(api + "api/getallusers")
-                        
+
                         .then((response) => {
                             ("All Users:", response.data);
                             localStorage.setItem("allUsers", JSON.stringify(response.data));
@@ -38,7 +39,7 @@ const Login = () => {
                             // alert("Something went wrong fetching all users.");
                         });
                     await axios.get(api + "api/getAllAsset")
-                        
+
                         .then((response) => {
                             ("All Assets:", response.data);
                             localStorage.setItem("getAllAssets", JSON.stringify(response.data));
@@ -48,7 +49,7 @@ const Login = () => {
                             // alert("Something went wrong fetching all assets.");
                         });
                     await axios.get(api + "api/getAllClients")
-                        
+
                         .then((response) => {
                             ("All customers:", response.data);
                             localStorage.setItem("AllClients", JSON.stringify(response.data));
@@ -58,7 +59,7 @@ const Login = () => {
                             // alert("Something went wrong fetching all assets.");
                         });
                     await axios.post(api + "api/getAllTickets", { username: data.username })
-                        
+
                         .then((response) => {
                             // ("All customers:", response.data);
                             localStorage.setItem("AllTickets", JSON.stringify(response.data));
@@ -70,7 +71,7 @@ const Login = () => {
 
                 }
                 await axios.get(api + "api/getOptionUsers")
-                    
+
                     .then((response) => {
                         localStorage.setItem("onlyUsers", JSON.stringify(response.data));
                     })
@@ -95,7 +96,9 @@ const Login = () => {
         <div className=' w-screen '>
             <div className='text-black flex bg-page-gradient items-center justify-center flex-col p-12  md:m-auto h-screen md:shadow-customBlue md:scale-[.7] md:rounded-[100px] md:w-[34vw]'>
                 {/* <h2 className="text-2xl text font-bold mb-5 text-center">Binary systems Login</h2> */}
-                <img src="/src/assets/logo.jpeg" alt="Logo..." className='md:scale-[.7] scale-[.6]' />
+                {/* <img src="/src/assets/logo.jpeg" alt="Logo..." className='md:scale-[.7] scale-[.6]' /> */}
+                {/* <img src={Logo} alt="Logo..." className='md:scale-[.7] scale-[.6]' /> */}
+                <Logo />
                 <div className='icon'>
                     <lord-icon
                         src="https://cdn.lordicon.com/hrjifpbq.json"

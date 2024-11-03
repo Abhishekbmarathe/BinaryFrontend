@@ -1,9 +1,10 @@
 import React from 'react'
+import logo from './logo.jpeg'
 
 function Logo() {
     return (
         <div>
-                <img src="/src/assets/logo.jpeg" alt="Logo..." className='h-24 w-[300px] bg-cover bg-blend-multiply'/>
+                <img src={logo} alt="Logo..." className='md:scale-[.7] scale-[.6]'/>
         </div>
     )
 }
