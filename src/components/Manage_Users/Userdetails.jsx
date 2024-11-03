@@ -130,21 +130,21 @@ function Userdetails() {
     const renderCard = (title, count1, label1, count2, label2, count3, label3, navLink) => {
         // Conditionally wrap the div in a Link only if navLink is provided
         const cardContent = (
-            <div className="w-full md:w-[400px] bg-cardcolor shadow-lg border-b-[2px] border-customColor text-black rounded-lg z-30 p-2 font-semibold font-sans">
+            <div className="w-full md:w-[400px] bg-cardcolor md:shadow-lg border-[2px] border-slate-300 text-black rounded-lg/ z-30 px-2 font-semibold font-sans">
                 <h2 className='mt-1 italic w-fit /text-xl'>{title}</h2>
-                <div className="p-5 text-center flex gap whitespace-nowrap">
-                    <div className='flex flex-col items-center justify-center rounded mx-auto'>
+                <div className="md:p-5 text-center flex gap whitespace-nowrap">
+                    <div className='flex flex-col items-center justify-center rounded py-2 mx-auto'>
                         <h1 className='text-5xl mb-5 text-customColor font-bold'>{count1}</h1>
                         <span className='text-sm '>{label1}</span>
                     </div>
                     {count2 !== undefined && (
-                        <div className='flex flex-col items-center justify-center my-2 rounded mx-auto'>
+                        <div className='flex flex-col items-center justify-center py-2  mx-auto'>
                             <h1 className='text-5xl mb-5 text-customColor font-bold'>{count2}</h1>
                             <span className='text-sm'>{label2}</span>
                         </div>
                     )}
                     {count3 !== undefined && (
-                        <div className='flex flex-col items-center justify-center rounded mx-auto'>
+                        <div className='flex flex-col items-center justify-center rounded py-2 mx-auto'>
                             <h1 className='text-5xl mb-5 text-customColor font-bold'>{count3}</h1>
                             <span className='text-sm'>{label3}</span>
                         </div>
@@ -207,7 +207,7 @@ function Userdetails() {
     return (
         <div className='text-gray-300 md:mx-[40%] lg:mx-[30%] md:w-[900px] mb-24 md:mb-0'>
             <div className='md:hidden gap-2 flex justify-between items-center bg-white sticky top-0 z-30'>
-                <img src={logo} alt="Logo..." className='w-24' />
+                <img src={logo} alt="Logo..." className='w-24 py-3' />
                 <div className='flex gap-2 items-center px-3'>
                     <Edit />
                     <span className='text-black'><Link to="/Edit-profile">Edit Profile</Link></span>
@@ -215,7 +215,7 @@ function Userdetails() {
             </div>
 
             <div className='flex flex-col md:w-fit md:mt-5 sticky top-12 z-10'>
-                <div className='flex gap-3 md:w-fit w-screen px-6 py-3 md:py-0 md:p-6 items-center border-customColor border-b-[3px]  bg-cardcolor  bg-cardBlack/ shadow-lg m-auto md:m-0 md:rounded-xl'>
+                <div className='flex gap-3 md:w-fit w-screen px-6 py-3 md:py-3 md:p-6 items-center border-slate-300 md:border-[2px]  bg-cardcolor  bg-cardBlack/ md:shadow-lg m-auto md:m-0 md:rounded-xl/'>
                     <div className='user'>
                         <User size='130' color='rgb(0 197 255)' />
                         <div className='px-8'>
