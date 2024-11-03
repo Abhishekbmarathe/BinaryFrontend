@@ -8,7 +8,7 @@ function CustomerProfile() {
     const [filteredCustomers, setFilteredCustomers] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [firstLetter, setFirstLetter] = useState([]); // To store the first letters
- 
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -58,9 +58,10 @@ function CustomerProfile() {
             {filteredCustomers.length > 0 ? (
                 filteredCustomers.map((customer, index) => (
                     <div key={index} className="/border-customColor bg-cyan-50/ overflow-hidden flex items-center">
-                        <div className='bg-customColor w-12 h-11 rounded-full flex items-center justify-center text-white text-2xl'>
+                        <div className="bg-customColor w-12 h-12 rounded-full flex items-center justify-center text-white text-2xl aspect-square">
                             <h1>{firstLetter[index]}</h1>
                         </div>
+
                         <div
                             className="w-[90vw] sm:max-w-full rounded-[8px] p-4 py-2 cursor-pointer  items-center"
                             onClick={() => handleExpand(customer._id)}

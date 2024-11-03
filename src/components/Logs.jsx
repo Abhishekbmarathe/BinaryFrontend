@@ -7,6 +7,10 @@ import Update from '../assets/Update';
 import Created from '../assets/Created';
 import Delete from '../assets/Delete';
 import Restored from '../assets/History';
+import Company from '../assets/Companyicon';
+import Settings from '../assets/Settings';
+import User from '../assets/User';
+import Ticket from '../assets/Ticket';
 
 const Logs = () => {
     const [records, setRecords] = useState([]);
@@ -71,6 +75,15 @@ const Logs = () => {
             default: return "bg-white"
         }
     }
+    const Logo = ({ k }) => {
+        switch (k) {
+            case "company": return <Company />
+            case "Company": return <Company />
+            case "ticketSettings": return <Settings color='rgb(0 197 255)'/>
+            case "ticketNumber": return <Ticket size='18'/>
+            case "User": return <User color='rgb(0 197 255)' size='20'/>
+        }
+    }
 
     return (
         <>
@@ -89,9 +102,9 @@ const Logs = () => {
                     />
                 </div>
 
-                <div className="overflow-x-auto">
-                    <table className="min-w-full bg-white border border-gray-300 font-sans">
-                        <thead>
+                <div className="overflow-auto h-screen">
+                    <table className="min-w-full bg-white  border-gray-300 font-sans">
+                        <thead className='top-0 sticky bg-white  z-10'>
                             <tr>
                                 <th className="px-4 py-2 border-b text-left/ ">Updated Date</th>
                                 <th className="px-4 py-2 border-b text-left">Updated By</th>
@@ -104,18 +117,20 @@ const Logs = () => {
                                 [...filteredRecords].reverse().map((record, index) => {  // Use reverse() here
                                     const { initials, color } = getInitials(record.updatedBy);
                                     return (
-                                        <tr key={index} className={`hover:bg-gray-100 border font-semibold text-sm ${bg(record.action)}`}>
+                                        <tr key={index} className={`hover:bg-gray-100  border font-semibold text-sm ${bg(record.action)}`}>
                                             <td className="px-4 py-2 ">
                                                 <div className="flex gap-1 justify-center items-center">
                                                     <Calender color={"gray"} />
                                                     <span>{record.updatedDate}</span>
                                                 </div>
                                             </td>
-                                            <td className="px-4 py-2 text-center flex items-center justify-start space-x-2">
+                                            <td className="px-4 py-2">
+                                            <div className='flex items-center justify-start space-x-2'>
                                                 <div className={`w-8 h-8 flex items-center justify-center text-white rounded-full ${color}`}>
                                                     {initials}
                                                 </div>
                                                 <span>{record.updatedBy}</span>
+                                            </div>
                                             </td>
                                             <td className="px-4 py-2 text-left capitalize">
                                                 <div className="flex items-center">
@@ -126,8 +141,8 @@ const Logs = () => {
                                             <td className="px-4 py-2 text-left">
                                                 {Object.entries(record.data).map(([key, value]) => (
                                                     <div key={key} className="text-sm text-gray-600">
-                                                        <strong>
-                                                            {key === 'ticketNumber' ? 'Ticket Number'
+                                                        <strong className='flex items-center gap-1'>
+                                                            <Logo k={key} /> {key === 'ticketNumber' ? 'Ticket Number'
                                                                 : key === 'ticketSettings' ? 'Ticket Settings'
                                                                     : key}:
                                                         </strong> {value}

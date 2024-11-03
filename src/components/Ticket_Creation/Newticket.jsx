@@ -303,7 +303,7 @@ const NewTicket = () => {
   return (
     <div className="md:w-1/2 m-auto">
       <h1 className='mt-6 font-bold text-2xl text-center sticky top-0 z-10'>New<span className='text-customColor'>Ticket</span></h1>
-      <form onSubmit={handleSubmit(onSubmit)} className="">
+      <form onSubmit={handleSubmit(onSubmit)} className="" autoComplete='off'>
         {step === 1 && (
           <div className="w-full max-w-md p-8 rounded-lg mb-2">
             <label className="block text-2xl mb-6 text-customColor">Customer Info</label>
@@ -363,7 +363,7 @@ const NewTicket = () => {
               {showCompanySuggestions && suggestions.length > 0 && (
                 <ul className="suggestions-list bg-slate-200 absolute z-10 w-full">
                   {suggestions.map((suggestion, index) => (
-                    <li key={index} onClick={() => handleCompanySelection(suggestion)} className='p-1'>
+                    <li key={index} onClick={() => handleCompanySelection(suggestion)} className='p-1 cursor-pointer hover:bg-slate-300'>
                       {suggestion}
                     </li>
                   ))}
@@ -383,13 +383,13 @@ const NewTicket = () => {
                 onChange={handleAddressInputChange}
                 onFocus={() => setShowAddressSuggestions(true)} // Show suggestions when focused
                 onBlur={() => setTimeout(() => setShowAddressSuggestions(false), 100)} // Hide suggestions on blur with a delay
-                autoComplete='off'
+                autoComplete="off"
               />
               {/* Display address suggestions based on the selected company */}
               {showAddressSuggestions && filteredAddresses.length > 0 && (
                 <ul className="suggestions-list bg-slate-200 absolute w-full">
                   {filteredAddresses.map((address, index) => (
-                    <li key={index} onClick={() => handleAddressSelection(address)} className='py-1 px-2'>
+                    <li key={index} onClick={() => handleAddressSelection(address)} className='py-1 px-2 cursor-pointer hover:bg-slate-300'>
                       {address}
                     </li>
                   ))}
@@ -413,6 +413,7 @@ const NewTicket = () => {
                 {...register('email')}
                 type="email"
                 id="email"
+                autoComplete="off"
               />
             </div>
 
