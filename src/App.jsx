@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+// import { BrowserRouter as  Router, Routes, Route } from 'react-router-dom';
+import { HashRouter as  Router, Routes, Route } from 'react-router-dom';
 import Home from './components/Home'
 import Login from './components/Auth/Login'
 import Manageuser from './components/Manage_Users/Manageuser';
@@ -71,8 +72,8 @@ function App() {
         <Route path="/openSettings" element={<Settings />} />
         <Route path="/open-ticket" element={<Openticket />} />
 
-        <Route path="/recycle-bin" element={<Recyclepage/>}/>
-        <Route path="/Logs" element={<Logs/>}/>
+        <Route path="/recycle-bin" element={<Recyclepage />} />
+        <Route path="/Logs" element={<Logs />} />
 
 
       </Routes>
