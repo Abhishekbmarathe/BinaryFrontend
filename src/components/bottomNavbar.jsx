@@ -8,6 +8,8 @@ import Home from '../assets/Home.jsx';
 import Arrowup from '../assets/Arrowup.jsx'
 import Arrrowdown from '../assets/Arrowdown.jsx';
 import Bell from '../assets/Bellnotification.jsx'
+// import logo2 from '../assets/logo2.jpeg';
+
 
 const BottomNavbar = () => {
     const [cardData, setCardData] = useState([

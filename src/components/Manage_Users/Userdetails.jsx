@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import User from '../../assets/User';
 import Edit from '../../assets/Edit';
 import { Link } from 'react-router-dom';
-import Logo from '../../assets/Logo';
+import logo from '../../assets/logo2.jpeg';
 import getAllAsset from '../modules/getTicketSetting';
 import getAllCustomers from '../modules/getAllcustomers';
 import getAlltickets from '../modules/getAllTickets';
@@ -207,7 +207,7 @@ function Userdetails() {
     return (
         <div className='text-gray-300 md:mx-[40%] lg:mx-[30%] md:w-[900px] mb-24 md:mb-0'>
             <div className='md:hidden gap-2 flex justify-between items-center bg-white sticky top-0 z-30'>
-                <img src="/src/assets/logo.jpeg" alt="Logo..." className='w-24' />
+                <img src={logo} alt="Logo..." className='w-24' />
                 <div className='flex gap-2 items-center px-3'>
                     <Edit />
                     <span className='text-black'><Link to="/Edit-profile">Edit Profile</Link></span>
