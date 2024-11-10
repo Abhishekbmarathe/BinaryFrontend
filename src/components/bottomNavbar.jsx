@@ -87,7 +87,7 @@ const BottomNavbar = () => {
                         {/* <span>Logs</span> */}
                     </button>
                 </nav>
-                <div className={`fixed inset-x-0 bottom-0 /bg-neutral-800 bg-white bg-panel-gradient/ border-t-2 border-customColor text-cyan-50 p-4 transition-transform duration-500 rounded-t-3xl ${pop ? 'translate-y-0' : 'translate-y-full'}`}>
+                <div className={`fixed inset-x-0 bottom-0 bg-white border-t-2 border-customColor p-4 transition-transform duration-500 rounded-t-3xl ${pop ? 'translate-y-0' : 'translate-y-full'}`}>
                     <div className='my-6 text-center text-black font-semibold'>Control Panel</div>
                     <div className="cards flex gap-4 justify-center   items-center flex-wrap">
                         {filteredCardData.map((card, index) => (

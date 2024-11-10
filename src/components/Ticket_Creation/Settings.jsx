@@ -99,10 +99,10 @@ function Settings() {
       await axios.post(api + 'api/updateTicketSettings', settingsData,
         {
           headers: {
-              'Content-Type': 'application/json', // Specify the content type
-              'updatedby': creator // Add the `creater` value in the headers
+            'Content-Type': 'application/json', // Specify the content type
+            'updatedby': creator // Add the `creater` value in the headers
           }
-      }
+        }
       );
       alert('Settings updated successfully!');
       window.location.reload(); // Refresh after submission
@@ -113,11 +113,11 @@ function Settings() {
 
   return (
     <div>
-      <h1 className='my-6 font-semibold text-3xl font-sans text-center sticky top-0 z-10 bg-[#f5f5f5]'>
+      <h1 className='my-6/ font-semibold text-3xl font-sans  z-10 bg-[#f5f5f5]/'>
         Ticket <span className='text-customColor'>Settings</span>
       </h1>
 
-      <form onSubmit={handleSubmit(onSubmit)} className='px-3 md:w-1/2 md:m-auto w-full'>
+      <form onSubmit={handleSubmit(onSubmit)} className='px-3 /md:w-1/2 md:m-auto/ w-full'>
         <div className='text-customColor font-semibold font-sans flex gap-3 relative justify-center'>
           <div className='my-5 flex w-full overflow-auto'>
             {['Help', 'SLA', 'Department', 'Canned'].map((type) => (
@@ -133,25 +133,25 @@ function Settings() {
           </div>
         </div>
 
-        <div className='border border-gray-400 rounded-md flex items-center gap-3'>
+        <div className=' rounded-md flex items-center gap-3'>
           <input
             type="text"
-            className='bg-transparent border-none p-3  w-11/12 block rounded-md focus:border-customColor outline-none'
+            className='bg-transparent  px-3 border-2 py-2  w-11/12 block rounded-md focus:border-customColor outline-none border-gray-300'
             placeholder={`Enter ${topic}`}
             {...register('addTopic')}
           />
           <button
             type="button"
             onClick={handleSubmit(handleAddTopic)}
-            className="p-2 px-5 text-white text-3xl rounded-md bg-blue-400"
+            className="py-2  px-5 text-white   rounded-md bg-blue-400 hover:bg-blue-500"
           >
-            +
+            Add
           </button>
         </div>
 
         <hr className='w-1/2 h-[2px] bg-gray-500 m-auto my-6 rounded-lg' />
 
-        <p className='px-5'>{topic}</p>
+        {/* <p className='px-5'>{topic}</p> */}
         <ul className='px-5'>
           {getCurrentList().map((item, index) => (
             <li key={index} className='border my-1 p-2 border-gray-500 rounded-lg flex justify-between items-center w-1/2'>
@@ -167,7 +167,7 @@ function Settings() {
           ))}
         </ul>
 
-        <button type="submit" className='bg-slate-400 py-2 px-3 rounded-xl my-9 fixed bottom-0 right-8 w-20 items-center text-white'>
+        <button type="submit" className='bg-blue-400 py-1 px-3 w-full rounded my-9  items-center text-white hover:bg-blue-500'>
           Save
         </button>
       </form>

@@ -153,6 +153,7 @@ function CustomerEdit() {
                                         onChange={handleChange}
                                         className="w-full border-2 p-3 mb-4 bg-transparent outline-none hover:border-customColor rounded border-gray-400"
                                         placeholder="Company Name"
+                                        readOnly={true}
                                     />
                                 </div>
                                 <div className="mb-4">
@@ -253,7 +254,7 @@ function CustomerEdit() {
                                         className='mr-2 p-2 border rounded bg-transparent border-gray-400 w-full'
                                     />
                                     <button onClick={() => handleRemoveBranch(index)} className='p-1'>
-                                        <Delete color='red'/>
+                                        <Delete color='red' />
                                     </button>
                                 </div>
                             ))}

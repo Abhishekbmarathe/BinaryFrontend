@@ -681,12 +681,14 @@ const NewTicket = () => {
                     <ul className='mt-4'>
                       {selectedFiles.map((file, index) => (
                         <li key={index} className="flex items-center justify-between mb-1 p-2 border-b border-gray-400">
-                          <div className='mr-2'>
+                          <div className='flex items-center mr-2'>
                             <File />
                           </div>
-                          {file.name}
+                          <div className="flex-1 overflow-hidden">
+                            <span className="truncate block max-w-[200px]">{file.name}</span>
+                          </div>
                           <button
-                            className="text-red-500 ml-2 p-1 bg-red-500 rounded"
+                            className="text-white bg-red-500 hover:bg-red-600 ml-2 p-1 rounded"
                             type="button"
                             onClick={() => removeFile(index, selectedFiles, setSelectedFiles)}
                           >
@@ -695,19 +697,10 @@ const NewTicket = () => {
                         </li>
                       ))}
                     </ul>
+
                   </div>
                 )}
               </div>
-
-              {/* {selectedFiles.length > 0 && (
-                <button
-                  className="mt-4 bg-green-500 text-white p-2 rounded-lg"
-                  type="button"
-                  onClick={() => submitFiles(selectedFiles)}
-                >
-                  Submit Files
-                </button>
-              )} */}
             </div>
 
             {/* hiden fields */}

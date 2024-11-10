@@ -53,6 +53,15 @@ function AssetDb() {
         {showForm && (
           <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-6'>
             <div>
+              <label className='block text-xl text-customColor font-sans  font-medium mb-2 '>Category</label>
+              <input
+                {...register('category', { required: true })}
+                className='border-2 rounded p-3 w-full bg-transparent border-gray-400'
+                placeholder='Enter category'
+              />
+              {errors.category && <span className='text-red-500'>Category is required</span>}
+            </div>
+            <div>
               <label className='block text-xl text-customColor font-sans  font-medium mb-2'>Brand Name</label>
               <input
                 {...register('brandName', { required: true })}
@@ -70,15 +79,7 @@ function AssetDb() {
               />
               {errors.productName && <span className='text-red-500'>Product Name is required</span>}
             </div>
-            <div>
-              <label className='block text-xl text-customColor font-sans  font-medium mb-2 '>Category</label>
-              <input
-                {...register('category', { required: true })}
-                className='border-2 rounded p-3 w-full bg-transparent border-gray-400'
-                placeholder='Enter category'
-              />
-              {errors.category && <span className='text-red-500'>Category is required</span>}
-            </div>
+
             <button
               type="submit"
               className="w-3/4 m-auto mt-6 p-2 bg-blue-500 text-white rounded-md"

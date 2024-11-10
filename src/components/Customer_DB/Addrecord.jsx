@@ -71,81 +71,79 @@ function NewPage() {
     };
 
     return (
-        <div className='w-screen h-[85vh] flex flex-col sm:h-auto'>
-            <h1 className="w-fit m-auto font-bold text-2xl my-8">
+        <div className="min-h-screen flex flex-col items-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 font-sans">
+            <h1 className="text-3xl font-semibold font-sans text-gray-900 mb-10">
                 Add <span className="text-customColor">Record</span>
             </h1>
-            <div className='w-56 h-56 mx-auto'>
+            <div className="w-72 h-full mb-8">
                 {selectedImage && (
-                    <div className="mb-4">
-                        <img src={selectedImage} alt="Selected" className="w-full h-full object-cover mb-4" />
+                    <div className="rounded-lg shadow-lg overflow-hidden">
+                        <img src={selectedImage} alt="Selected" className="w-full h-96 object-cover" />
                     </div>
                 )}
             </div>
-            <form onSubmit={handleSubmit(onSubmit)} className='w-[95vw] sm:w-[50%] m-auto'>
-                <div className='flex flex-wrap items-center gap-14 m-auto mb-5'>
-                    <div>
+            <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-lg bg-white p-8 shadow-lg rounded-lg">
+                <div className="flex flex-wrap justify-between items-center mb-8">
+                    <div className="w-full sm:w-auto">
                         <input
                             type="text"
                             id="currentDate"
-                            className="shadow bg-transparent appearance-none border w-[200px] rounded-xl p-3 leading-tight focus:outline-none focus:shadow-outline"
+                            className="w-full sm:w-auto bg-gray-100 text-gray-800 border border-gray-300 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             value={new Date().toLocaleDateString()}
                             readOnly
                             {...register('currentDate')}
                         />
                     </div>
-
-                    <div className="relative">
-                        <input
-                            type="file"
-                            id="photo"
-                            name="photo"
-                            className="shadow bg-transparent appearance-none border rounded w-[50px] py-[5px] leading-tight focus:outline-none focus:shadow-outline absolute invisible"
-                            capture="camera"
-                            ref={fileInputRef}
-                            style={{ opacity: 0, zIndex: -1 }}
-                            onChange={handleImageChange}
-                        />
-                        <div onClick={() => handleClick(fileInputRef)} className='w-fit scale-[1.8] cursor-pointer'>
-                            <Camera />
+                    <div className="flex items-center gap-8">
+                        <div>
+                            <input
+                                type="file"
+                                id="photo"
+                                name="photo"
+                                className="hidden"
+                                ref={fileInputRef}
+                                onChange={handleImageChange}
+                            />
+                            <div onClick={() => handleClick(fileInputRef)} className="cursor-pointer p-3 rounded-lg bg-blue-100 hover:bg-blue-200">
+                                <Camera className="text-blue-500 w-8 h-8" />
+                            </div>
                         </div>
-                    </div>
-
-                    <div className="relative">
-                        <input
-                            type="file"
-                            id="gallery"
-                            name="gallery"
-                            className="shadow bg-transparent appearance-none border rounded w-[50px] py-[5px] leading-tight focus:outline-none focus:shadow-outline absolute invisible"
-                            ref={galleryInputRef}
-                            style={{ opacity: 0, zIndex: -1 }}
-                            onChange={handleImageChange}
-                        />
-                        <div onClick={() => handleClick(galleryInputRef)} className='w-fit scale-[1.4] cursor-pointer bg-customColor rounded'>
-                            <GalleryIcon />
+                        <div>
+                            <input
+                                type="file"
+                                id="gallery"
+                                name="gallery"
+                                className="hidden"
+                                ref={galleryInputRef}
+                                onChange={handleImageChange}
+                            />
+                            <div onClick={() => handleClick(galleryInputRef)} className="cursor-pointer p-[12px] rounded-lg bg-customColor hover:bg-green-200">
+                                <GalleryIcon className="text-green-500 w-8 h-8" />
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div className="mb-4">
-                    <label htmlFor="description" className="block font-bold mb-2">
+                <div className="mb-8">
+                    <label htmlFor="description" className="block text-xl font-medium text-gray-700 mb-3">
                         Description
                     </label>
                     <textarea
                         id="description"
-                        className="shadow bg-transparent appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
+                        className="w-full h-40 bg-gray-100 text-gray-800 border border-gray-300 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         {...register('description', { required: 'Description is required' })}
                     />
-                    {errors.description && <span className="text-red-500">{errors.description.message}</span>}
+                    {errors.description && <span className="text-red-600 text-sm mt-2">{errors.description.message}</span>}
                 </div>
                 <button
                     type="submit"
-                    className="bg-slate-200 hover:opacity-70 w-full transition-all text-purple-700 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    className="w-full bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-700 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                     Upload Record
                 </button>
             </form>
         </div>
     );
+    
 }
 
 export default NewPage;

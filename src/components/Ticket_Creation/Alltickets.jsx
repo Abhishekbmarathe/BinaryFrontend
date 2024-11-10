@@ -10,6 +10,7 @@ import Technician from '../../assets/Technician';
 import getTicketsettings from '../modules/getTicketSetting';
 import Search from '../../assets/Search';
 import Home from '../../assets/Home';
+import Ticketpannel from './Ticketpannel';
 
 function Alltickets() {
     const [settings, setSetting] = useState(false);
@@ -98,99 +99,106 @@ function Alltickets() {
     };
 
     return (
-        <div className='mb-16'>
+        <div className='mb-16 '>
             <Nav />
-            <div className='my-6 flex items-center justify-between md:justify-start md:gap-16 px-3 relative '>
-                <h1 className='font-semibold font-sans text-3xl sticky top-0 z-10 bg-[#f5f5f5]'>
-                    Manage<span className='text-customColor'>Ticket</span>
-                </h1>
+            <h1 className='font-semibold font-sans text-3xl sticky top-0 z-10 hidden whitespace-nowrap md:block px-3'>
+                {/* Manage<span className='text-customColor '>Ticket</span> */}
+            </h1>
+            <div className='md:flex'>
+                <Ticketpannel />
+                <div className='my-6 flex items-center justify-between md:justify-start md:gap-16 px-3 relative md:opacity-0 md:-z-10 md:hidden'>
+                    <h1 className='font-semibold font-sans text-3xl sticky top-0 z-10 bg-[#f5f5f5]'>
+                        Manage<span className='text-customColor'>Ticket</span>
+                    </h1>
 
-                {isAdmin && (
-                    <button onClick={toggleSettings}>
-                        <Settings />
-                    </button>
-                )}
-            </div>
-            {/* Search Input */}
-            <div className='px-3 flex relative md:max-w-[700px] md:px-0 md:rounded-lg md:mx-3 md:shadow-inner shadow- md:shadow-gray-400 md:bg-white'>
-                <input
-                    type="text"
-                    className='bg-transparent border border-t-0 border-l-0 border-r-0 border-b-gray-500 md:border-none p-2 outline-none w-full'
-                    placeholder="Search by company name or ticket number"
-                    value={searchInput}
-                    onChange={handleSearchInputChange} // Handle input change
-                />
-                <button className='absolute right-6 top-2'>
-                    <Search />
-                </button>
-            </div>
-            <div className="px-3 md:w-fit">
-                {filteredTickets.length > 0 ? (
-                    <ul className='md:flex md:gap-4 md:flex-wrap items-center m-auto'>
-                        {filteredTickets.map((ticket, index) => (
-                            <li
-                                key={index}
-                                className='my-4 bg-white py-4 px-5 rounded-lg shadow-md shadow-gray-400 flex items-center justify-between cursor-pointer min-w-80 transition-all'
-                                onClick={() => openTicket(ticket._id)}
-                            >
-                                <div className='text-[16px] font-sans'>
-                                    <div className='text-gray-600 flex items-center gap-1'>
-                                        {ticket.ticketNumber} <span className='text-[10px] text-gray-400'>●</span> <span className={`${getPriorityColor(ticket.priority)}`}>{ticket.priority}</span>
-                                    </div>
-                                    <span className='text-customColor text-xl'>{ticket.companyName}</span>
-                                    <div className='my-1 text-customColor flex items-center gap-2'>
-                                        <span className={`text-white text-xs px-3 py-1 w-20 text-center rounded-md ${statusColor(ticket.ticketStatus)}`}>
-                                            {ticket.ticketStatus}
-                                        </span>
-                                        <span className='flex gap-[2px] items-center'>
-                                            {(ticket.ticketStatus === "Assigned" || ticket.ticketStatus === "Reopened") && (
-                                                <>
-                                                    <Technician /> {ticket.assignedTo}
-                                                </>
-                                            )}
-                                        </span>
-                                    </div>
-                                    <div className='text-gray-600 flex items-center'>
-                                        {dateTime[index] && (
-                                            <div className='flex gap-2'>
-                                                <div className='flex'>
-                                                    <History size={18} />
-                                                    <span className='text-customColor'>{dateTime[index].time}</span>
-                                                </div>
-                                                <div className='flex gap-1'>
-                                                    <Calender />
-                                                    <span className='text-customColor'>{dateTime[index].date}</span>
-                                                </div>
+                    {isAdmin && (
+                        <button onClick={toggleSettings}>
+                            <Settings />
+                        </button>
+                    )}
+                </div>
+                {/* Search Input */}
+                <div className=' p-4 rounded-sm '>
+                    <div className='px-3 flex relative md:max-w-[700px] md:px-0 md:rounded-lg md:mx-3 /md:shadow-inner shadow- md:shadow-gray-400/ /md:bg-white h-11'>      
+                        <input
+                            type="text"
+                            className='bg-transparent border  border-gray-500 bg-white /md:border-none p-2 outline-none w-full rounded focus:border-blue-400'
+                            placeholder="Search by company name or ticket number"
+                            value={searchInput}
+                            onChange={handleSearchInputChange} // Handle input change
+                        />
+                    </div>
+                    <div className="px-3 md:w-fit md:overflow-auto  md:h-[750px]">
+                        {filteredTickets.length > 0 ? (
+                            <ul className='md:flex md:flex-wrap items-center m-auto'>
+                                {filteredTickets.map((ticket, index) => (
+                                    <li
+                                        key={index}
+                                        className='my-2 bg-white py-4 px-5 rounded-lg shadow-m/d border border-gray-500 shadow-gray-300 flex items-center justify-between cursor-pointer min-w-80 md:w-full transition-all'
+                                        onClick={() => openTicket(ticket._id)}
+                                    >
+                                        <div className='text-[16px] font-sans'>
+                                            <div className='text-gray-600 flex items-center gap-1'>
+                                                {ticket.ticketNumber} <span className='text-[10px] text-gray-400'>●</span> <span className={`${getPriorityColor(ticket.priority)}`}>{ticket.priority}</span>
                                             </div>
-                                        )}
-                                    </div>
-                                </div>
-                                <div className='bg-[#E2FEFB] rounded-full h-fit p-3 mt-4'>
-                                    <Ticket size={25} color="rgb(0 197 255)" />
-                                </div>
-                            </li>
-                        ))}
-                    </ul>
-                ) : (
-                    <p>No matching tickets found.</p>
-                )}
-            </div>
+                                            <span className='text-customColor text-xl'>{ticket.companyName}</span>
+                                            <div className='my-1 text-customColor flex items-center gap-2'>
+                                                <span className={`text-white text-xs px-3 py-1 w-20 text-center rounded-md ${statusColor(ticket.ticketStatus)}`}>
+                                                    {ticket.ticketStatus}
+                                                </span>
+                                                <span className='flex gap-[2px] items-center'>
+                                                    {(ticket.ticketStatus === "Assigned" || ticket.ticketStatus === "Reopened") && (
+                                                        <>
+                                                            <Technician /> {ticket.assignedTo}
+                                                        </>
+                                                    )}
+                                                </span>
+                                            </div>
+                                            <div className='text-gray-600 flex items-center'>
+                                                {dateTime[index] && (
+                                                    <div className='flex gap-2'>
+                                                        <div className='flex'>
+                                                            <History size={18} />
+                                                            <span className='text-customColor'>{dateTime[index].time}</span>
+                                                        </div>
+                                                        <div className='flex gap-1'>
+                                                            <Calender />
+                                                            <span className='text-customColor'>{dateTime[index].date}</span>
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                        <div className='bg-[#E2FEFB] rounded-full h-fit p-3 mt-4'>
+                                            <Ticket size={25} color="rgb(0 197 255)" />
+                                        </div>
+                                    </li>
+                                ))}
+                            </ul>
+                        ) : (
+                            <p>No matching tickets found.</p>
+                        )}
+                    </div>
+                </div>
 
-            <button
-                className='bg-slate-400 py-2 px-3 rounded-xl my-9 fixed bottom-0 right-8 flex justify-between w-20 items-center
+
+                <button
+                    className='bg-slate-400 py-2 px-3 rounded-xl my-9 fixed bottom-0 right-8 flex justify-between w-20 items-center
                  text-white z-50'
-                onClick={newTicket}
-            >
-                <span className='text-white font-bold text-xl'>+</span> New
-            </button>
+                    onClick={newTicket}
+                >
+                    <span className='text-white font-bold text-xl'>+</span> New
+                </button>
 
-            <div className='fixed md:hidden bottom-0 py-2 overflow-y-auto w-full z-90 bg-white'>
-                <nav className='w-screen flex items-center justify-center px-16 py-2'>
-                    <button onClick={home}>
-                        <Home />
-                    </button>
-                </nav>
+                <div className='fixed md:hidden bottom-0 py-2 overflow-y-auto w-full z-90 bg-white'>
+                    <nav className='w-screen flex items-center justify-center px-16 py-2'>
+                        <button onClick={home}>
+                            <Home />
+                        </button>
+                    </nav>
+                </div>
             </div>
+
         </div>
     );
 }
