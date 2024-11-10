@@ -305,7 +305,7 @@ const NewTicket = () => {
       <h1 className='mt-6 font-bold text-2xl text-center sticky top-0 z-10'>New<span className='text-customColor'>Ticket</span></h1>
       <form onSubmit={handleSubmit(onSubmit)} className="" autoComplete='off'>
         {step === 1 && (
-          <div className="w-full max-w-md p-8 rounded-lg mb-2">
+          <div className="w-full max-w-md/ p-8 rounded-lg mb-2">
             <label className="block text-2xl mb-6 text-customColor">Customer Info</label>
             <div className="mb-4">
               <label htmlFor="" className='block text-xl text-customColor font-sans  font-medium mb-2'>Company Type:</label>
@@ -465,7 +465,7 @@ const NewTicket = () => {
         )}
 
         {step === 2 && (
-          <div className="w-full max-w-md p-8 rounded-lg  mb-2">
+          <div className="w-full max-w-md/ p-8 rounded-lg  mb-2">
             <div className="mb-4">
               <label className="block text-2xl mb-2 text-customColor">Ticket Info</label>
             </div>
@@ -545,7 +545,7 @@ const NewTicket = () => {
           </div>
         )}
         {step === 3 && (
-          <div className='w-full max-w-md p-8 rounded-lg  mb-2'>
+          <div className='w-full max-w-md/ p-8 rounded-lg  mb-2'>
             <div className="mb-4">
               <label className="block text-xl text-customColor font-sans  font-medium mb-2" htmlFor="priority">Priority</label>
               <div className="flex gap-3 items-center">
@@ -627,7 +627,7 @@ const NewTicket = () => {
         )}
 
         {step === 4 && (
-          <div className="w-full max-w-md p-8 rounded-lg  mb-2">
+          <div className="w-full max-w-md/ p-8 rounded-lg  mb-2">
             <div className="mb-4">
               <label className="block text-xl text-customColor font-sans  font-medium mb-2">Response</label>
             </div>

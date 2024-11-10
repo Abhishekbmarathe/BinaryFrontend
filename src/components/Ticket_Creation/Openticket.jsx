@@ -503,24 +503,24 @@ const NewTicket = () => {
   if (!ticket) return <div>Loading...</div>; // Show a loading message until the ticket is fetched
 
   return (
-    <div className="min-h-screen py-3">
+    <div className="min-h-screen py-3 md:w-1/2 bg-white m-auto shadow-xl shadow-gray-300">
       <div className='flex items-center justify-between px-3'>
-        <h1 className='my-3 font-bold text-2xl text-center sticky top-0 z-10 bg-[#f5f5f5]'>Edit <span className='text-customColor'>Ticket</span></h1>
+        <h1 className='my-3 font-semibold font-sans text-2xl text-center sticky top-0 z-10 bg-[#f5f5f5]'>Edit <span className='text-customColor'>Ticket</span></h1>
         <div className='flex gap-2'>
           {isAdmin && (
             <>
-              <button className='mx-2' onClick={handleDelete}>
+              <button className='mx-2 border p-3 py-2 border-black rounded-md hover:bg-slate-300 transition-colors' onClick={handleDelete}>
                 <Delete />
               </button>
             </>
           )}
           {!allowEdit && (
             <div>
-              <button onClick={() => setToggleedit(true)} className={`${toggleEdit ? 'hidden' : 'block'}`}>
+              <button onClick={() => setToggleedit(true)} className={`${toggleEdit ? 'hidden' : 'block'} border p-3 py-2 border-black hover:bg-slate-300 transition-colors rounded-md` }>
                 <Edit />
               </button>
               {toggleEdit && (
-                <div>
+                <div className='border p-3 py-2 border-black hover:bg-slate-300 transition-colors rounded-md'>
                   {ticketOC === "Open" && (
                     <button className='bg-transparent px-3 rounded-md text-green-500' onClick={() => changeStatus('Closed')}>Close</button>
                   )}
@@ -547,7 +547,7 @@ const NewTicket = () => {
 
 
         {/* Step 1: Customer Info */}
-        {step === 1 && (
+        {/* {step === 1 && ( */}
           <div>
             {/* Company Type */}
             <div className="mb-6">
@@ -720,7 +720,7 @@ const NewTicket = () => {
               )}
             </div>
 
-            <div className="">
+            {/* <div className="">
               <button
                 type="button"
                 className="px-6 py-2 float-start bg-blue-400 text-white rounded hover:bg-blue-700"
@@ -738,13 +738,13 @@ const NewTicket = () => {
               >
                 Next
               </button>
-            </div>
+            </div> */}
 
           </div>
-        )}
+        {/* )} */}
 
         {/* Step 2: Ticket Info */}
-        {step === 2 && (
+        {/* {step === 2 && ( */}
           <div>
             {/* Product Name */}
             <div className="mb-6 relative">
@@ -835,7 +835,7 @@ const NewTicket = () => {
             {/* Assigned To */}
 
 
-            <div className="flex justify-between">
+            {/* <div className="flex justify-between">
               <button
                 type="button"
                 className="w-28 py-2 h-fit bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
@@ -850,10 +850,10 @@ const NewTicket = () => {
               >
                 Next
               </button>
-            </div>
+            </div> */}
           </div>
-        )}
-        {step === 3 && (
+        {/* )} */}
+        {/* {step === 3 && ( */}
           <div className="flex flex-col gap-6">
             {/* Priority */}
             <div className="mb-4">
@@ -926,7 +926,7 @@ const NewTicket = () => {
               )}
             </div>
 
-            <div className="flex justify-between">
+            {/* <div className="flex justify-between">
               <button
                 type="button"
                 className="px-6 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
@@ -941,12 +941,12 @@ const NewTicket = () => {
               >
                 Next
               </button>
-            </div>
+            </div> */}
           </div>
-        )}
+        {/* )} */}
 
         {/* Step 3: Response */}
-        {step === 4 && (
+        {/* {step === 4 && ( */}
           <div>
             {/* Canned Response */}
             <div className="mb-4">
@@ -1058,13 +1058,13 @@ const NewTicket = () => {
             </div>
 
             <div className="flex justify-between">
-              <button
+              {/* <button
                 type="button"
                 className="px-6 h-fit py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
                 onClick={() => setStep(3)}
               >
                 Previous
-              </button>
+              </button> */}
               {toggleEdit && (
                 <>
                   {!allowEdit && (
@@ -1147,7 +1147,7 @@ const NewTicket = () => {
           </div>
 
 
-        )}
+        {/* )} */}
       </form>
     </div>
   );
