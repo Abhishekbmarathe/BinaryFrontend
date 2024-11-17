@@ -112,7 +112,7 @@ function AssetUpdate() {
     };
 
     return (
-        <div className="max-w-md mx-auto sm:max-w-[50vw]">
+        <div className="max-w-md mx-auto sm:max-w-[50vw] md:bg-white md:shadow-xl">
             <BottomMenu />
             <div className=" rounded-lg mb-4 p-4">
                 <div className='flex items-center justify-between mb-8'>

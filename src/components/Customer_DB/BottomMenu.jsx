@@ -10,6 +10,9 @@ const BottomNavbar = () => {
     const capturePhoto = () => {
         navigate('/capturePhoto');
     };
+    const assetPrivatedet = () => {
+        navigate('/assetPrivatedet');
+    };
 
     return (
         <div>
@@ -26,7 +29,10 @@ const BottomNavbar = () => {
                         <Imag className="w-6 h-6 md:w-8 md:h-8" />
                         <span className="text-xs md:text-sm">Image</span>
                     </button>
-                    <button className='flex flex-col items-center text-white hover:opacity-80 transition-all duration-200'>
+                    <button className='flex flex-col items-center text-white hover:opacity-80 transition-all duration-200'
+                        onClick={assetPrivatedet}
+
+                    >
                         <Info className="w-6 h-6 md:w-8 md:h-8" />
                         <span className="text-xs md:text-sm">Info</span>
                     </button>

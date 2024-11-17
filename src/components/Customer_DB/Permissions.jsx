@@ -46,7 +46,7 @@ const Permissions = ({ companyName }) => {
     const [showSuggestionBox, setShowSuggestionBox] = useState(false);
 
     useEffect(() => {
-        axios.post(api + "api/getGlobalData", { companyName })
+        axios.post(api + "api/getGlobalData", { companyName})
             .then(response => {
                 const fetchedArray = response.data;
                 const fetchedData = fetchedArray.reduce((acc, obj) => ({ ...acc, ...obj.data }), {});
@@ -212,18 +212,18 @@ const Permissions = ({ companyName }) => {
 
     return (
         <div>
-            <div className="mb-4">
-                <div className='flex justify-between md:px-12 px-2 mb-3'>
+            <div className="mb-4 px-3">
+                <div className='flex justify-between flex-wrap gap-2 px-2 mb-3 font-sans'>
                     <h3 className="text-lg font-bold">Granted Permissions</h3>
                     <div className='flex'>
                         <button
-                            className='rounded-xl flex justify-center w-fit items-center text-blue-500 mr-2'
+                            className='rounded flex justify-center w-fit items-center bg-blue-500 mr-2 text-white px-2 py-1 hover:opacity-85'
                             onClick={() => openPermissionModal(null)}
                         >
                             Add Permission
                         </button>
                         <button
-                            className='rounded-xl flex justify-center w-fit items-center text-green-500'
+                            className='rounded flex justify-center w-fit items-center bg-blue-500 mr-2 text-white px-2 py-1 hover:opacity-85'
                             onClick={submitToApi}
                         >
                             Save Changes<span className='text-xs'>&nbsp;●</span>
@@ -234,13 +234,13 @@ const Permissions = ({ companyName }) => {
                     {grantedPermissions.map((permission, index) => (
                         <li key={index}
                             onClick={() => openPermissionModal(index)}
-                            className="flex flex-col p-4 border border-black rounded cursor-pointer mb-2 bg-gray-100">
+                            className="flex flex-col p-4 border border-black rounded cursor-pointer mb-2">
                             <div className="flex justify-between mb-2">
                                 <div className="text-customColor text-xl font-semibold">{permission.username}</div>
                             </div>
                             <div className="flex flex-wrap">
                                 {permission.key.map((k, i) => (
-                                    <span key={i} className="mr-2 p-2 bg-blue-500 text-white rounded-lg">{k}</span>
+                                    <span key={i} className="mr-2  px-2 shadow-customShadow text-black rounded">{k}</span>
                                 ))}
                             </div>
                         </li>

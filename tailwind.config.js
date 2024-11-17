@@ -8,6 +8,7 @@ export default {
     extend: {
       boxShadow: {
         'customBlue': '#00c5ffd6 0px 0px 11px 1px',
+        'customShadow': '0px 1px 4px gray'
       },
       colors: {
         'customColor': 'rgb(0 197 255)', 

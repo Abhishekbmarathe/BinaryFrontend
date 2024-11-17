@@ -10,6 +10,7 @@ import Permissions from '../Customer_DB/Permissions';
 
 function App() {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [assetId, setAssetId] = useState(localStorage.getItem('assetId'))
     const [formData, setFormData] = useState({ companyName: '', data: {}, permissions: {} });
     const [tempData, setTempData] = useState({ key: '', value: '', sensitive: false });
     // const [tempData, setTempData] = useState({ key: '', value: '', sensitive: false });
@@ -18,24 +19,25 @@ function App() {
     const [selectedKey, setSelectedKey] = useState(null); // Track selected key for update
     const [errors, setErrors] = useState({ key: '', value: '' }); // Validation errors
 
+
     const [permissionPage, setPage] = useState(false);
     const [flag, setFlag] = useState(false);
     // const [pflag, setpPflag] = useState(false);
 
     const location = useLocation();
-    const { companyName, customerId } = location.state || {};
+    const { companyName } = location.state || {};
 
     // Fetch existing data
     useEffect(() => {
         setLoading(true); // Start loading
-        axios.post(api + "api/getGlobalData", { companyName })
+        axios.post(api + "api/getGlobalData", { companyName: assetId })
             .then(response => {
                 const fetchedArray = response.data;
                 const fetchedData = fetchedArray.reduce((acc, obj) => ({ ...acc, ...obj.data }), {});
 
                 setFormData(prevData => ({
                     ...prevData,
-                    companyName,
+                    companyName: assetId,
                     data: { ...prevData.data, ...fetchedData }
                 }));
             })
@@ -187,7 +189,7 @@ function App() {
             setLoading(true); // Start loading
             axios.post(api + "api/updateGlobalData", formData)
                 .then(() => {
-                    return axios.post(api + "api/getGlobalData", { companyName });
+                    return axios.post(api + "api/getGlobalData", { companyName: assetId });
                 })
                 .then(response => {
                     const fetchedArray = response.data;
@@ -274,9 +276,9 @@ function App() {
             </div>
 
             {permissionPage ? (
-                <Permissions companyName={companyName} />
+                <Permissions companyName={assetId} />
             ) : (
-                <div>
+                <div className=''>
                     {/* Button to Open the Modal for Creating */}
                     <div className='px-5'>
                         <button
@@ -314,8 +316,8 @@ function App() {
 
                     {/* Modal Popup */}
                     {isModalOpen && (
-                        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-                            <div className="bg-white p-6 rounded shadow-lg w-[88%] relative">
+                        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 ">
+                            <div className="bg-white p-6 rounded shadow-lg w-[88%] relative md:w-1/2">
                                 <h2 className="text-xl font-semi-bold mb-4 font-sans">
                                     {selectedKey ? 'Update Key-Value Pair' : 'Enter Key-Value Pair'}
                                 </h2>
