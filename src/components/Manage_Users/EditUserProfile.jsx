@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import fetchAndStoreUsers from '../modules/fetchAllusers';
 import api from '../modules/Api';
+import Delete from '../../assets/Delete';
 
 function UserDetail() {
     const { userId } = useParams();
@@ -116,8 +117,17 @@ function UserDetail() {
     }
 
     return (
-        <div className="max-w-md mx-auto mt-10 sm:max-w-[50vw]">
-            <h1 className='m-auto w-fit text-2xl'>Edit <span className='text-customColor'>Profile</span></h1>
+        <div className="max-w-md mx-auto mt-10 sm:max-w-[50vw] font-sans md:bg-white md:shadow-lg">
+            <div className='flex justify-between p-3'>
+                <h1 className='w-fit text-2xl'>Edit <span className='text-customColor'>Profile</span></h1>
+                <button
+                    className="border border-black text-red-400 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline block"
+                    type="button"
+                    onClick={handleDelete}
+                >
+                    <Delete />
+                </button>
+            </div>
             <div className="rounded-lg overflow-hidden mb-4">
                 <div className="p-4">
                     {isLoading &&
@@ -138,8 +148,14 @@ function UserDetail() {
                                             </>
                                         ) : (
                                             <>
-                                                <label className="block text-black text-sm font-bold mb-2" htmlFor={`${key}-${idx}`}>
-                                                    {key.charAt(0).toUpperCase() + key.slice(1)}
+                                                <label
+                                                    className="block text-black text-sm font-bold mb-2"
+                                                    htmlFor={`${key}-${idx}`}
+                                                >
+                                                    {/* Check if the key is 'PhoneNum', display 'Phone number', otherwise capitalize the key */}
+                                                    {key === 'phoneNum'
+                                                        ? 'Phone number'
+                                                        : key.charAt(0).toUpperCase() + key.slice(1)}
                                                 </label>
                                                 <input
                                                     className="appearance-none border-2 border-gray-400 rounded w-full p-3 px-3 bg-transparent text-black leading-tight focus:outline-none focus:shadow-outline sm:py-4 sm:rounded-xl"
@@ -154,6 +170,7 @@ function UserDetail() {
                                     </div>
                                 )
                             ))}
+
 
                             {/* Radio buttons for user role */}
                             <div className="mb-4">
@@ -199,29 +216,29 @@ function UserDetail() {
                                                     checked={user[key]}
                                                     onChange={handleChange}
                                                 />
-                                                <span className="text-black">{key.charAt(0).toUpperCase() + key.slice(1)}</span>
+                                                <span className="text-black">
+                                                    {key === 'createAsset' && 'Asset Creation'}
+                                                    {key === 'createClient' && 'Customer Database'}
+                                                    {key === 'createTicket' && 'Ticket Creation'}
+                                                    {!['createAsset', 'createClient', 'createTicket'].includes(key) &&
+                                                        (key.charAt(0).toUpperCase() + key.slice(1))}
+                                                </span>
                                             </div>
                                         )
                                     ))}
+
                                 </div>
                             )}
 
                             {error && <p className="text-red-500 text-sm">{error}</p>}
 
                             <button
-                                className="bg-slate-300 w-full hover:bg-slate-200 text-purple-500 sm:font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                className="bg-blue-500 w-full hover:bg-slate-200 text-white sm:font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                                 type="button"
                                 onClick={handleSave}
                             >
-                                UPDATE
+                                Save
                             </button><br /><br />
-                            <button
-                                className="bg-slate-300 text-red-400 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline block"
-                                type="button"
-                                onClick={handleDelete}
-                            >
-                                DELETE
-                            </button>
                         </form>
                     )}
                 </div>

@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import User from '../../assets/User'
 import Logo from '../../assets/Logo'
 import api from '../modules/Api'
+import Close from '../../assets/Eyeclose';
+import Show from '../../assets/Eyeopen';
 
 
 const Login = () => {
@@ -139,9 +141,9 @@ const Login = () => {
                                 <button
                                     type="button"
                                     onClick={togglePasswordVisibility}
-                                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-black"
+                                    className="absolute right-0 top-1/2 transform -translate-y-1/2 text-black scale-[.3]"
                                 >
-                                    {passwordVisible ? 'Hide' : 'Show'}
+                                    {passwordVisible ? <Show /> : <Close /> }
                                 </button>
                                 {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
                             </div>

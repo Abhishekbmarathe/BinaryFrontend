@@ -5,6 +5,8 @@ import Alluser from './Alluser';
 import fetchAndStoreUsers from '../modules/fetchAllusers'
 import Nav from '../TopNav'
 import api from '../modules/Api'
+import Eyeclose from '../../assets/Eyeclose'
+import Eyeopen from '../../assets/Eyeopen'
 
 function Manageuser() {
     const { register, handleSubmit, formState: { errors } } = useForm();
@@ -36,7 +38,7 @@ function Manageuser() {
             alert('Failed to add user');
             setIsLoading(false); // Set loading state to false on error
         }
-        
+
 
 
     };
@@ -48,13 +50,13 @@ function Manageuser() {
 
     return (
         <><Nav />
-            <div className='flex flex-col justify-center items-center sm:w-1/2 sm:m-auto'>
+            <div className='flex flex-col justify-center items-center sm:w-1/2 sm:m-auto  md:mt-6'>
                 <h1 className='my-6 font-semibold font-sans  text-2xl'>User <span className='text-customColor'> List</span></h1>
                 {!showForm ? (
-                    <button className='bg-white shadow-lg shadow-gray-500 py-2 px-3 rounded-xl my-9 fixed bottom-0 right-8 flex justify-between w-20 items-center ' onClick={() => setShowForm(true)}><span className='text-customColor font-bold text-xl'>+</span> New</button>
+                    <button className='bg-white shadow-customShadow  py-2  px-5 rounded-xl my-9 fixed bottom-9 md:bottom-16 right-8 md:right-24' onClick={() => setShowForm(true)}><span className='text-customColor  text-3xl'>+</span></button>
                 ) : null}
                 {showForm && (
-                    <div className="mx-auto p-4 w-full text-black rounded-lg">
+                    <div className="mx-auto p-4 w-full text-black rounded-lg md:bg-white md:shadow-lg">
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <div className="mb-4">
                                 <label className="block text-black">Name</label>
@@ -106,9 +108,9 @@ function Manageuser() {
                                     <button
                                         type="button"
                                         onClick={togglePasswordVisibility}
-                                        className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-300"
+                                        className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-300 scale-[.3]"
                                     >
-                                        {passwordVisible ? 'Hide' : 'Show'}
+                                        {!passwordVisible ? <Eyeclose /> : <Eyeopen />}
                                     </button>
                                 </div>
                                 {errors.password && <span className="text-red-500">Password is required</span>}
@@ -191,7 +193,7 @@ function Manageuser() {
 
                             <button
                                 type="submit"
-                                className="w-full p-2 bg-slate-300 text-purple-500 rounded-md hover:bg-slate-200"
+                                className="w-full p-2 bg-blue-500 text-white rounded-md hover:bg-slate-200"
                                 disabled={isLoading} // Disable button when loading
                             >
                                 {isLoading ? (

@@ -119,7 +119,7 @@ function Alltickets() {
                 </div>
                 {/* Search Input */}
                 <div className=' p-4 rounded-sm '>
-                    <div className='px-3 flex relative md:max-w-[700px] md:px-0 md:rounded-lg md:mx-3 /md:shadow-inner shadow- md:shadow-gray-400/ /md:bg-white h-11'>      
+                    <div className='px-3 flex relative md:max-w-[700px] md:px-0 md:rounded-lg md:mx-3 /md:shadow-inner shadow- md:shadow-gray-400/ /md:bg-white h-11'>
                         <input
                             type="text"
                             className='bg-transparent border  border-gray-500 bg-white /md:border-none p-2 outline-none w-full rounded focus:border-blue-400'
@@ -127,6 +127,11 @@ function Alltickets() {
                             value={searchInput}
                             onChange={handleSearchInputChange} // Handle input change
                         />
+                        <button className='bg-white shadow-customShadow  py-1  px-5 rounded-xl md:flex mx-10 hidden' onClick={newTicket}>
+                            <span className='text-customColor  text-3xl'>
+                                +
+                            </span>
+                        </button>
                     </div>
                     <div className="px-3 md:w-fit md:overflow-auto  md:h-[750px]">
                         {filteredTickets.length > 0 ? (
@@ -183,12 +188,13 @@ function Alltickets() {
 
 
                 <button
-                    className='bg-slate-400 py-2 px-3 rounded-xl my-9 fixed bottom-0 right-8 flex justify-between w-20 items-center
+                    className='md:hidden bg-slate-400 py-2 px-3 rounded-xl my-9 fixed bottom-0 right-8 flex justify-between w-20 items-center
                  text-white z-50'
                     onClick={newTicket}
                 >
                     <span className='text-white font-bold text-xl'>+</span> New
                 </button>
+
 
                 <div className='fixed md:hidden bottom-0 py-2 overflow-y-auto w-full z-90 bg-white'>
                     <nav className='w-screen flex items-center justify-center px-16 py-2'>

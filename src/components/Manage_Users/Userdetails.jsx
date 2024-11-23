@@ -215,7 +215,7 @@ function Userdetails() {
             </div>
 
             <div className='flex flex-col md:w-fit md:mt-5 sticky top-12 z-10'>
-                <div className='flex gap-3 md:w-fit w-screen px-6 py-3 md:py-3 md:p-6 items-center border-slate-300 md:border-[2px]  bg-cardcolor  bg-cardBlack/ md:shadow-lg m-auto md:m-0 md:rounded-xl/'>
+                <div className='flex gap-3 md:w-fit w-screen px-6 py-3 md:py-3 md:p-6 items-center border-slate-300 md:border-[2px]  bg-cardcolor  bg-cardBlack/ md:shadow-lg m-auto md:m-0 md:rounded-xl/ '>
                     <div className='user'>
                         <User size='130' color='rgb(0 197 255)' />
                         <div className='px-8'>
@@ -232,10 +232,12 @@ function Userdetails() {
                             <label className='text-black whitespace-nowrap'>Phone no:</label>
                             <span className='text-customColor'>{phone}</span>
                         </div>
-                        <div className='flex md:flex-row md:text-xl md:my-4'>
+                        <div className='flex md:flex-row md:text-xl w-52 md:my-4'>
                             <label className='text-black'>Email:</label>
-                            <span className='whitespace-nowrap text-customColor'>{email}</span>
+                            <span className='text-customColor break-all'>{email}</span>
                         </div>
+
+
                     </div>
                 </div>
             </div>

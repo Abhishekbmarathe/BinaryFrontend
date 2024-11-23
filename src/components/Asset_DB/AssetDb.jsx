@@ -43,12 +43,13 @@ function AssetDb() {
       <div className='w-[90vw] sm:w-1/2 m-auto'>
         <h1 className='my-6 font-semibold font-sans text-2xl mx-auto w-fit'>Asset <span className='text-customColor'>DB</span></h1>
         {!showForm ? (
-          <button
-            className='bg-white shadow-[0px_10px_20px_gray] py-2 px-3 rounded-xl my-9 fixed bottom-0 right-8 flex justify-between w-20 items-center'
-            onClick={() => setShowForm(true)}
-          >
-            <span className='text-customColor text-xl font-bold' >+</span> New
-          </button>
+          // <button
+          //   className='bg-white shadow py-2 px-3 rounded-xl my-9 fixed bottom-0 right-8 flex justify-between w-20 items-center'
+          //   onClick={() => setShowForm(true)}
+          // >
+          //   <span className='text-customColor text-xl font-bold' >+</span> New
+          // </button>
+          <button className='bg-white shadow-customShadow  py-2  px-5 rounded-xl my-9 fixed bottom-9 md:bottom-16 right-8 md:right-24' onClick={() => setShowForm(true)}><span className='text-customColor  text-3xl'>+</span></button>
         ) : null}
         {showForm && (
           <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-6'>

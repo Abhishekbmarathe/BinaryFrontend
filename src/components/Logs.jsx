@@ -106,7 +106,7 @@ const Logs = () => {
                     <table className="min-w-full bg-white  border-gray-300 font-sans">
                         <thead className='top-0 sticky bg-white  z-10'>
                             <tr>
-                                <th className="px-4 py-2 border-b text-left/ ">Updated Date</th>
+                                <th className="px-4 py-2 border-b text-left/ ">Date</th>
                                 <th className="px-4 py-2 border-b text-left">Updated By</th>
                                 <th className="px-4 py-2 border-b text-left">Action</th>
                                 <th className="px-4 py-2 border-b text-left">Info</th>
