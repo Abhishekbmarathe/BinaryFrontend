@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import api from '../modules/Api';
+import Loader from '../../components/Loader';
 
 // MultiCheckbox component for multiple key selection
 const MultiCheckbox = ({ options, selectedValues, onChange }) => {
@@ -44,63 +45,56 @@ const Permissions = ({ companyName }) => {
     const [suggestions, setSuggestions] = useState([]); // Custom suggestions
     const [filteredSuggestions, setFilteredSuggestions] = useState([]);
     const [showSuggestionBox, setShowSuggestionBox] = useState(false);
+    const [loading, setLoading] = useState(false); // State to track loading
 
 
     useEffect(() => {
+        const fetchData = async () => {
+            setLoading(true); // Set loading to true before starting API calls
+            try {
+                // Fetch users from local storage
+                const storedUsers = localStorage.getItem('onlyUsers');
+                if (storedUsers) {
+                    const users = JSON.parse(storedUsers);
+                    const technicianUsers = users
+                        .filter((user) => user.role === 'technician')
+                        .map((user) => user.username);
+                    setSuggestions(technicianUsers);
+                }
 
-        const storedUsers = localStorage.getItem('onlyUsers');
-        console.log(JSON.parse(storedUsers))
-        if (storedUsers) {
-            const users = JSON.parse(storedUsers);
-            // Filter users with the role 'technician'
-            const technicianUsers = users
-                .filter((user) => user.role === 'technician') // Filter by role
-                .map((user) => user.username);               // Extract the username
-            setSuggestions(technicianUsers)
-            // console.log("Technician usernames:", technicianUsers);
-        }
-        axios.post(api + "api/getGlobalData", { companyName })
-        .then(response => {
-          const allDynamicKeys = response.data.map(item => {
-            // Extract all dynamic keys from each item
-            return Object.keys(item.data); // Get all keys as an array
-          });
-      
-        //   console.log("All dynamic keys:", allDynamicKeys); // Log the array of key arrays
-          setAvailableKeys(allDynamicKeys.flat()); // Flatten the array and set in state if needed
-        })
-        .catch(error => {
-          console.log("Error fetching data:", error);
-        });
-      
+                // First API call: Get global data and dynamic keys
+                const response1 = await axios.post(api + 'api/getGlobalData', { companyName });
+                const allDynamicKeys = response1.data.map(item => Object.keys(item.data));
+                setAvailableKeys(allDynamicKeys.flat());
 
-
-        axios.post(api + "api/getGlobalData", { companyName })
-            .then(response => {
-                const fetchedArray = response.data;
+                // Second API call: Fetch data and permissions
+                const response2 = await axios.post(api + 'api/getGlobalData', { companyName });
+                const fetchedArray = response2.data;
                 const fetchedData = fetchedArray.reduce((acc, obj) => ({ ...acc, ...obj.data }), {});
                 const fetchedPermissions = fetchedArray.reduce((acc, obj) => ({ ...acc, ...obj.permissions }), {});
-
 
                 setFormData(prevData => ({
                     ...prevData,
                     companyName,
                     data: { ...prevData.data, ...fetchedData },
-                    permissions: { ...prevData.permissions, ...fetchedPermissions }
+                    permissions: { ...prevData.permissions, ...fetchedPermissions },
                 }));
-
 
                 const permissionsArray = Object.entries(fetchedPermissions).map(([username, keys]) => ({
                     username,
                     key: Array.isArray(keys) ? keys : [keys],
-                    grantedAt: new Date().toLocaleString()
+                    grantedAt: new Date().toLocaleString(),
                 }));
 
                 setGrantedPermissions(permissionsArray);
-            })
-            .catch(error => {
+            } catch (error) {
                 console.error('Error fetching data:', error);
-            });
+            } finally {
+                setLoading(false); // Set loading to false after all API calls complete
+            }
+        };
+
+        fetchData();
     }, [companyName]);
 
     const openPermissionModal = (index) => {
@@ -209,6 +203,7 @@ const Permissions = ({ companyName }) => {
     };
 
     const submitToApi = async () => {
+        setLoading(true);  // Set loading to true before API call
         try {
             const permissionsMap = grantedPermissions.reduce((acc, permission) => {
                 const { username, key } = permission;
@@ -232,12 +227,15 @@ const Permissions = ({ companyName }) => {
             const response = await axios.post(api + 'api/updateGlobalData', payload);
 
             if (response.data.status) {
+                alert('Permissions updated successfully')
                 console.log('Permissions successfully submitted:', response.data.message || 'Success');
             } else {
                 console.log('Failed to submit permissions:', response.data.message || 'Failure');
             }
         } catch (error) {
             console.error('Error submitting permissions:', error);
+        } finally {
+            setLoading(false);  // Set loading to false after API call completes
         }
     };
 
@@ -246,6 +244,7 @@ const Permissions = ({ companyName }) => {
             <div className="mb-4 px-3">
                 <div className='flex justify-between flex-wrap gap-2 px-2 mb-3 font-sans'>
                     <h3 className="text-lg font-bold">Granted Permissions</h3>
+
                     <div className='flex'>
                         <button
                             className='rounded flex justify-center w-fit items-center bg-blue-500 mr-2 text-white px-2 py-1 hover:opacity-85'
@@ -261,22 +260,28 @@ const Permissions = ({ companyName }) => {
                         </button>
                     </div>
                 </div>
-                <ul className='font-sans'>
-                    {grantedPermissions.map((permission, index) => (
-                        <li key={index}
-                            onClick={() => openPermissionModal(index)}
-                            className="flex flex-col p-4 border border-black rounded cursor-pointer mb-2">
-                            <div className="flex justify-between mb-2">
-                                <div className="text-customColor text-xl font-semibold">{permission.username}</div>
-                            </div>
-                            <div className="flex flex-wrap">
-                                {permission.key.map((k, i) => (
-                                    <span key={i} className="mr-2  px-2 shadow-customShadow text-black rounded">{k}</span>
-                                ))}
-                            </div>
-                        </li>
-                    ))}
-                </ul>
+                {!loading && (
+                    <ul className='font-sans'>
+                        {grantedPermissions.map((permission, index) => (
+                            <li key={index}
+                                onClick={() => openPermissionModal(index)}
+                                className="flex flex-col p-4 border border-black rounded cursor-pointer mb-2">
+                                <div className="flex justify-between mb-2">
+                                    <div className="text-customColor text-xl font-semibold">{permission.username}</div>
+                                </div>
+                                <div className="flex flex-wrap">
+                                    {permission.key.map((k, i) => (
+                                        <span key={i} className="mr-2  px-2 shadow-customShadow text-black rounded">{k}</span>
+                                    ))}
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
+                )}
+                {loading && (
+                    <Loader />
+                )}
+
             </div>
 
             {isPermissionModalOpen && (

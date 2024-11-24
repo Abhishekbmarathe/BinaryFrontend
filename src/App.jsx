@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 // import { BrowserRouter as  Router, Routes, Route } from 'react-router-dom';
-import { HashRouter as  Router, Routes, Route } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './components/Home'
 import Login from './components/Auth/Login'
 import Manageuser from './components/Manage_Users/Manageuser';
@@ -30,6 +30,7 @@ import Alltickets from './components/Ticket_Creation/Alltickets';
 import Settings from './components/Ticket_Creation/Settings';
 import Openticket from './components/Ticket_Creation/Openticket';
 import Recyclepage from './components/Customer_DB/Recyclepage';
+import CompanyAssign from './components/Customer_DB/CompanyAssign';
 
 import Logs from './components/Logs';
 
@@ -68,6 +69,7 @@ function App() {
         <Route path="/add-record" element={<Addrecord />} />
         <Route path='/customer/private-data' element={<PrivateData />} />
         <Route path='/assetPrivatedet' element={<AssetPrivateData />} />
+        <Route path='/customer/companyAssign' element={<CompanyAssign />} />
 
         <Route path="/newticket" element={<NewTicket />} />
         <Route path="/create-ticket" element={<Alltickets />} />

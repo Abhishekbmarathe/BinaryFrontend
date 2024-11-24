@@ -6,6 +6,7 @@ import Company from '../../assets/Companyicon';
 import Link from '../../assets/Link';
 import Email from '../../assets/Email';
 import Info from '../../assets/info';
+import User from '../../assets/User';
 
 // Create and export CompanyContext
 export const CompanyContext = createContext();
@@ -38,9 +39,15 @@ function CustomerDetail() {
     const handlePrivateData = () => {
         navigate('/customer/private-data', { state: { customerId: customerId, companyName: customer?.companyName } });
     };
+    const handleCompanyassign = () => {
+        navigate('/customer/companyAssign', { state: { companyName: customer?.companyName } });
+
+    }
 
     if (!customer) {
-        return <div>Loading...</div>;
+        return <div>
+            NO customers found!
+        </div>;
     }
 
     return (
@@ -56,6 +63,9 @@ function CustomerDetail() {
                             </button>
                             <button onClick={handleEdit} className="scale-[1.5]">
                                 <Edit color="rgb(0 197 255)" size={21} />
+                            </button>
+                            <button onClick={handleCompanyassign} className="scale-[1.5]">
+                                <User color="rgb(0 197 255)" size={21} />
                             </button>
                         </div>
                     </div>
