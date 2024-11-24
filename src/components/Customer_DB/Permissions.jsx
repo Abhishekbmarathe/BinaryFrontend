@@ -40,17 +40,47 @@ const Permissions = ({ companyName }) => {
     const [grantedPermissions, setGrantedPermissions] = useState([]);
     const [editIndex, setEditIndex] = useState(null);
     const [permissionData, setPermissionData] = useState({ username: '', key: [] });
-    const [availableKeys] = useState(['Key1', 'Key2', 'Key3', 'Key4']); // Example keys
-    const [suggestions] = useState(['s1', 's2', 's3', 's4', 's5']); // Custom suggestions
+    const [availableKeys, setAvailableKeys] = useState([]); // Example keys
+    const [suggestions, setSuggestions] = useState([]); // Custom suggestions
     const [filteredSuggestions, setFilteredSuggestions] = useState([]);
     const [showSuggestionBox, setShowSuggestionBox] = useState(false);
 
+
     useEffect(() => {
-        axios.post(api + "api/getGlobalData", { companyName})
+
+        const storedUsers = localStorage.getItem('onlyUsers');
+        console.log(JSON.parse(storedUsers))
+        if (storedUsers) {
+            const users = JSON.parse(storedUsers);
+            // Filter users with the role 'technician'
+            const technicianUsers = users
+                .filter((user) => user.role === 'technician') // Filter by role
+                .map((user) => user.username);               // Extract the username
+            setSuggestions(technicianUsers)
+            // console.log("Technician usernames:", technicianUsers);
+        }
+        axios.post(api + "api/getGlobalData", { companyName })
+        .then(response => {
+          const allDynamicKeys = response.data.map(item => {
+            // Extract all dynamic keys from each item
+            return Object.keys(item.data); // Get all keys as an array
+          });
+      
+          console.log("All dynamic keys:", allDynamicKeys); // Log the array of key arrays
+          setAvailableKeys(allDynamicKeys.flat()); // Flatten the array and set in state if needed
+        })
+        .catch(error => {
+          console.log("Error fetching data:", error);
+        });
+      
+
+
+        axios.post(api + "api/getGlobalData", { companyName })
             .then(response => {
                 const fetchedArray = response.data;
                 const fetchedData = fetchedArray.reduce((acc, obj) => ({ ...acc, ...obj.data }), {});
                 const fetchedPermissions = fetchedArray.reduce((acc, obj) => ({ ...acc, ...obj.permissions }), {});
+
 
                 setFormData(prevData => ({
                     ...prevData,
@@ -58,6 +88,7 @@ const Permissions = ({ companyName }) => {
                     data: { ...prevData.data, ...fetchedData },
                     permissions: { ...prevData.permissions, ...fetchedPermissions }
                 }));
+
 
                 const permissionsArray = Object.entries(fetchedPermissions).map(([username, keys]) => ({
                     username,
