@@ -3,6 +3,8 @@ import { useForm } from 'react-hook-form';
 import axios from 'axios'; // Assuming you're using Axios for API requests
 import api from '../modules/Api';
 import { useNavigate } from 'react-router-dom';
+import Eyeclose from '../../assets/Eyeclose'
+import Eyeopen from '../../assets/Eyeopen'
 
 const Editprofile = () => {
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
@@ -21,8 +23,8 @@ const Editprofile = () => {
 
 
     const navigate = useNavigate();
-    
-    
+
+
 
     // Fetch user details from localStorage when the component mounts
     useEffect(() => {
@@ -130,10 +132,10 @@ const Editprofile = () => {
                     />
                     <button
                         type="button"
-                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+                        className="absolute -right-5 top-1/2 transform -translate-y-[38%] text-gray-500 scale-[.3]"
                         onClick={() => setShowOldPassword(!showOldPassword)}
                     >
-                        {showOldPassword ? "Hide" : "Show"}
+                        {showOldPassword ? <Eyeopen /> : <Eyeclose />}
                     </button>
                     {errors.oldPassword && <p className="text-red-500 text-sm">Old password is required</p>}
                 </div>
@@ -148,10 +150,10 @@ const Editprofile = () => {
                     />
                     <button
                         type="button"
-                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+                        className="absolute -right-5 top-1/2 transform -translate-y-[38%] text-gray-500 scale-[.3]"
                         onClick={() => setShowNewPassword(!showNewPassword)}
                     >
-                        {showNewPassword ? "Hide" : "Show"}
+                        {showNewPassword ? <Eyeopen /> : <Eyeclose />}
                     </button>
                     {errors.newPassword && <p className="text-red-500 text-sm">New password is required</p>}
                 </div>
@@ -166,10 +168,10 @@ const Editprofile = () => {
                     />
                     <button
                         type="button"
-                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+                        className="absolute -right-5 top-1/2 transform -translate-y-[38%] text-gray-500 scale-[.3]"
                         onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                     >
-                        {showConfirmPassword ? "Hide" : "Show"}
+                        {showConfirmPassword ? <Eyeopen /> : <Eyeclose />}
                     </button>
                     {errors.password && <p className="text-red-500 text-sm">Confirm password is required</p>}
                 </div>
