@@ -7,6 +7,8 @@ import Link from '../../assets/Link';
 import Email from '../../assets/Email';
 import Info from '../../assets/info';
 import User from '../../assets/User';
+import Hammenu from '../../assets/HamburgMenu';
+import Hamburg from '../../assets/Hamburg';
 
 // Create and export CompanyContext
 export const CompanyContext = createContext();
@@ -14,6 +16,7 @@ function CustomerDetail() {
     const { customerId } = useParams();
     const [customer, setCustomer] = useState(null);
     const navigate = useNavigate();
+    const [menupop, setMenupop] = useState(false);
 
     useEffect(() => {
         const allCustomers = JSON.parse(localStorage.getItem("AllClients"));
@@ -41,7 +44,6 @@ function CustomerDetail() {
     };
     const handleCompanyassign = () => {
         navigate('/customer/companyAssign', { state: { companyName: customer?.companyName } });
-
     }
 
     if (!customer) {
@@ -53,26 +55,39 @@ function CustomerDetail() {
     return (
         // Provide the companyName context with a fallback value
         <CompanyContext.Provider value={{ companyName: customer?.companyName || 'Unknown Company' }}>
-            <div className="max-w-md mx-auto mt-0 sm:max-w-[50vw]">
+            <div className="max-w-md mx-auto mt-0 sm:max-w-[50vw] md:shadow-customShadow md:bg-white md:h-screen">
                 <div className="rounded-lg overflow-hidden mb-4 p-4">
                     <div className='flex justify-between items-center mb-10'>
                         <h2 className="text-2xl w-fit font-bold">Customer <span className='text-customColor'>Details</span></h2>
-                        <div className='flex items-center gap-5'>
-                            <button onClick={handlePrivateData}>
-                                <Info color="rgb(0 197 255)" size={28} />
+                        <div className='md:flex items-center gap-5 hidden'>
+                            <button onClick={handleEdit} className="flex items-center gap-1 shadow-customShadow px-3 py-1 bg-gray-100 hover:bg-gray-300 transition-all">
+                                <div className='scale-[1.5]'>
+                                </div>
+                                <Edit color="rgb(0 197 255)" size={21} /> <span>Edit Company</span>
                             </button>
-                            <button onClick={handleEdit} className="scale-[1.5]">
-                                <Edit color="rgb(0 197 255)" size={21} />
+                            <button onClick={handlePrivateData} className=' flex items-center gap-1 shadow-customShadow px-3 py-1 bg-gray-100 hover:bg-gray-300 transition-all'>
+                                <div>
+                                </div>
+                                <Info color="rgb(0 197 255)" size={21} /><span>Global data</span>
                             </button>
-                            <button onClick={handleCompanyassign} className="scale-[1.5]">
-                                <User color="rgb(0 197 255)" size={21} />
+                            <button onClick={handleCompanyassign} className="flex items-center gap-1 shadow-customShadow px-3 py-1 bg-gray-100 hover:bg-gray-300 transition-all">
+                                <div className='scale-[1.5]'>
+                                </div>
+                                <User color="rgb(0 197 255)" size={21} /><span>Company Permission</span>
                             </button>
                         </div>
+                        <button className='scale-110 md:hidden'
+                            onClick={() => setMenupop(!menupop)}
+                        >
+                            <Hamburg />
+                        </button>
+                        {menupop && (
+                            <Hammenu />
+                        )}
                     </div>
                     <div className='w-fit scale-[3.5] my-8 m-auto'>
                         <Company />
                     </div>
-
                     <div className="mb-4 flex flex-col items-center">
                         <p>{customer.companyName || 'Unknown Company'}</p>
                         <div className='flex'>
@@ -90,10 +105,10 @@ function CustomerDetail() {
                 <Allassets companyName={customer?.companyName} />
 
                 <button
-                    className='bg-slate-400 py-2 px-3 rounded-xl my-9 fixed bottom-0 right-8 flex justify-between w-20 items-center'
+                    className='bg-white shadow-customShadow  py-2 px-5 rounded-xl my-9 fixed bottom-0 right-8 flex justify-between items-center'
                     onClick={handleNewCustomer}
                 >
-                    <span className='text-white text-xl font-bold'>+</span> New
+                    <span className='text-customColor text-3xl font-bold '>+</span>
                 </button>
                 <div className='fixed md:hidden /bg-bottom-gradient bottom-0 py-2 overflow-y-auto w-full -z-10'>
                     <nav className='w-screen flex items-center justify-center px-16 py-2'>

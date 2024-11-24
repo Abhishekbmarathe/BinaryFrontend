@@ -4,6 +4,8 @@ import { useForm, Controller } from 'react-hook-form';
 import api from '../modules/Api';
 import { useLocation } from 'react-router-dom';
 import FetchallUsers from '../modules/fetchAllusers';
+import HamburgerMenu from '../../assets/Hamburg';
+import getAllcustomers from '../modules/getAllcustomers';
 
 const CompanyAssign = () => {
     const location = useLocation();
@@ -21,6 +23,15 @@ const CompanyAssign = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [loading, setLoading] = useState(false);
 
+    const companyAssign = () => {
+        const techAssignData = JSON.parse(localStorage.getItem('AllClients')) || [];
+        const clientData = techAssignData.find((client) => client.companyName === companyName);
+        const extractedPermissions = clientData ? clientData.techPermision || [] : [];
+        setTechPermissions(extractedPermissions);
+        setValue('technicians', extractedPermissions);
+
+    }
+
     useEffect(() => {
         FetchallUsers();
         const storedUsers = localStorage.getItem('onlyUsers');
@@ -31,14 +42,10 @@ const CompanyAssign = () => {
                 .map((user) => user.username);
             setSuggestions(technicianUsers);
         }
+        companyAssign();
 
-        const techAssignData = JSON.parse(localStorage.getItem('AllClients')) || [];
-        const clientData = techAssignData.find((client) => client.companyName === companyName);
-        const extractedPermissions = clientData ? clientData.techPermision || [] : [];
-        setTechPermissions(extractedPermissions);
 
         // Set the initial values for the form based on techPermissions
-        setValue('technicians', extractedPermissions);
     }, [companyName, setValue]);
 
     const filteredTechnicians = technicianList.filter((technician) =>
@@ -52,14 +59,16 @@ const CompanyAssign = () => {
                 companyName: companyName,
                 techPermision: data.technicians,
             },
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'updatedby': creator
-                }
-            });
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'updatedby': creator
+                    }
+                });
             console.log('Response:', response.data);
             alert('Company Successfully Assigned to technicians!');
+            getAllcustomers();
+
         } catch (error) {
             console.error('Error Assigning Technicians:', error);
             alert('Failed to assign technicians. Please try again.');
@@ -86,6 +95,7 @@ const CompanyAssign = () => {
                 </button>
             </div>
 
+            {/* <HamburgerMenu /> */}
             <div className="my-4">
                 <input
                     type="text"

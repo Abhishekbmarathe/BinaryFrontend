@@ -31,7 +31,7 @@ function Allassets({ companyName }) {
 
     return (
         <div className="w-[95vw] mx-auto mt-10 sm:max-w-[50vw]">
-            <div className=" rounded-lg overflow-hidden mb-4">
+            <div className=" rounded-lg overflow-hidden mb-4 md:px-3">
                 {allassets.length === 0 ? (
                     <p className='text-customColor m-auto w-fit text-3xl'>No assets!</p>
                 ) : (
