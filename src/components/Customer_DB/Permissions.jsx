@@ -66,7 +66,7 @@ const Permissions = ({ companyName }) => {
             return Object.keys(item.data); // Get all keys as an array
           });
       
-          console.log("All dynamic keys:", allDynamicKeys); // Log the array of key arrays
+        //   console.log("All dynamic keys:", allDynamicKeys); // Log the array of key arrays
           setAvailableKeys(allDynamicKeys.flat()); // Flatten the array and set in state if needed
         })
         .catch(error => {
