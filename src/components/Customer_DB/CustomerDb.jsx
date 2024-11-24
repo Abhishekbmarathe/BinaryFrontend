@@ -24,7 +24,7 @@ function AssetDb() {
   const [step, setStep] = useState(1);
   const [branches, setBranches] = useState([]);
   const [creator, setCreator] = useState(JSON.parse(localStorage.getItem('userDet')).username);
-  
+
 
 
   Clientbranches();
@@ -119,10 +119,10 @@ function AssetDb() {
           <div>
 
             <button
-              className='bg-slate-400 py-2 px-3 rounded-xl my-9 fixed bottom-0 right-8 flex justify-between w-20 items-center'
+              className='bg-white shadow-customShadow  py-2 px-5 rounded-xl my-9 fixed bottom-0 right-8 flex justify-between items-center'
               onClick={() => setShowForm(true)}
             >
-              <span className='text-white font-bold text-xl'>+</span> New
+              <span className='text-customColor text-3xl font-bold '>+</span>
             </button>
           </div>
         ) : null}

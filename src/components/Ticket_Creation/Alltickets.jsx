@@ -133,7 +133,7 @@ function Alltickets() {
                             </span>
                         </button>
                     </div>
-                    <div className="px-3 md:w-fit md:overflow-auto  md:h-[750px]">
+                    <div className="px-3  md:overflow-auto  md:h-[750px]">
                         {filteredTickets.length > 0 ? (
                             <ul className='md:flex md:flex-wrap items-center m-auto'>
                                 {filteredTickets.map((ticket, index) => (
@@ -162,7 +162,7 @@ function Alltickets() {
                                             <div className='text-gray-600 flex items-center'>
                                                 {dateTime[index] && (
                                                     <div className='flex gap-2'>
-                                                        <div className='flex'>
+                                                        <div className='flex items-center'>
                                                             <History size={18} />
                                                             <span className='text-customColor'>{dateTime[index].time}</span>
                                                         </div>

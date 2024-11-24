@@ -28,7 +28,7 @@ const HamburgMenu = () => {
         navigate('/customer/companyAssign', { state: { companyName: customer?.companyName } });
     }
     return (
-        <div className='flex md:items-center gap-5 flex-col  md:flex-row absolute md:static top-12 right-0 shadow-customShadow md:shadow-none bg-gray-100 z-10 p-3 md:p-0'>
+        <div className='flex md:items-center gap-5 flex-col  md:flex-row absolute md:static top-12 right-0 shadow-customShadow md:shadow-none bg-gray-100 z-10 p-3 md:p-0 text-gray-700'>
             <button onClick={handleEdit} className="flex items-center gap-1">
                 <div className='scale-[1.5]'>
                 </div>

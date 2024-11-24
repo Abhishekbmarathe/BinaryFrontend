@@ -113,7 +113,7 @@ function Settings() {
 
   return (
     <div>
-      <h1 className='my-6/ font-semibold text-3xl font-sans  z-10 bg-[#f5f5f5]/'>
+      <h1 className='my-6 px-3 md:my-0 md:px-0 font-semibold text-3xl font-sans  z-10 bg-[#f5f5f5]/'>
         Ticket <span className='text-customColor'>Settings</span>
       </h1>
 

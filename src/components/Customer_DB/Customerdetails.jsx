@@ -59,7 +59,7 @@ function CustomerDetail() {
                 <div className="rounded-lg overflow-hidden mb-4 p-4">
                     <div className='flex justify-between items-center mb-10'>
                         <h2 className="text-2xl w-fit font-bold">Customer <span className='text-customColor'>Details</span></h2>
-                        <div className='md:flex items-center gap-5 hidden'>
+                        <div className='md:flex items-center gap-5 hidden text-gray-600'>
                             <button onClick={handleEdit} className="flex items-center gap-1 shadow-customShadow px-3 py-1 bg-gray-100 hover:bg-gray-300 transition-all">
                                 <div className='scale-[1.5]'>
                                 </div>
