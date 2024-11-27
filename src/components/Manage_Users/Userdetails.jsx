@@ -6,8 +6,11 @@ import logo from '../../assets/logo2.jpeg';
 import getAllAsset from '../modules/getTicketSetting';
 import getAllCustomers from '../modules/getAllcustomers';
 import getAlltickets from '../modules/getAllTickets';
-import api from '../modules/Api'
-import axios from 'axios'
+import api from '../modules/Api';
+import axios from 'axios';
+import Technician from '../Manage_Users/Technician';
+import Hammenu from '../../assets/HamburgMenu';
+import Hamburg from '../../assets/Hamburg';
 
 function Userdetails() {
     // Total number of Users, Admins, and Technicians
@@ -185,8 +188,8 @@ function Userdetails() {
                     </>
                 )}
                 {role === "technician" && (
-                    <div className='text-black w-3/4 m-auto flex items-center gap-3 md:m-0'>
-                        <div className=''>
+                    <div className=''>
+                        {/* <div className=''>
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" stroke="orange" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="48px" height="48px">
                                 <path d="M12 2L1 21h22L12 2z" />
                                 <line x1="12" y1="8" x2="12" y2="13" />
@@ -195,7 +198,9 @@ function Userdetails() {
                         </div>
                         <p>
                             kindly contact master admin for the android app
-                        </p>
+                        </p> */}
+
+                        <Technician />
                     </div>
                 )}
             </div>
@@ -211,36 +216,40 @@ function Userdetails() {
                 <div className='flex gap-2 items-center px-3'>
                     <Edit />
                     <span className='text-black'><Link to="/Edit-profile">Edit Profile</Link></span>
+                    <button className=''>
+                        <Hamburg />
+                    </button>
                 </div>
             </div>
+            {role !== "technician" && (
+                <div className='flex flex-col md:w-fit md:mt-5 sticky top-12 z-10'>
+                    <div className='flex gap-3 md:w-fit w-screen px-6 py-3 md:py-3 md:p-6 items-center border-slate-300 md:border-[2px]  bg-cardcolor  bg-cardBlack/ md:shadow-lg m-auto md:m-0 md:rounded-xl/ '>
+                        <div className='user'>
+                            <User size='130' color='rgb(0 197 255)' />
+                            <div className='px-8'>
+                                <h1 className='text-2xl text-black'>{userName}</h1>
+                                <h4 className='text-customColor'>{role}</h4>
+                            </div>
+                        </div>
+                        <div className=''>
+                            <div className='flex md:flex-row md:text-xl md:my-4'>
+                                <label className='text-black'>Name:</label>
+                                <span className='text-customColor'>{currentUser}</span>
+                            </div>
+                            <div className='flex md:flex-row md:text-xl md:my-4'>
+                                <label className='text-black whitespace-nowrap'>Phone no:</label>
+                                <span className='text-customColor'>{phone}</span>
+                            </div>
+                            <div className='flex md:flex-row md:text-xl w-52 md:my-4'>
+                                <label className='text-black'>Email:</label>
+                                <span className='text-customColor break-all'>{email}</span>
+                            </div>
 
-            <div className='flex flex-col md:w-fit md:mt-5 sticky top-12 z-10'>
-                <div className='flex gap-3 md:w-fit w-screen px-6 py-3 md:py-3 md:p-6 items-center border-slate-300 md:border-[2px]  bg-cardcolor  bg-cardBlack/ md:shadow-lg m-auto md:m-0 md:rounded-xl/ '>
-                    <div className='user'>
-                        <User size='130' color='rgb(0 197 255)' />
-                        <div className='px-8'>
-                            <h1 className='text-2xl text-black'>{userName}</h1>
-                            <h4 className='text-customColor'>{role}</h4>
-                        </div>
-                    </div>
-                    <div className=''>
-                        <div className='flex md:flex-row md:text-xl md:my-4'>
-                            <label className='text-black'>Name:</label>
-                            <span className='text-customColor'>{currentUser}</span>
-                        </div>
-                        <div className='flex md:flex-row md:text-xl md:my-4'>
-                            <label className='text-black whitespace-nowrap'>Phone no:</label>
-                            <span className='text-customColor'>{phone}</span>
-                        </div>
-                        <div className='flex md:flex-row md:text-xl w-52 md:my-4'>
-                            <label className='text-black'>Email:</label>
-                            <span className='text-customColor break-all'>{email}</span>
-                        </div>
 
-
+                        </div>
                     </div>
                 </div>
-            </div>
+            )}
 
             {renderCards()}
         </div>

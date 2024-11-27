@@ -11,6 +11,8 @@ import getTicketsettings from '../modules/getTicketSetting';
 import Search from '../../assets/Search';
 import Home from '../../assets/Home';
 import Ticketpannel from './Ticketpannel';
+import axios from 'axios';
+import api from '../../components/modules/Api'
 
 function Alltickets() {
     const [settings, setSetting] = useState(false);
@@ -19,8 +21,15 @@ function Alltickets() {
     const [dateTime, setDateTime] = useState([]);
     const [searchInput, setSearchInput] = useState(''); // State for search input
     const [filteredTickets, setFilteredTickets] = useState([]); // State for filtered tickets
+    const [role, setRole] = useState('');
+    const [userName, setUsername] = useState('');
+
+
 
     useEffect(() => {
+        const currentUserdet = JSON.parse(localStorage.getItem("userDet")) || {};
+        setRole(currentUserdet.role || 'User');
+        setUsername(currentUserdet.username || 'Guest');
         const data = JSON.parse(localStorage.getItem("AllTickets")); // Assuming data is stored as a stringified JSON
         const users = JSON.parse(localStorage.getItem("userDet"));
         if (data) {
@@ -52,7 +61,24 @@ function Alltickets() {
         navigator.vibrate(60);
     };
 
-    getTickets();
+    if (role !== "technician") {
+        getTickets();
+    } else {
+        const getTechTicket = async () => {
+            try {
+                localStorage.removeItem('AllTickets'); // Clear old data
+                const response = await axios.post(`${api}api/getTechTicket`, {
+                    username: userName, // Payload
+                });
+
+                localStorage.setItem('AllTickets', JSON.stringify(response.data)); // Store the new data
+                console.log('Response:', response.data);
+            } catch (error) {
+                console.error('Error fetching tech ticket:', error);
+            }
+        };
+        getTechTicket();
+    }
     getTicketsettings();
 
     const getPriorityColor = (priority) => {
@@ -100,16 +126,26 @@ function Alltickets() {
 
     return (
         <div className='mb-16 '>
-            <Nav />
+            {role !== 'technician' && (
+                <Nav />
+            )}
             <h1 className='font-semibold font-sans text-3xl sticky top-0 z-10 hidden whitespace-nowrap md:block px-3'>
                 {/* Manage<span className='text-customColor '>Ticket</span> */}
             </h1>
             <div className='md:flex'>
-                <Ticketpannel />
+                {role !== "technician" && (
+                    <>
+                        <Ticketpannel />
+                    </>
+
+                )}
                 <div className='my-6 flex items-center justify-between md:justify-start md:gap-16 px-3 relative md:opacity-0 md:-z-10 md:hidden'>
-                    <h1 className='font-semibold font-sans text-3xl sticky top-0 z-10 bg-[#f5f5f5]'>
-                        Manage<span className='text-customColor'>Ticket</span>
-                    </h1>
+                    {role !== "technician" && (
+
+                        <h1 className='font-semibold font-sans text-3xl sticky top-0 z-10 bg-[#f5f5f5]'>
+                            Manage<span className='text-customColor'>Ticket</span>
+                        </h1>
+                    )}
 
                     {isAdmin && (
                         <button onClick={toggleSettings}>

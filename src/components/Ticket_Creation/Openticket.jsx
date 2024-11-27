@@ -10,6 +10,8 @@ import api from '../modules/Api';
 import Edit from '../../assets/Edit';
 import Close from '../../assets/Close';
 import File from '../../assets/File';
+import Hamburg from '../../assets/info';
+import TicketInfo from './TicketInfo';
 
 const NewTicket = () => {
   const { handleSubmit, register, setValue, getValues } = useForm();
@@ -496,6 +498,10 @@ const NewTicket = () => {
     }
   };
 
+  const TicketInfo = () => {
+    navigate('/TicketInfo', { state: { ticketNumber } });
+  }
+
 
 
 
@@ -506,21 +512,21 @@ const NewTicket = () => {
     <div className="min-h-screen py-3 md:w-1/2 bg-white m-auto shadow-xl shadow-gray-300">
       <div className='flex items-center justify-between px-3'>
         <h1 className='my-3 font-semibold font-sans text-2xl text-center sticky top-0 z-10 bg-[#f5f5f5]'>Edit <span className='text-customColor'>Ticket</span></h1>
-        <div className='flex gap-2'>
+        <div className='flex gap-3'>
           {isAdmin && (
             <>
-              <button className='mx-2 border p-3 py-2 border-black rounded-md hover:bg-slate-300 transition-colors' onClick={handleDelete}>
+              <button className='mx-2 shadow-customShadow p-3 py-2 border-black rounded-md hover:bg-slate-300 transition-colors' onClick={handleDelete}>
                 <Delete />
               </button>
             </>
           )}
           {!allowEdit && (
             <div>
-              <button onClick={() => setToggleedit(true)} className={`${toggleEdit ? 'hidden' : 'block'} border p-3 py-2 border-black hover:bg-slate-300 transition-colors rounded-md` }>
+              <button onClick={() => setToggleedit(true)} className={`${toggleEdit ? 'hidden' : 'block'} shadow-customShadow p-3 py-2 border-black hover:bg-slate-300 transition-colors rounded-md`}>
                 <Edit />
               </button>
               {toggleEdit && (
-                <div className='border p-3 py-2 border-black hover:bg-slate-300 transition-colors rounded-md'>
+                <div className='shadow-customShadow p-3 py-2 border-black hover:bg-slate-300 transition-colors rounded-md'>
                   {ticketOC === "Open" && (
                     <button className='bg-transparent px-3 rounded-md text-green-500' onClick={() => changeStatus('Closed')}>Close</button>
                   )}
@@ -537,9 +543,11 @@ const NewTicket = () => {
               )}
             </div>
           )}
-
-
-
+          <button className='shadow-customShadow p-3 py-2 hover:bg-slate-300 transition-colors rounded-md'
+            onClick={TicketInfo}
+          >
+            <Hamburg color='rgb(0, 197, 255)' />
+          </button>
         </div>
       </div>
       <form onSubmit={handleSubmit(onSubmit)} className="max-w-3xl mx-auto p-8 rounded">
@@ -548,179 +556,179 @@ const NewTicket = () => {
 
         {/* Step 1: Customer Info */}
         {/* {step === 1 && ( */}
-          <div>
-            {/* Company Type */}
-            <div className="mb-6">
-              <label className="block text-xl text-customColor font-sans  font-medium mb-2">Company Type</label>
-              <div className="flex items-center">
-                <span className="mr-4">Call Based</span>
-                <label className="relative inline-flex items-center cursor-pointer">
-                  <input
-                    type="checkbox"
-                    className="sr-only peer"
-                    checked={companyType === 'Contract'}
-                    onChange={handleCompanyTypeToggle}
-                    disabled={allowEdit}
-                  />
-                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer dark:bg-gray-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                </label>
-                <span className="ml-4">Contract Based</span>
-              </div>
-            </div>
-
-            {/* Company Name */}
-            <div className="mb-6">
-              <label htmlFor="companyName" className="block text-xl text-customColor  font-sans font-medium mb-2">
-                Company Name
+        <div>
+          {/* Company Type */}
+          <div className="mb-6">
+            <label className="block text-xl text-customColor font-sans  font-medium mb-2">Company Type</label>
+            <div className="flex items-center">
+              <span className="mr-4">Call Based</span>
+              <label className="relative inline-flex items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  className="sr-only peer"
+                  checked={companyType === 'Contract'}
+                  onChange={handleCompanyTypeToggle}
+                  disabled={allowEdit}
+                />
+                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer dark:bg-gray-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
               </label>
-              <input
-                type="text"
-                className="w-full p-3 border-2 border-gray-400 bg-transparent rounded"
-                {...register('companyName', { required: true })}
-                readOnly={true}
-                value={extractCompany}
-                onChange={handleCompanyInputChange}
-                autoComplete='off'
-              />
-              {/* Display company name suggestions */}
-              {showCompanySuggestions && suggestions.length > 0 && (
-                <ul className="suggestions-list bg-slate-200 absolute z-10 w-full">
-                  {suggestions.map((suggestion, index) => (
-                    <li key={index} onClick={() => handleCompanySelection(suggestion)} className='p-1'>
-                      {suggestion}
-                    </li>
-                  ))}
-                </ul>
-              )}
+              <span className="ml-4">Contract Based</span>
             </div>
+          </div>
 
-            {/* Address */}
-            <div className="mb-6 relative">
-              <label htmlFor="address" className="block text-xl text-customColor  font-sans font-medium mb-2">
-                Address
-              </label>
-              <input
-                type="text"
-                id="address"
-                value={addressInput}
-                {...register('address', { required: true })}
-                className="w-full p-3 border-2 border-gray-400 bg-transparent rounded"
-                // readOnly={allowEdit}
-                disabled={!toggleEdit} // if toggleedit is false then only we can edit
-                onChange={handleAddressInputChange}
-                onFocus={() => setShowAddressSuggestions(true)} // Show suggestions when focused
-                onBlur={() => setTimeout(() => setShowAddressSuggestions(false), 100)} // Hide suggestions on blur with a delay
-                autoComplete='off'
-                onClick={() => handleCompanySelection(extractCompany)}
-              />
-              {/* Display address suggestions based on the selected company */}
-              {toggleEdit && (
-                <>
-                  {showAddressSuggestions && filteredAddresses.length > 0 && (
-                    <ul className="suggestions-list bg-slate-600 text-white absolute w-full">
-                      {filteredAddresses.map((address, index) => (
-                        <li key={index} onClick={() => handleAddressSelection(address)} className='py-1 px-2'>
-                          {address}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </>
-              )}
+          {/* Company Name */}
+          <div className="mb-6">
+            <label htmlFor="companyName" className="block text-xl text-customColor  font-sans font-medium mb-2">
+              Company Name
+            </label>
+            <input
+              type="text"
+              className="w-full p-3 border-2 border-gray-400 bg-transparent rounded"
+              {...register('companyName', { required: true })}
+              readOnly={true}
+              value={extractCompany}
+              onChange={handleCompanyInputChange}
+              autoComplete='off'
+            />
+            {/* Display company name suggestions */}
+            {showCompanySuggestions && suggestions.length > 0 && (
+              <ul className="suggestions-list bg-slate-200 absolute z-10 w-full">
+                {suggestions.map((suggestion, index) => (
+                  <li key={index} onClick={() => handleCompanySelection(suggestion)} className='p-1'>
+                    {suggestion}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
 
-            </div>
+          {/* Address */}
+          <div className="mb-6 relative">
+            <label htmlFor="address" className="block text-xl text-customColor  font-sans font-medium mb-2">
+              Address
+            </label>
+            <input
+              type="text"
+              id="address"
+              value={addressInput}
+              {...register('address', { required: true })}
+              className="w-full p-3 border-2 border-gray-400 bg-transparent rounded"
+              // readOnly={allowEdit}
+              disabled={!toggleEdit} // if toggleedit is false then only we can edit
+              onChange={handleAddressInputChange}
+              onFocus={() => setShowAddressSuggestions(true)} // Show suggestions when focused
+              onBlur={() => setTimeout(() => setShowAddressSuggestions(false), 100)} // Hide suggestions on blur with a delay
+              autoComplete='off'
+              onClick={() => handleCompanySelection(extractCompany)}
+            />
+            {/* Display address suggestions based on the selected company */}
+            {toggleEdit && (
+              <>
+                {showAddressSuggestions && filteredAddresses.length > 0 && (
+                  <ul className="suggestions-list bg-slate-600 text-white absolute w-full">
+                    {filteredAddresses.map((address, index) => (
+                      <li key={index} onClick={() => handleAddressSelection(address)} className='py-1 px-2'>
+                        {address}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </>
+            )}
 
-            {/* Creator */}
-            <div className="mb-6">
-              {/* <label htmlFor="creator" className="block text-lg font-medium mb-2">
+          </div>
+
+          {/* Creator */}
+          <div className="mb-6">
+            {/* <label htmlFor="creator" className="block text-lg font-medium mb-2">
                 Creator
               </label> */}
-              <input
-                type="text"
-                id="creator"
-                {...register('creator', { required: true })}
-                className="w-full p-3 border border-gray-300 rounded"
-                hidden={true}
-              />
-            </div>
-            <div className='mb-4'>
-              <label className="block text-xl text-customColor font-sans  font-medium mb-2" htmlFor="contactDetail">Email</label>
-              <input
-                className="w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500"
-                {...register('email')}
-                type="email"
-                id="email"
-                disabled={!toggleEdit}
-              />
-            </div>
+            <input
+              type="text"
+              id="creator"
+              {...register('creator', { required: true })}
+              className="w-full p-3 border border-gray-300 rounded"
+              hidden={true}
+            />
+          </div>
+          <div className='mb-4'>
+            <label className="block text-xl text-customColor font-sans  font-medium mb-2" htmlFor="contactDetail">Email</label>
+            <input
+              className="w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500"
+              {...register('email')}
+              type="email"
+              id="email"
+              disabled={!toggleEdit}
+            />
+          </div>
 
-            <div className="mb-6">
-              <label className="block text-xl text-customColor  font-sans font-medium mb-2" htmlFor="ticketSource">Ticket Source</label>
-              <select className='w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500' {...register('ticketSource')}
-                disabled={!toggleEdit}
-              >
-                <option value="">Select source</option>
-                <option value="Email">Email</option>
-                <option value="Call">Call</option>
-                <option value="Whatsapp">Whatsapp</option>
-                <option value="Whatsapp">others</option>
-              </select>
-            </div>
+          <div className="mb-6">
+            <label className="block text-xl text-customColor  font-sans font-medium mb-2" htmlFor="ticketSource">Ticket Source</label>
+            <select className='w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500' {...register('ticketSource')}
+              disabled={!toggleEdit}
+            >
+              <option value="">Select source</option>
+              <option value="Email">Email</option>
+              <option value="Call">Call</option>
+              <option value="Whatsapp">Whatsapp</option>
+              <option value="Whatsapp">others</option>
+            </select>
+          </div>
 
-            {/* Contacts */}
-            <div className="mb-6">
-              <label className="block text-xl text-customColor  font-medium font-sans mb-2">Contacts</label>
-              {contacts.map((contact, index) => (
-                <div key={index} className="flex items-center mb-4">
-                  <input
-                    type="text"
-                    className="w-1/2 p-3 border-2 border-gray-400 bg-transparent rounded mr-4"
-                    {...register('name')}
-                    value={contact.name}
-                    onChange={(e) => handleContactChange(index, 'name', e.target.value)}
-                    placeholder="Name"
-                    disabled={!toggleEdit} // if toggleedit is false then only we can edit
-                  />
-                  <input
-                    type="text"
-                    className="w-1/2 p-3 border-2 border-gray-400 bg-transparent rounded mr-4"
-                    {...register('number')}
-                    value={contact.number}
-                    onChange={(e) => handleContactChange(index, 'number', e.target.value)}
-                    placeholder="Number"
-                    disabled={!toggleEdit}
-                  />
-                  {toggleEdit && (
-                    <>
-                      {!allowEdit && (
-                        <button
-                          type="button"
-                          onClick={() => handleRemoveContact(index)}
-                          className=" text-red-500 hover:text-red-700"
-                        >
-                          <Delete />
-                        </button>
-                      )}
-                    </>
-                  )}
-                </div>
-              ))}
-              {toggleEdit && (
-                <>
-                  {!allowEdit && (
-                    <button
-                      type="button"
-                      onClick={handleAddContact}
-                      className="text-blue-500 hover:text-blue-700"
-                    >
-                      + Add another contact
-                    </button>
-                  )}
-                </>
-              )}
-            </div>
+          {/* Contacts */}
+          <div className="mb-6">
+            <label className="block text-xl text-customColor  font-medium font-sans mb-2">Contacts</label>
+            {contacts.map((contact, index) => (
+              <div key={index} className="flex items-center mb-4">
+                <input
+                  type="text"
+                  className="w-1/2 p-3 border-2 border-gray-400 bg-transparent rounded mr-4"
+                  {...register('name')}
+                  value={contact.name}
+                  onChange={(e) => handleContactChange(index, 'name', e.target.value)}
+                  placeholder="Name"
+                  disabled={!toggleEdit} // if toggleedit is false then only we can edit
+                />
+                <input
+                  type="text"
+                  className="w-1/2 p-3 border-2 border-gray-400 bg-transparent rounded mr-4"
+                  {...register('number')}
+                  value={contact.number}
+                  onChange={(e) => handleContactChange(index, 'number', e.target.value)}
+                  placeholder="Number"
+                  disabled={!toggleEdit}
+                />
+                {toggleEdit && (
+                  <>
+                    {!allowEdit && (
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveContact(index)}
+                        className=" text-red-500 hover:text-red-700"
+                      >
+                        <Delete />
+                      </button>
+                    )}
+                  </>
+                )}
+              </div>
+            ))}
+            {toggleEdit && (
+              <>
+                {!allowEdit && (
+                  <button
+                    type="button"
+                    onClick={handleAddContact}
+                    className="text-blue-500 hover:text-blue-700"
+                  >
+                    + Add another contact
+                  </button>
+                )}
+              </>
+            )}
+          </div>
 
-            {/* <div className="">
+          {/* <div className="">
               <button
                 type="button"
                 className="px-6 py-2 float-start bg-blue-400 text-white rounded hover:bg-blue-700"
@@ -740,86 +748,86 @@ const NewTicket = () => {
               </button>
             </div> */}
 
-          </div>
+        </div>
         {/* )} */}
 
         {/* Step 2: Ticket Info */}
         {/* {step === 2 && ( */}
-          <div>
-            {/* Product Name */}
-            <div className="mb-6 relative">
-              <label htmlFor="productName" className="block text-xl text-customColor  font-sans font-medium mb-2">
-                Product Name
-              </label>
-              <input
-                type="text"
-                id="productName"
-                {...register('productName', { required: true })}
-                className="w-full p-3 border-2 border-gray-400 bg-transparent rounded"
-                // readOnly={allowEdit}
-                // readOnly={!toggleEdit}
-                disabled={!toggleEdit} // if toggleedit is false then only we can edit
-                value={productInput}
-                onChange={handleProductInputChange}
-                onFocus={() => setShowProductSuggestions(true)} // Show suggestions when focused
-                onBlur={() => setTimeout(() => setShowProductSuggestions(false), 100)} // Hide suggestions on blur with a delay
-                autoComplete='off'
-              />
-              {toggleEdit && (
-                <>
-                  {/* Display product suggestions based on the selected address */}
-                  {showProductSuggestions && filteredProducts.length > 0 && (
-                    <ul className="suggestions-list bg-slate-200 absolute w-full">
-                      {filteredProducts.map((product, index) => (
-                        <li key={index} onClick={() => handleProductSelection(product)} className='px-2 py-1'>
-                          {product}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </>
-              )}
+        <div>
+          {/* Product Name */}
+          <div className="mb-6 relative">
+            <label htmlFor="productName" className="block text-xl text-customColor  font-sans font-medium mb-2">
+              Product Name
+            </label>
+            <input
+              type="text"
+              id="productName"
+              {...register('productName', { required: true })}
+              className="w-full p-3 border-2 border-gray-400 bg-transparent rounded"
+              // readOnly={allowEdit}
+              // readOnly={!toggleEdit}
+              disabled={!toggleEdit} // if toggleedit is false then only we can edit
+              value={productInput}
+              onChange={handleProductInputChange}
+              onFocus={() => setShowProductSuggestions(true)} // Show suggestions when focused
+              onBlur={() => setTimeout(() => setShowProductSuggestions(false), 100)} // Hide suggestions on blur with a delay
+              autoComplete='off'
+            />
+            {toggleEdit && (
+              <>
+                {/* Display product suggestions based on the selected address */}
+                {showProductSuggestions && filteredProducts.length > 0 && (
+                  <ul className="suggestions-list bg-slate-200 absolute w-full">
+                    {filteredProducts.map((product, index) => (
+                      <li key={index} onClick={() => handleProductSelection(product)} className='px-2 py-1'>
+                        {product}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </>
+            )}
 
-            </div>
+          </div>
 
 
 
-            {/* Help Topic */}
-            <div className="mb-6">
-              <label className="block text-xl text-customColor  font-sans font-medium mb-2" htmlFor="helpTopic">Help Topic</label>
-              <select className="w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500" {...register('helpTopic')} id="helpTopic" disabled={!toggleEdit}>
-                <option value="">Select Help Topic</option>
-                {helpTopics.map((topic, index) => (
-                  <option key={index} value={topic}>{topic}</option>
-                ))}
-              </select>
-            </div>
+          {/* Help Topic */}
+          <div className="mb-6">
+            <label className="block text-xl text-customColor  font-sans font-medium mb-2" htmlFor="helpTopic">Help Topic</label>
+            <select className="w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500" {...register('helpTopic')} id="helpTopic" disabled={!toggleEdit}>
+              <option value="">Select Help Topic</option>
+              {helpTopics.map((topic, index) => (
+                <option key={index} value={topic}>{topic}</option>
+              ))}
+            </select>
+          </div>
 
-            {/* Department */}
-            <div className="mb-6">
-              <label className="block text-xl text-customColor  font-sans font-medium mb-2" htmlFor="department">Department</label>
-              <select className="w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500" {...register('department')} id="department" disabled={!toggleEdit}>
-                <option value="">Select Department</option>
-                {departments.map((department, index) => (
-                  <option key={index} value={department}>{department}</option>
-                ))}
-              </select>
-            </div>
+          {/* Department */}
+          <div className="mb-6">
+            <label className="block text-xl text-customColor  font-sans font-medium mb-2" htmlFor="department">Department</label>
+            <select className="w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500" {...register('department')} id="department" disabled={!toggleEdit}>
+              <option value="">Select Department</option>
+              {departments.map((department, index) => (
+                <option key={index} value={department}>{department}</option>
+              ))}
+            </select>
+          </div>
 
-            {/* SLA Plan */}
-            <div className="mb-6">
-              <label className="block text-xl text-customColor  font-sans font-medium mb-2" htmlFor="slaPlan">SLA</label>
-              <select className="w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500" {...register('slaPlan')} id="slaPlan"
-                disabled={!toggleEdit}>
-                <option value="">Select SLA</option>
-                {slaPlans.map((sla, index) => (
-                  <option key={index} value={sla}>{sla}</option>
-                ))}
-              </select>
-            </div>
+          {/* SLA Plan */}
+          <div className="mb-6">
+            <label className="block text-xl text-customColor  font-sans font-medium mb-2" htmlFor="slaPlan">SLA</label>
+            <select className="w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500" {...register('slaPlan')} id="slaPlan"
+              disabled={!toggleEdit}>
+              <option value="">Select SLA</option>
+              {slaPlans.map((sla, index) => (
+                <option key={index} value={sla}>{sla}</option>
+              ))}
+            </select>
+          </div>
 
-            {/* Due Date */}
-            {/* <div className="mb-6">
+          {/* Due Date */}
+          {/* <div className="mb-6">
               <label htmlFor="dueDate" className="block text-lg font-medium mb-2">
                 Due Date
               </label>
@@ -832,10 +840,10 @@ const NewTicket = () => {
               />
             </div> */}
 
-            {/* Assigned To */}
+          {/* Assigned To */}
 
 
-            {/* <div className="flex justify-between">
+          {/* <div className="flex justify-between">
               <button
                 type="button"
                 className="w-28 py-2 h-fit bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
@@ -851,82 +859,82 @@ const NewTicket = () => {
                 Next
               </button>
             </div> */}
-          </div>
+        </div>
         {/* )} */}
         {/* {step === 3 && ( */}
-          <div className="flex flex-col gap-6">
-            {/* Priority */}
-            <div className="mb-4">
-              <label className="block mb-2 font-sans text-xl text-customColor  font-medium" htmlFor="priority">Priority</label>
-              <div className="flex gap-3 items-center">
-                <label className="inline-flex items-center">
-                  <input
-                    type="radio"
-                    value="Low"
-                    {...register('priority')}
-                    className="form-radio text-blue-600"
-                    disabled={!toggleEdit}
-                  />
-                  <span className="ml-2">Low</span>
-                </label>
-                <label className="inline-flex items-center">
-                  <input
-                    type="radio"
-                    value="Normal"
-                    {...register('priority')}
-                    className="form-radio text-blue-600"
-                    disabled={!toggleEdit}
-                  />
-                  <span className="ml-2">Normal</span>
-                </label>
-                <label className="inline-flex items-center">
-                  <input
-                    type="radio"
-                    value="High"
-                    {...register('priority')}
-                    className="form-radio text-blue-600"
-                    disabled={!toggleEdit}
-                  />
-                  <span className="ml-2">High</span>
-                </label>
+        <div className="flex flex-col gap-6">
+          {/* Priority */}
+          <div className="mb-4">
+            <label className="block mb-2 font-sans text-xl text-customColor  font-medium" htmlFor="priority">Priority</label>
+            <div className="flex gap-3 items-center">
+              <label className="inline-flex items-center">
+                <input
+                  type="radio"
+                  value="Low"
+                  {...register('priority')}
+                  className="form-radio text-blue-600"
+                  disabled={!toggleEdit}
+                />
+                <span className="ml-2">Low</span>
+              </label>
+              <label className="inline-flex items-center">
+                <input
+                  type="radio"
+                  value="Normal"
+                  {...register('priority')}
+                  className="form-radio text-blue-600"
+                  disabled={!toggleEdit}
+                />
+                <span className="ml-2">Normal</span>
+              </label>
+              <label className="inline-flex items-center">
+                <input
+                  type="radio"
+                  value="High"
+                  {...register('priority')}
+                  className="form-radio text-blue-600"
+                  disabled={!toggleEdit}
+                />
+                <span className="ml-2">High</span>
+              </label>
+            </div>
+          </div>
+          <div className="mb-4">
+            <label className="block text-xl text-customColor  font-sans font-medium mb-2" htmlFor="issueDescription">Issue Description</label>
+            <textarea className="w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500" {...register('issueDescription')} id="issueDescription" readOnly={!toggleEdit}></textarea>
+          </div>
+
+          <div className="mb-4 relative">
+            <label className="block mb-2 text-xl text-customColor  font-sans font-medium" htmlFor="collaborators">Collaborators</label>
+            <div
+              className={`w-full p-3 bg-transparent border-2 border-gray-400 rounded cursor-pointer ${!toggleEdit ? 'pointer-events-none' : 'pointer-events-auto'} `}
+              onClick={toggleDropdown}
+            >
+              {selectedUsers.length > 0 ? selectedUsers.join(", ") : "Select Collaborators"}
+            </div>
+
+            {isDropdownOpen && (
+              <div className="absolute mt-2 w-full bg-white border border-gray-600 rounded shadow-lg z-10">
+                {users.map((user, index) => (
+                  <div key={index} className="px-4 py-2 flex items-center">
+                    <input
+                      type="checkbox"
+                      id={`user-${index}`}
+                      checked={selectedUsers.includes(user)}
+                      onChange={() => handleUserSelection(user)}
+                      className="mr-2"
+                    />
+                    <label htmlFor={`user-${index}`} className="text-sm">
+                      {user}
+                    </label>
+                  </div>
+                ))}
               </div>
-            </div>
-            <div className="mb-4">
-              <label className="block text-xl text-customColor  font-sans font-medium mb-2" htmlFor="issueDescription">Issue Description</label>
-              <textarea className="w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500" {...register('issueDescription')} id="issueDescription" readOnly={!toggleEdit}></textarea>
-            </div>
 
-            <div className="mb-4 relative">
-              <label className="block mb-2 text-xl text-customColor  font-sans font-medium" htmlFor="collaborators">Collaborators</label>
-              <div
-                className={`w-full p-3 bg-transparent border-2 border-gray-400 rounded cursor-pointer ${!toggleEdit ? 'pointer-events-none' : 'pointer-events-auto'} `}
-                onClick={toggleDropdown}
-              >
-                {selectedUsers.length > 0 ? selectedUsers.join(", ") : "Select Collaborators"}
-              </div>
+            )}
+          </div>
 
-              {isDropdownOpen && (
-                <div className="absolute mt-2 w-full bg-white border border-gray-600 rounded shadow-lg z-10">
-                  {users.map((user, index) => (
-                    <div key={index} className="px-4 py-2 flex items-center">
-                      <input
-                        type="checkbox"
-                        id={`user-${index}`}
-                        checked={selectedUsers.includes(user)}
-                        onChange={() => handleUserSelection(user)}
-                        className="mr-2"
-                      />
-                      <label htmlFor={`user-${index}`} className="text-sm">
-                        {user}
-                      </label>
-                    </div>
-                  ))}
-                </div>
-
-              )}
-            </div>
-
-            {/* <div className="flex justify-between">
+          {/* <div className="flex justify-between">
               <button
                 type="button"
                 className="px-6 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
@@ -942,38 +950,38 @@ const NewTicket = () => {
                 Next
               </button>
             </div> */}
-          </div>
+        </div>
         {/* )} */}
 
         {/* Step 3: Response */}
         {/* {step === 4 && ( */}
-          <div>
-            {/* Canned Response */}
-            <div className="mb-4">
-              <label className="block text-xl text-customColor  font-sans font-medium mb-2" htmlFor="cannedResponse">Canned Response</label>
-              <select className="w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500" {...register('cannedResponse')} id="cannedResponse"
-                disabled={!toggleEdit}
-              >
-                <option value="">Select Canned</option>
-                {cannedResponse.map((canned, index) => (
-                  <option key={index} value={canned}>{canned}</option>
-                ))}
-                <option value="response2">Response 2</option>
-              </select>
-            </div>
-            <div className="mb-4">
-              <label className="block text-xl text-customColor  font-sans font-medium mb-2" htmlFor="">Assign Technician</label>
-              <select className="w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500" {...register('assignedTo')} id=""
-                onChange={(e) => checkStatus(e.target.value)}
-                disabled={!toggleEdit}
-              >
-                {/* <option value="">Select</option> */}
-                {ticketAss.map((user, index) => (
-                  <option key={index} value={user}>{user}</option>
-                ))}
-              </select>
-            </div>
-            {/* <input
+        <div>
+          {/* Canned Response */}
+          <div className="mb-4">
+            <label className="block text-xl text-customColor  font-sans font-medium mb-2" htmlFor="cannedResponse">Canned Response</label>
+            <select className="w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500" {...register('cannedResponse')} id="cannedResponse"
+              disabled={!toggleEdit}
+            >
+              <option value="">Select Canned</option>
+              {cannedResponse.map((canned, index) => (
+                <option key={index} value={canned}>{canned}</option>
+              ))}
+              <option value="response2">Response 2</option>
+            </select>
+          </div>
+          <div className="mb-4">
+            <label className="block text-xl text-customColor  font-sans font-medium mb-2" htmlFor="">Assign Technician</label>
+            <select className="w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500" {...register('assignedTo')} id=""
+              onChange={(e) => checkStatus(e.target.value)}
+              disabled={!toggleEdit}
+            >
+              {/* <option value="">Select</option> */}
+              {ticketAss.map((user, index) => (
+                <option key={index} value={user}>{user}</option>
+              ))}
+            </select>
+          </div>
+          {/* <input
                 className="w-full p-2 bg-transparent border border-gray-600 rounded focus:outline-none focus:border-blue-500"
                 {...register('ticketStatus')}
                 type="text"
@@ -981,72 +989,72 @@ const NewTicket = () => {
                 hidden={true}
                 contentEditable="false"
               /> */}
-            <div className="mb-4">
-              <label className="block text-xl text-customColor  font-sans font-medium  mb-2" htmlFor="">Additional Info</label>
-              <textarea className="w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500" {...register('additionalInfo')} id="" readOnly={!toggleEdit}></textarea>
-            </div>
+          <div className="mb-4">
+            <label className="block text-xl text-customColor  font-sans font-medium  mb-2" htmlFor="">Additional Info</label>
+            <textarea className="w-full p-3 bg-transparent border-2 border-gray-400 rounded focus:outline-none focus:border-blue-500" {...register('additionalInfo')} id="" readOnly={!toggleEdit}></textarea>
+          </div>
 
 
-            <div className='mb-6'>
-              <button
-                className="flex items-center gap-1 bg-blue-500 text-white px-3 h-fit py-2 rounded-lg"
-                type="button"
-                onClick={() => setShowfiles(true)}
-              >
-                <Attachment />
-                View Attached Files
-              </button>
+          <div className='mb-6'>
+            <button
+              className="flex items-center gap-1 bg-blue-500 text-white px-3 h-fit py-2 rounded-lg"
+              type="button"
+              onClick={() => setShowfiles(true)}
+            >
+              <Attachment />
+              View Attached Files
+            </button>
 
-            </div>
-            <div className='mb-6'>
-              {toggleEdit && (
-                <>
-                  <input
-                    type="file"
-                    multiple
-                    onChange={(e) => handleFileChange(e, selectedFiles, setSelectedFiles)}
-                    style={{ display: 'none' }}
-                    id="fileInput"
-                  />
-                  {!allowEdit && (
+          </div>
+          <div className='mb-6'>
+            {toggleEdit && (
+              <>
+                <input
+                  type="file"
+                  multiple
+                  onChange={(e) => handleFileChange(e, selectedFiles, setSelectedFiles)}
+                  style={{ display: 'none' }}
+                  id="fileInput"
+                />
+                {!allowEdit && (
 
-                    <button
-                      className="flex items-center gap-1 bg-blue-500 text-white px-3 h-fit py-2 rounded-lg"
-                      type="button"
-                      onClick={() => document.getElementById('fileInput').click()}
-                    >
-                      <Attachment />
-                      Attach File
-                    </button>
-                  )}
-
-                </>
-              )}
-
-
-              <div className="mt-2">
-                {selectedFiles.length > 0 && (
-                  <div>
-                    <h4>Selected Files:</h4>
-                    <ul>
-                      {selectedFiles.map((file, index) => (
-                        <li key={index} className="flex items-center justify-between mb-1">
-                          {file.name}
-                          <button
-                            className="text-red-500 ml-2"
-                            type="button"
-                            onClick={() => removeFile(index, selectedFiles, setSelectedFiles)}
-                          >
-                            Remove
-                          </button>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                  <button
+                    className="flex items-center gap-1 bg-blue-500 text-white px-3 h-fit py-2 rounded-lg"
+                    type="button"
+                    onClick={() => document.getElementById('fileInput').click()}
+                  >
+                    <Attachment />
+                    Attach File
+                  </button>
                 )}
-              </div>
 
-              {/* {selectedFiles.length > 0 && (
+              </>
+            )}
+
+
+            <div className="mt-2">
+              {selectedFiles.length > 0 && (
+                <div>
+                  <h4>Selected Files:</h4>
+                  <ul>
+                    {selectedFiles.map((file, index) => (
+                      <li key={index} className="flex items-center justify-between mb-1">
+                        {file.name}
+                        <button
+                          className="text-red-500 ml-2"
+                          type="button"
+                          onClick={() => removeFile(index, selectedFiles, setSelectedFiles)}
+                        >
+                          Remove
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+
+            {/* {selectedFiles.length > 0 && (
                 <button
                   className="mt-4 bg-green-500 text-white p-2 rounded-lg"
                   type="button"
@@ -1055,96 +1063,96 @@ const NewTicket = () => {
                   Submit Files
                 </button>
               )} */}
-            </div>
+          </div>
 
-            <div className="flex justify-between">
-              {/* <button
+          <div className="flex justify-between">
+            {/* <button
                 type="button"
                 className="px-6 h-fit py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
                 onClick={() => setStep(3)}
               >
                 Previous
               </button> */}
-              {toggleEdit && (
-                <>
-                  {!allowEdit && (
-                    <button
-                      type="submit"
-                      className="px-6 h-fit py-2 bg-blue-500 text-white rounded hover:bg-blue-700"
-                    >
-                      update
-                    </button>
-                  )}
-                </>
-              )}
-            </div>
-
-            {/* display attached files */}
-            {showFiles && (
+            {toggleEdit && (
               <>
-                <div className='absolute md:w-1/2 h-[70vh] overflow-auto w-[80%] rounded-xl top-1/2 bg-slate-600 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 text-white p-4 pt-0'>
-                  <div className='flex justify-between sticky top-0 bg-inherit py-4'>
-                    <h1 className='text-customColor text-xl'>Attached Files</h1>
-                    <button type='button'
-                      className='bg-red-500 p-1 rounded-full'
-                      onClick={() => setShowfiles(false)}
-                    >
-                      <Close />
-                    </button>
-                  </div>
-
-                  <div className='mt-5'>
-                    {/* Render attached files here */}
-                    {Object.keys(getAttachedfiles).length > 0 ? (
-                      Object.entries(getAttachedfiles).map(([fileNameWithId, fileUrl], index) => {
-                        // Extract the file name by splitting the string at '____'
-                        const fileName = fileNameWithId.split('____')[0];
-
-                        return (
-                          <div key={index} className="p-2  border-b border-gray-400 flex justify-between items-center">
-                            {/* Create a clickable link for file URL and display the file name*/}
-                            <a
-                              href={fileUrl} // Use the URL from the dynamic object
-                              target="_blank" // Open the link in a new tab
-                              rel="noopener noreferrer" // Security feature
-                              className=""
-                            >
-                              <div className='w-fit flex items-center gap-1'>
-                                <File />
-                                {/* Truncate on small screens, allow normal word breaking on medium screens and up */}
-                                <p className='text-gray-300 text-sm max-w-[190px]  md:max-w-full truncate md:overflow-visible md:whitespace-normal /md:break-words'>
-                                  {fileName}
-                                </p>
-                              </div>
-
-
-                            </a>
-
-
-                            {/* Add Delete Button */}
-                            {toggleEdit && (
-                              <button
-                                type='button'
-                                onClick={() => handleFileDeletion(fileUrl)}
-                              >
-                                <Delete />
-                              </button>
-                            )}
-                          </div>
-                        );
-                      })
-                    ) : (
-                      <p>No files attached</p>
-                    )}
-                  </div>
-                </div>
+                {!allowEdit && (
+                  <button
+                    type="submit"
+                    className="px-6 h-fit py-2 bg-blue-500 text-white rounded hover:bg-blue-700"
+                  >
+                    update
+                  </button>
+                )}
               </>
             )}
-
-
-
-
           </div>
+
+          {/* display attached files */}
+          {showFiles && (
+            <>
+              <div className='absolute md:w-1/2 h-[70vh] overflow-auto w-[80%] rounded-xl top-1/2 bg-slate-600 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 text-white p-4 pt-0'>
+                <div className='flex justify-between sticky top-0 bg-inherit py-4'>
+                  <h1 className='text-customColor text-xl'>Attached Files</h1>
+                  <button type='button'
+                    className='bg-red-500 p-1 rounded-full'
+                    onClick={() => setShowfiles(false)}
+                  >
+                    <Close />
+                  </button>
+                </div>
+
+                <div className='mt-5'>
+                  {/* Render attached files here */}
+                  {Object.keys(getAttachedfiles).length > 0 ? (
+                    Object.entries(getAttachedfiles).map(([fileNameWithId, fileUrl], index) => {
+                      // Extract the file name by splitting the string at '____'
+                      const fileName = fileNameWithId.split('____')[0];
+
+                      return (
+                        <div key={index} className="p-2  border-b border-gray-400 flex justify-between items-center">
+                          {/* Create a clickable link for file URL and display the file name*/}
+                          <a
+                            href={fileUrl} // Use the URL from the dynamic object
+                            target="_blank" // Open the link in a new tab
+                            rel="noopener noreferrer" // Security feature
+                            className=""
+                          >
+                            <div className='w-fit flex items-center gap-1'>
+                              <File />
+                              {/* Truncate on small screens, allow normal word breaking on medium screens and up */}
+                              <p className='text-gray-300 text-sm max-w-[190px]  md:max-w-full truncate md:overflow-visible md:whitespace-normal /md:break-words'>
+                                {fileName}
+                              </p>
+                            </div>
+
+
+                          </a>
+
+
+                          {/* Add Delete Button */}
+                          {toggleEdit && (
+                            <button
+                              type='button'
+                              onClick={() => handleFileDeletion(fileUrl)}
+                            >
+                              <Delete />
+                            </button>
+                          )}
+                        </div>
+                      );
+                    })
+                  ) : (
+                    <p>No files attached</p>
+                  )}
+                </div>
+              </div>
+            </>
+          )}
+
+
+
+
+        </div>
 
 
         {/* )} */}
