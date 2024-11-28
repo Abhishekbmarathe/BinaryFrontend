@@ -224,14 +224,11 @@ function Alltickets() {
 
 
                 <button
-                    className='md:hidden bg-slate-400 py-2 px-3 rounded-xl my-9 fixed bottom-0 right-8 flex justify-between w-20 items-center
-                 text-white z-50'
+                    className='md:hidden  fixed bottom-9 my-9 right-8 bg-white shadow-customShadow  py-1  px-5 rounded-xl'
                     onClick={newTicket}
                 >
-                    <span className='text-white font-bold text-xl'>+</span> New
+                    <span className='text-customColor font-bold text-3xl'>+</span>
                 </button>
-
-
                 <div className='fixed md:hidden bottom-0 py-2 overflow-y-auto w-full z-90 bg-white'>
                     <nav className='w-screen flex items-center justify-center px-16 py-2'>
                         <button onClick={home}>

@@ -21,12 +21,15 @@ const BottomNavbar = () => {
     ]);
 
     const [filteredCardData, setFilteredCardData] = useState([]);
+    const [currentUser, setCurrentUser] = useState([]);
     const navigate = useNavigate();
     const [pop, setPop] = useState(false);
 
     useEffect(() => {
         const userDet = JSON.parse(localStorage.getItem('userDet'));
+        setCurrentUser(userDet);
         const user = userDet.user || userDet;
+
         const permissions = {
             createTicket: user.createTicket,
             assignTicket: user.assignTicket,
@@ -58,6 +61,9 @@ const BottomNavbar = () => {
     };
 
     const bahuth = () => {
+        if (currentUser.role === "technician") {
+            return navigate('/PermitedCompanies')
+        }
         navigate('/Logs')
         navigator.vibrate(60);
     };
@@ -76,15 +82,16 @@ const BottomNavbar = () => {
                 <nav className='w-screen flex items-center justify-between px-16 py  '>
                     <button onClick={home} className='flex flex-col items-center'>
                         <Home />
-                        {/* <span>Home</span> */}
+                        <span>Home</span>
                     </button>
                     <button onClick={popUp} className='flex flex-col items-center'>
                         <Arrowup />
-                        {/* <span className='opacity-0'>Up</span> */}
+                        <span className='opacity-0'>Up</span>
                     </button>
                     <button onClick={bahuth} className='flex flex-col items-center'>
                         <Bell />
-                        {/* <span>Logs</span> */}
+                        {currentUser.role === 'technician' ? <span>Company</span> : <span>Logs</span>}
+
                     </button>
                 </nav>
                 <div className={`fixed inset-x-0 bottom-0 bg-white border-t-2 border-customColor p-4 transition-transform duration-500 rounded-t-3xl ${pop ? 'translate-y-0' : 'translate-y-full'}`}>

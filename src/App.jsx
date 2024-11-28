@@ -32,6 +32,7 @@ import Openticket from './components/Ticket_Creation/Openticket';
 import Recyclepage from './components/Customer_DB/Recyclepage';
 import CompanyAssign from './components/Customer_DB/CompanyAssign';
 import TicketInfo from './components/Ticket_Creation/TicketInfo';
+import PermitedCompany from './components/Ticket_Creation/PermitedCompany';
 
 import Logs from './components/Logs';
 
@@ -77,6 +78,7 @@ function App() {
         <Route path="/openSettings" element={<Settings />} />
         <Route path="/open-ticket" element={<Openticket />} />
         <Route path="/TicketInfo" element={<TicketInfo />} />
+        <Route path="/PermitedCompanies" element={<PermitedCompany />} />
 
         <Route path="/recycle-bin" element={<Recyclepage />} />
         <Route path="/Logs" element={<Logs />} />
