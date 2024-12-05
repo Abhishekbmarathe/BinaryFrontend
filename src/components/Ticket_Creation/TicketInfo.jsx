@@ -4,6 +4,7 @@ import api from '../modules/Api';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import Ticketimg from '../Ticket_Creation/TicketImg';
+import TicketHistory from './TicketHistory';
 
 const TicketInfo = () => {
     const location = useLocation();
@@ -15,6 +16,7 @@ const TicketInfo = () => {
     const [activeTab, setActiveTab] = useState('notes');  // State to manage active tab
 
     const [creator, setCreator] = useState(JSON.parse(localStorage.getItem('userDet')).username);
+
 
     // Function to fetch ticket details
     const getTechTicketDesc = async () => {
@@ -146,7 +148,7 @@ const TicketInfo = () => {
                         )}
 
                         {activeTab === 'history' && (
-                            <p>History content goes here...</p>  // Placeholder for history
+                            <TicketHistory />
                         )}
                     </div>
                 )}

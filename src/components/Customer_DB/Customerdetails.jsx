@@ -101,9 +101,7 @@ function CustomerDetail() {
                     </div>
                     <h1 className='text-customColor text-xl'>Assets</h1>
                 </div>
-
                 <Allassets companyName={customer?.companyName} />
-
                 <button
                     className='bg-white shadow-customShadow  py-2 px-5 rounded-xl my-9 fixed bottom-0 right-8 flex justify-between items-center'
                     onClick={handleNewCustomer}

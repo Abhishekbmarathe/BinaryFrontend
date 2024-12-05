@@ -249,6 +249,10 @@ const NewTicket = () => {
       setCompanyType(currentTicket.senderCompanyType);
       // console.log(currentTicket.senderCompanyType) 
 
+
+      localStorage.setItem('ticketNumber', currentTicket.ticketNumber);
+
+
       // Check edit option based on user role and collaborators
       const isNotCreator = user.username !== currentTicket.creator;
       const isNotAdmin = user.role !== "mAdmin";

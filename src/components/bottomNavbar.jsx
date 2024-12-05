@@ -30,25 +30,40 @@ const BottomNavbar = () => {
         setCurrentUser(userDet);
         const user = userDet.user || userDet;
 
-        const permissions = {
-            createTicket: user.createTicket,
-            assignTicket: user.assignTicket,
-            createClient: user.createClient,
-            createAsset: user.createAsset,
-            manageFinance: user.manageFinance,
-            manageUser: user.manageUser,
-            role: user.role
-        };
+        // Define permissions based on the user's role
+        let permissions;
+        if (user.role === 'technician') {
+            permissions = {
+                createClient: user.createClient = true,
+                createAsset: user.createAsset = true,
+                // createClient: user.createClient || false,
+                // createAsset: user.createAsset || false,
+                role: user.role,
+            };
+            
+        } else {
+            permissions = {
+                createTicket: user.createTicket || false,
+                assignTicket: user.assignTicket || false,
+                createClient: user.createClient || false,
+                createAsset: user.createAsset || false,
+                manageFinance: user.manageFinance || false,
+                manageUser: user.manageUser || false,
+                role: user.role,
+            };
+        }
 
+        // Filter card data based on permissions
         const filteredData = cardData.filter(card => {
             if (user.role === 'mAdmin') {
-                return true;
+                return true; // Admin can access all cards
             }
-            return permissions[card.permission];
+            return permissions[card.permission]; // Check specific permission for each card
         });
 
         setFilteredCardData(filteredData);
     }, [cardData]);
+
 
     const popUp = () => {
         setPop(!pop);

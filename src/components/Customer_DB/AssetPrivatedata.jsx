@@ -18,7 +18,12 @@ function App() {
     const [loading, setLoading] = useState(false);  // Loading state
     const [selectedKey, setSelectedKey] = useState(null); // Track selected key for update
     const [errors, setErrors] = useState({ key: '', value: '' }); // Validation errors
+    const role = JSON.parse(localStorage.getItem('userDet'))?.role || 'unknown';
+    const [userDet, setUserdet] = useState(JSON.parse(localStorage.getItem('userDet')));
 
+    const [dynamicData, setDynamicData] = useState([]);
+    const hasEmptyProducts = dynamicData.some(item => item.productName === "");
+    const hasNonEmptyProducts = dynamicData.some(item => item.productName !== "");
 
     const [permissionPage, setPage] = useState(false);
     const [flag, setFlag] = useState(false);
@@ -26,18 +31,44 @@ function App() {
 
     const location = useLocation();
     const { companyName } = location.state || {};
+    const techEndPoint = role !== 'technician' ? 'api/getGlobalData' : 'api/getTechPrivateData'
 
     // Fetch existing data
+    // useEffect(() => {
+    //     setLoading(true); // Start loading
+    //     axios.post(api + "api/getGlobalData", { companyName: assetId })
+    //         .then(response => {
+    //             const fetchedArray = response.data;
+    //             const fetchedData = fetchedArray.reduce((acc, obj) => ({ ...acc, ...obj.data }), {});
+
+    //             setFormData(prevData => ({
+    //                 ...prevData,
+    //                 companyName: assetId,
+    //                 data: { ...prevData.data, ...fetchedData }
+    //             }));
+    //         })
+    //         .catch(error => {
+    //             console.error('Error fetching data:', error);
+    //         })
+    //         .finally(() => setLoading(false)); // End loading
+    // }, [companyName]);
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
+
     useEffect(() => {
         setLoading(true); // Start loading
-        axios.post(api + "api/getGlobalData", { companyName: assetId })
+        const payload = role !== 'technician' ? { companyName: assetId } : { username: userDet.username };
+        axios.post(api + techEndPoint, payload)
             .then(response => {
+                console.log("asset p data ",response.data)
                 const fetchedArray = response.data;
+                setDynamicData(response.data);
                 const fetchedData = fetchedArray.reduce((acc, obj) => ({ ...acc, ...obj.data }), {});
-
                 setFormData(prevData => ({
                     ...prevData,
-                    companyName: assetId,
+                    companyName,
                     data: { ...prevData.data, ...fetchedData }
                 }));
             })
@@ -45,11 +76,7 @@ function App() {
                 console.error('Error fetching data:', error);
             })
             .finally(() => setLoading(false)); // End loading
-    }, [companyName]);
-
-    const togglePasswordVisibility = () => {
-        setShowPassword(!showPassword);
-    };
+    }, [companyName, role]);
 
 
     // const [tempData, setTempData] = useState({ key: '', value: '', sensitive: false, id: null });
@@ -298,19 +325,50 @@ function App() {
                     ) : (
                         <div>
                             {/* Display Existing and Newly Added Data */}
-                            {Object.entries(formData.data).map(([key, { value, sensitive }], index) => (
-                                <div key={index} className='px-4 py-2 m-auto rounded border font-sans border-cyan-400/ border-black w-[95%] mb-2'
-                                    onClick={() => openModal(key)} // Open modal on click with existing data
-                                >
-                                    <div className='flex flex-col font-sans'>
-                                        <span className='font-semibold text-xl text-customColor'>{key}</span>
-                                        <div className='flex gap-1'>
-                                            <span className='font-semibold'>Value : </span>
-                                            <span>{value}</span>
+                            {role !== 'technician' ? (
+                                <div>
+
+                                    {Object.entries(formData.data).map(([key, { value, sensitive }], index) => (
+                                        <div key={index} className='px-4 py-2 m-auto rounded border font-sans border-cyan-400/ border-black w-[95%] mb-2'
+                                            onClick={() => openModal(key)} // Open modal on click with existing data
+                                        >
+                                            <div className='flex flex-col font-sans'>
+                                                <span className='font-semibold text-xl text-customColor'>{key}</span>
+                                                <div className='flex gap-1'>
+                                                    <span className='font-semibold'>Value : </span>
+                                                    <span>{value}</span>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
+                                    ))}
                                 </div>
-                            ))}
+                            ) : (
+                                <div>
+                                    {hasNonEmptyProducts && (
+                                        <div>
+                                            {/* currentlt this block of code is not used anywhere */}
+
+                                            {/* // Block for items with non-empty productName */}
+                                            <div className="non-empty-product-block">
+                                                {dynamicData.map((item, index) => (
+                                                    item.productName !== "" && (
+                                                        <div key={index} className="data-card px-4 py-2 m-auto rounded border font-sans border-cyan-400/ border-black w-[95%] mb-2">
+                                                            {Object.entries(item).map(([key, value]) => (
+                                                                key !== "companyName" && key !== "productName" && (
+                                                                    <p key={key}>
+                                                                        <strong>{key}:</strong> {value}
+                                                                    </p>
+                                                                )
+                                                            ))}
+                                                        </div>
+                                                    )
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            )
+                            }
                         </div>
                     )}
 

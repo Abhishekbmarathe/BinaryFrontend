@@ -14,6 +14,17 @@ function CustomerEdit() {
     const [branches, setBranches] = useState([]);
     const isAdmin = useAdminStatus();
     const [creator, setCreator] = useState(JSON.parse(localStorage.getItem('userDet')).username);
+    const [isTechnician, setIstechnician] = useState(false)
+
+
+    useEffect(() => {
+        const role = JSON.parse(localStorage.getItem('userDet'))?.role || 'unknown';
+        if (role === 'technician') {
+            setIstechnician(true);
+        }
+    })
+
+
 
     useEffect(() => {
         const allCustomers = JSON.parse(localStorage.getItem("AllClients"));
@@ -166,6 +177,7 @@ function CustomerEdit() {
                                         onChange={handleChange}
                                         className="w-full border-2 p-3 mb-4 bg-transparent outline-none hover:border-customColor rounded border-gray-400"
                                         placeholder="Email"
+                                        readOnly={isTechnician}
                                     />
                                 </div>
                                 <div className="mb-4">
@@ -178,6 +190,8 @@ function CustomerEdit() {
                                         onChange={handleChange}
                                         className="w-full border-2 p-3 mb-4 bg-transparent outline-none hover:border-customColor rounded border-gray-400"
                                         placeholder="Website"
+                                        readOnly={isTechnician}
+
                                     />
                                 </div>
                                 <div className="mb-4">
@@ -190,6 +204,8 @@ function CustomerEdit() {
                                         onChange={handleChange}
                                         className="w-full border-2 p-3 mb-4 bg-transparent outline-none hover:border-customColor rounded border-gray-400"
                                         placeholder="Address"
+                                        readOnly={isTechnician}
+
                                     />
                                 </div>
                                 {customer.contacts && customer.contacts.map((contact, index) => (
@@ -206,6 +222,8 @@ function CustomerEdit() {
                                                     onChange={(e) => handleChange(e, index, 'name')}
                                                     className="w-full border-2 p-3 mb-2 bg-transparent outline-none hover:border-customColor rounded border-gray-400"
                                                     placeholder="Contact Name"
+                                                    readOnly={isTechnician}
+
                                                 />
                                             </div>
                                             <div>
@@ -218,6 +236,8 @@ function CustomerEdit() {
                                                     onChange={(e) => handleChange(e, index, 'number')}
                                                     className="w-full border-2 p-3 bg-transparent outline-none hover:border-customColor rounded border-gray-400"
                                                     placeholder="Contact Number"
+                                                    readOnly={isTechnician}
+
                                                 />
                                             </div>
                                         </div>
@@ -233,7 +253,9 @@ function CustomerEdit() {
                         <div>
                             <div className='text-customColor flex justify-between cursor-pointer'>
                                 <label>Sub Branches</label>
-                                <span onClick={handleAddBranch}>+ Add</span>
+                                {!isTechnician && (
+                                    <span onClick={handleAddBranch}>+ Add</span>
+                                )}
                             </div>
                             {branches.map((branch, index) => (
                                 <div key={index} className='mt-4 flex'>
@@ -244,6 +266,8 @@ function CustomerEdit() {
                                         value={branch.location}
                                         onChange={(e) => handleBranchChange(index, e)}
                                         className='mr-2 p-2 border rounded bg-transparent border-gray-400 w-full'
+                                        readOnly={isTechnician}
+
                                     />
                                     <input
                                         type='text'
@@ -252,15 +276,21 @@ function CustomerEdit() {
                                         value={branch.department}
                                         onChange={(e) => handleBranchChange(index, e)}
                                         className='mr-2 p-2 border rounded bg-transparent border-gray-400 w-full'
+                                        readOnly={isTechnician}
+
                                     />
-                                    <button onClick={() => handleRemoveBranch(index)} className='p-1'>
-                                        <Delete color='red' />
-                                    </button>
+                                    {!isTechnician && (
+                                        <button onClick={() => handleRemoveBranch(index)} className='p-1'>
+                                            <Delete color='red' />
+                                        </button>
+                                    )}
                                 </div>
                             ))}
                             <div className="mt-4">
                                 <button onClick={() => setStep(1)} className="text-white bg-blue-400 mb-3 px-4 py-1 mr-3">Previous</button>
-                                <button onClick={handleUpdate} className="text-white bg-blue-400 mb-3 px-4 py-1">Save</button>
+                                {!isTechnician && (
+                                    <button onClick={handleUpdate} className="text-white bg-blue-400 mb-3 px-4 py-1">Save</button>
+                                )}
                             </div>
                         </div>
                     )}

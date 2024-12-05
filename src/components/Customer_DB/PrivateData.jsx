@@ -7,6 +7,7 @@ import Loader from '../Loader';
 import api from '../modules/Api';
 import Close from '../../assets/Close';
 import Permissions from '../Customer_DB/Permissions';
+import Userdetails from '../Manage_Users/Userdetails';
 
 function App() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -17,6 +18,13 @@ function App() {
     const [loading, setLoading] = useState(false);  // Loading state
     const [selectedKey, setSelectedKey] = useState(null); // Track selected key for update
     const [errors, setErrors] = useState({ key: '', value: '' }); // Validation errors
+    const role = JSON.parse(localStorage.getItem('userDet'))?.role || 'unknown';
+    const [userDet, setUserdet] = useState(JSON.parse(localStorage.getItem('userDet')));
+
+    const [dynamicData, setDynamicData] = useState([]);
+    const hasEmptyProducts = dynamicData.some(item => item.productName === "");
+    const hasNonEmptyProducts = dynamicData.some(item => item.productName !== "");
+
 
     const [permissionPage, setPage] = useState(false);
     const [flag, setFlag] = useState(false);
@@ -24,15 +32,18 @@ function App() {
 
     const location = useLocation();
     const { companyName, customerId } = location.state || {};
+    const techEndPoint = role !== 'technician' ? 'api/getGlobalData' : 'api/getTechPrivateData'
 
     // Fetch existing data
     useEffect(() => {
         setLoading(true); // Start loading
-        axios.post(api + "api/getGlobalData", { companyName })
+        const payload = role !== 'technician' ? { companyName } : { username: userDet.username };
+        axios.post(api + techEndPoint, payload)
             .then(response => {
+                console.log(response.data)
                 const fetchedArray = response.data;
+                setDynamicData(response.data);
                 const fetchedData = fetchedArray.reduce((acc, obj) => ({ ...acc, ...obj.data }), {});
-
                 setFormData(prevData => ({
                     ...prevData,
                     companyName,
@@ -43,12 +54,11 @@ function App() {
                 console.error('Error fetching data:', error);
             })
             .finally(() => setLoading(false)); // End loading
-    }, [companyName]);
+    }, [companyName, role]); // Add 'role' to the dependency array if it can change
 
     const togglePasswordVisibility = () => {
-        setShowPassword(!showPassword);
+        setShowPassword(prevState => !prevState);
     };
-
 
     // const [tempData, setTempData] = useState({ key: '', value: '', sensitive: false, id: null });
 
@@ -185,11 +195,13 @@ function App() {
         const cnf = confirm("Are you sure to save the changes?");
         if (cnf) {
             setLoading(true); // Start loading
+            const payload = role !== 'technician' ? { companyName } : { username: userDet.username };
             axios.post(api + "api/updateGlobalData", formData)
                 .then(() => {
-                    return axios.post(api + "api/getGlobalData", { companyName });
+                    return axios.post(api + techEndPoint, payload);
                 })
                 .then(response => {
+                    setDynamicData(response.data);
                     const fetchedArray = response.data;
                     const fetchedData = fetchedArray.reduce((acc, obj) => ({ ...acc, ...obj.data }), {});
 
@@ -267,11 +279,14 @@ function App() {
 
 
             </div>
-            <div className='flex items-center justify-center fixed bottom-4 left-1/2 -translate-x-1/2 gap-14'>
-                <button className='font-sans text-xl text-customColor w-16' onClick={() => setPage(false)}>Data </button>
-                <button type='button' className='text-3xl'>|</button>
-                <button className='font-sans text-xl text-customColor' onClick={() => setPage(true)}>Permissions</button>
-            </div>
+            {role !== 'technician' && (
+                <div className='flex items-center justify-center fixed bottom-4 left-1/2 -translate-x-1/2 gap-14'>
+                    <button className='font-sans text-xl text-customColor w-16' onClick={() => setPage(false)}>Data </button>
+                    <button type='button' className='text-3xl'>|</button>
+                    <button className='font-sans text-xl text-customColor' onClick={() => setPage(true)}>Permissions</button>
+                </div>
+            )}
+
 
             {permissionPage ? (
                 <Permissions companyName={companyName} />
@@ -296,19 +311,69 @@ function App() {
                     ) : (
                         <div>
                             {/* Display Existing and Newly Added Data */}
-                            {Object.entries(formData.data).map(([key, { value, sensitive }], index) => (
-                                <div key={index} className='px-4 py-2 m-auto rounded border font-sans border-cyan-400/ border-black w-[95%] mb-2'
-                                    onClick={() => openModal(key)} // Open modal on click with existing data
-                                >
-                                    <div className='flex flex-col font-sans'>
-                                        <span className='font-semibold text-xl text-customColor'>{key}</span>
-                                        <div className='flex gap-1'>
-                                            <span className='font-semibold'>Value : </span>
-                                            <span>{value}</span>
+                            {role !== 'technician' ? (
+                                <div>
+
+                                    {Object.entries(formData.data).map(([key, { value, sensitive }], index) => (
+                                        <div key={index} className='px-4 py-2 m-auto rounded border font-sans border-cyan-400/ border-black w-[95%] mb-2'
+                                            onClick={() => openModal(key)} // Open modal on click with existing data
+                                        >
+                                            <div className='flex flex-col font-sans'>
+                                                <span className='font-semibold text-xl text-customColor'>{key}</span>
+                                                <div className='flex gap-1'>
+                                                    <span className='font-semibold'>Value : </span>
+                                                    <span>{value}</span>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
+                                    ))}
                                 </div>
-                            ))}
+                            ) : (
+                                <div>
+                                    {hasEmptyProducts ? (
+                                        // Block for items with empty productName
+                                        <div className="empty-product-block">
+                                            {dynamicData.map((item, index) => (
+                                                item.productName === "" && (
+                                                    <div key={index} className="data-card px-4 py-2 m-auto rounded border font-sans border-cyan-400/ border-black w-[95%] mb-2">
+                                                        {Object.entries(item).map(([key, value]) => (
+                                                            key !== "companyName" && key !== "productName" && (
+                                                                <p key={key}>
+                                                                    <strong>{key}:</strong> {value}
+                                                                </p>
+                                                            )
+                                                        ))}
+                                                    </div>
+                                                )
+                                            ))}
+                                        </div>
+
+                                    ) : hasNonEmptyProducts && (
+                                        <div>
+                                            {/* currentlt this block of code is not used anywhere */}
+
+                                            {/* // Block for items with non-empty productName */}
+                                            <div className="non-empty-product-block">
+                                                <h2>Available Products</h2>
+                                                {dynamicData.map((item, index) => (
+                                                    item.productName !== "" && (
+                                                        <div key={index} className="data-card">
+                                                            {Object.entries(item).map(([key, value]) => (
+                                                                key !== "companyName" && key !== "productName" && (
+                                                                    <p key={key}>
+                                                                        <strong>{key}:</strong> {value}
+                                                                    </p>
+                                                                )
+                                                            ))}
+                                                        </div>
+                                                    )
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            )
+                            }
                         </div>
                     )}
 

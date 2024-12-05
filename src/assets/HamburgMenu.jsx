@@ -3,11 +3,14 @@ import React, { useState, useEffect, createContext } from 'react';
 import Edit from '../assets/Edit';
 import Info from '../assets/info';
 import User from '../assets/User';
+import Company from '../assets/Companyicon'
 
 const HamburgMenu = () => {
     const { customerId } = useParams();
     const [customer, setCustomer] = useState(null);
     const navigate = useNavigate();
+    const role = JSON.parse(localStorage.getItem('userDet'))?.role || 'unknown';
+
 
     useEffect(() => {
         const allCustomers = JSON.parse(localStorage.getItem("AllClients"));
@@ -30,20 +33,24 @@ const HamburgMenu = () => {
     return (
         <div className='flex md:items-center gap-5 flex-col  md:flex-row absolute md:static top-12 right-0 shadow-customShadow md:shadow-none bg-gray-100 z-10 p-3 md:p-0 text-gray-700'>
             <button onClick={handleEdit} className="flex items-center gap-1">
-                <div className='scale-[1.5]'>
+                <div>
                 </div>
-                <Edit color="rgb(0 197 255)" size={21} /> <span>Edit Company</span>
+                {role !== 'technician' ? (<Edit color="rgb(0 197 255)" size={21} />) : (<Company color="rgb(0 197 255)" size={21} />)}
+                <span>{role !== 'technician' ? ('Edit') : ('View')} Company</span>
             </button>
             <button onClick={handlePrivateData} className=' flex items-center gap-1'>
                 <div>
                 </div>
                 <Info color="rgb(0 197 255)" size={21} /><span>Global data</span>
             </button>
-            <button onClick={handleCompanyassign} className="flex items-center gap-1">
-                <div className='scale-[1.5]'>
-                </div>
-                <User color="rgb(0 197 255)" size={21} /><span>Company Permission</span>
-            </button>
+            {role !== 'technician' && (
+
+                <button onClick={handleCompanyassign} className="flex items-center gap-1">
+                    <div className='scale-[1.5]'>
+                    </div>
+                    <User color="rgb(0 197 255)" size={21} /><span>Company Permission</span>
+                </button>
+            )}
         </div>
     )
 }
