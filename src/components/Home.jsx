@@ -18,6 +18,7 @@ function Home() {
             <Nav />
             <Sidepannel />
             <Userdetails />
+            
         </div>
     )
 }

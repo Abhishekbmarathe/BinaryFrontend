@@ -42,12 +42,6 @@ const Technician = () => {
 
     return (
         <div>
-            <div className='flex gap-3'>
-                <button className='text-white shadow-customShadow hover:bg-blue-500 transition-all bg-blue-400 w-28 px-3 py-2 rounded-sm'>ALL</button>
-                <button className='text-white shadow-customShadow hover:bg-blue-500 transition-all bg-blue-400 w-28 px-3 py-2 rounded-sm'>ASSIGNED</button>
-                <button className='text-white shadow-customShadow hover:bg-blue-500 transition-all bg-blue-400 w-28 px-3 py-2 rounded-sm'>CLOSED</button>
-            </div>
-
             <Alltickets />
         </div>
     );

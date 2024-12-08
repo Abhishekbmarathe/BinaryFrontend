@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Camera from '../../assets/camera';
 import Attach from '../../assets/Attachment';
@@ -7,6 +7,11 @@ import api from '../modules/Api';
 const TicketImg = () => {
     const [selectedFile, setSelectedFile] = useState(null);
     const [creator, setCreator] = useState(JSON.parse(localStorage.getItem('userDet')).username);
+    const [responseData, setTechfiles] = useState();
+
+    useEffect(() => {
+        techFiles();
+    }, []); // Empty array ensures this effect runs only once on component mount
 
 
     // Function to handle file selection
@@ -37,6 +42,20 @@ const TicketImg = () => {
             console.error('Error accessing the camera:', error);
         }
     };
+    const techFiles = async () => {
+        try {
+            const response = await axios.post(api + 'api/getTechFiles/', { ticketNumber }, {
+                headers: {
+                    updatedby: creator,
+                },
+            });
+            console.log(response.data); // Debug API response
+            setTechfiles(response.data || []); // Ensure response data is valid
+        } catch (error) {
+            console.error('Error fetching files:', error.response?.data || error.message);
+            alert('Error fetching uploaded files.');
+        }
+    };
 
     // Function to send file to the API
     const handleSubmit = async () => {
@@ -58,6 +77,7 @@ const TicketImg = () => {
             });
             if (response.data.status) {
                 alert('File uploaded successfully');
+                techFiles()
             } else {
                 alert('File upload failed');
             }
@@ -93,14 +113,39 @@ const TicketImg = () => {
                     </div>
                     <span>Attach</span>
                 </button>
+                {/* Upload button */}
+                <button
+                    onClick={handleSubmit}
+                    className='py-2 px-4 w-fit bg-blue-500 text-white rounded-sm'>
+                    Upload
+                </button>
             </div>
 
-            {/* Upload button */}
-            <button
-                onClick={handleSubmit}
-                className='py-2 px-4 bg-blue-500 text-white rounded-sm'>
-                Upload
-            </button>
+            <div className="p-4">
+                <h2 className="text-xl font-semibold mb-4">Uploaded Files</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {responseData && responseData.length > 0 ? (
+                        responseData.map((file, index) => (
+                            <div
+                                key={index}
+                                className="border rounded-lg p-4  shadow-customShadow transition-shadow"
+                            >
+                                <h3 className="text-lg font-medium">{file.fileName}</h3>
+                                <a
+                                    href={file.photoLink}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-blue-500 hover:underline"
+                                >
+                                    View File
+                                </a>
+                            </div>
+                        ))
+                    ) : (
+                        <p>No files uploaded yet.</p>
+                    )}
+                </div>
+            </div>
         </div>
     );
 };

@@ -23,6 +23,8 @@ function Alltickets() {
     const [filteredTickets, setFilteredTickets] = useState([]); // State for filtered tickets
     const [role, setRole] = useState('');
     const [userName, setUsername] = useState('');
+    const [selectedFilter, setSelectedFilter] = useState('All');
+
 
 
 
@@ -124,8 +126,21 @@ function Alltickets() {
         setFilteredTickets(filtered);
     };
 
+
+    const handleFilterChange = (filter) => {
+        setSelectedFilter(filter);
+
+        if (filter === 'All') {
+            setFilteredTickets(allTickets); // Show all tickets
+        } else {
+            const filtered = allTickets.filter(ticket => ticket.ticketStatus === filter);
+            setFilteredTickets(filtered); // Show filtered tickets
+        }
+    };
+
+
     return (
-        <div className='mb-16 '>
+        <div className='mb-16'>
             {role !== 'technician' && (
                 <Nav />
             )}
@@ -139,12 +154,38 @@ function Alltickets() {
                     </>
 
                 )}
-                <div className='my-6 flex items-center justify-between md:justify-start md:gap-16 px-3 relative md:opacity-0 md:-z-10 md:hidden'>
+                <div className='my-6/ flex items-center justify-between md:justify-start md:gap-16 px-3 relative md:opacity-0 md:-z-10 md:hidden'>
                     {role !== "technician" && (
-
                         <h1 className='font-semibold font-sans text-3xl sticky top-0 z-10 bg-[#f5f5f5]'>
                             Manage<span className='text-customColor'>Ticket</span>
                         </h1>
+                    )}
+                    {role === "technician" && (
+                        // Filter buttons
+                        <div className='flex gap-3'>
+                            <button
+                                className={`text-white hover:bg-blue-500 transition-all bg-blue-400 w-28 px-3 py-1 rounded-sm ${selectedFilter === 'All' ? 'bg-blue-600' : ''
+                                    }`}
+                                onClick={() => handleFilterChange('All')}
+                            >
+                                All
+                            </button>
+                            <button
+                                className={`text-white hover:bg-blue-500 transition-all bg-blue-400 w-28 px-3 py-1 rounded-sm ${selectedFilter === 'Assigned' ? 'bg-blue-600' : ''
+                                    }`}
+                                onClick={() => handleFilterChange('Assigned')}
+                            >
+                                Assigned
+                            </button>
+                            <button
+                                className={`text-white hover:bg-blue-500 transition-all bg-blue-400 w-28 px-3 py-1 rounded-sm ${selectedFilter === 'Closed' ? 'bg-blue-600' : ''
+                                    }`}
+                                onClick={() => handleFilterChange('Closed')}
+                            >
+                                Closed
+                            </button>
+                        </div>
+
                     )}
 
                     {isAdmin && (
@@ -159,7 +200,7 @@ function Alltickets() {
                         <input
                             type="text"
                             className='bg-transparent border  border-gray-500 bg-white /md:border-none p-2 outline-none w-full rounded focus:border-blue-400'
-                            placeholder="Search by company name or ticket number"
+                            placeholder="Search"
                             value={searchInput}
                             onChange={handleSearchInputChange} // Handle input change
                         />

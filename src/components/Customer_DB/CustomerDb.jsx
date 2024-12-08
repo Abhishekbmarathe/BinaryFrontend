@@ -106,9 +106,9 @@ function AssetDb() {
   return (
     <>
       <Nav />
-      <div className='w-[90vw] sm:w-1/2 m-auto'>
+      <div className='w-[90vw] sm:w-1/2 m-auto font-sans'>
         <div className='flex items-center justify-between my-6'>
-          <h1 className='font-semibold font-sans text-3xl w-fit'>Customer <span className='text-customColor'>DB</span></h1>
+          <h1 className='font-semibold font-sans text-3xl w-fit'>Manage <span className='text-customColor'>Company</span></h1>
           {ismAdmin && (
             <Link to='/recycle-bin'>
               <Recycle />
@@ -163,7 +163,7 @@ function AssetDb() {
                   {errors.address && <span className='text-red-500'>Address is required</span>}
                 </div>
                 <div>
-                  <label className='block font-bold text-2xl my-2'>Contact Information</label>
+                  <label className='block font-bold text-xl/ my-2'>Contact Information</label>
                   {fields.map((item, index) => (
                     <div key={item.id} className=''>
                       <div>
@@ -237,30 +237,33 @@ function AssetDb() {
                     </div>
                   ))}
 
-                  <button
-                    className='mt-[50%] bg-blue-400 text-white px-6 py-2 rounded-lg'
-                    onClick={() => setStep(1)}
-                  >
-                    Previous
-                  </button>
+                  <div className='flex justify-between'>
+                    <button
+                      className='mt-[50%] bg-blue-400 text-white px-6 py-2 rounded-lg mb-5'
+                      onClick={() => setStep(1)}
+                    >
+                      Previous
+                    </button>
+                    <button
+                      type="submit"
+                      className="mt-[50%] bg-blue-400 text-white px-6 py-2 rounded-lg mb-5"
+                      disabled={isLoading} // Disable button when loading
+                    >
+                      {isLoading ? (
+                        <div className="flex justify-center items-center gap-3">
+                          <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 border-dotted rounded-full" role="status"></div>
+                          <span className="breathing">Loading...</span>
+                        </div>
+                      ) : (
+                        'Save '
+                      )}
+                    </button>
+                  </div>
                 </div>
               )}
             </div>
 
-            <button
-              type="submit"
-              className="w-full block m-auto p-2  text-white rounded-md bg-slate-400 transition-all"
-              disabled={isLoading} // Disable button when loading
-            >
-              {isLoading ? (
-                <div className="flex justify-center items-center gap-3">
-                  <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 border-dotted rounded-full" role="status"></div>
-                  <span className="breathing">Loading...</span>
-                </div>
-              ) : (
-                'Add '
-              )}
-            </button>
+
           </form>
         )}
         {!showForm && <Allcustomers />}

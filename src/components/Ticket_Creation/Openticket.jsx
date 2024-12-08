@@ -33,6 +33,9 @@ const NewTicket = () => {
   const [ticketFileId, setTicketFileId] = useState();
 
 
+  const handleScrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const checkStatus = (val) => {
     console.log(val)
@@ -55,7 +58,7 @@ const NewTicket = () => {
   const [companyData, setCompanyData] = useState({});
   const [selectedCompany, setSelectedCompany] = useState('');
   const [addressInput, setAddressInput] = useState(extractAddress);
-  const [productInput, setProductInput] = useState('');
+  const [productInput, setProductInput] = useState();
   const [showCompanySuggestions, setShowCompanySuggestions] = useState(false);
   const [showAddressSuggestions, setShowAddressSuggestions] = useState(false);
   const [showProductSuggestions, setShowProductSuggestions] = useState(false);
@@ -209,6 +212,7 @@ const NewTicket = () => {
     setShowAddressSuggestions(true); // Show suggestions when typing in the address field
     setValue('address', value); // Register address field in the form
   };
+
 
   const handleProductInputChange = (e) => {
     const value = e.target.value;
@@ -1003,7 +1007,10 @@ const NewTicket = () => {
             <button
               className="flex items-center gap-1 bg-blue-500 text-white px-3 h-fit py-2 rounded-lg"
               type="button"
-              onClick={() => setShowfiles(true)}
+              onClick={() => {
+                setShowfiles(true); // Call the first function
+                handleScrollToTop(); // Call the second function
+              }}
             >
               <Attachment />
               View Attached Files

@@ -41,7 +41,7 @@ function AssetDb() {
     <>
       <Nav />
       <div className='w-[90vw] sm:w-1/2 m-auto'>
-        <h1 className='my-6 font-semibold font-sans text-2xl mx-auto w-fit'>Asset <span className='text-customColor'>DB</span></h1>
+        <h1 className='my-6 font-semibold font-sans text-2xl mx-auto w-fit'>Asset's <span className='text-customColor'></span></h1>
         {!showForm ? (
           // <button
           //   className='bg-white shadow py-2 px-3 rounded-xl my-9 fixed bottom-0 right-8 flex justify-between w-20 items-center'
