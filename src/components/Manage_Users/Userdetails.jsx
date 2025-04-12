@@ -162,7 +162,7 @@ function Userdetails() {
                 {cardContent}
             </Link>
         ) : (
-            <div className="relative w-full md:w-72 px-2">
+            <div className="relative w-full md:w-72 px-2">  
                 {cardContent}
             </div>
         );

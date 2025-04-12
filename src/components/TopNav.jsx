@@ -17,9 +17,7 @@ function TopNav() {
     return (
         <div className='hidden md:flex text-black bg-[#ffffff]   justify-between  items-center bg-[rgb(245 245 245)] sticky top-0 z-30'>
             <div className=''>
-                {/* <Logo /> */}
-                {/* <img src="/src/assets/logo2.jpeg" alt="Logo..." className='w-[300px]'/> */}
-                <img src={logo2} alt="Logo..." className='w-[300px]'/>
+                <img src={logo2} alt="Logo..." className='w-[300px]' />
             </div>
             <div>
                 <ul className='flex gap-12 items-center font-semibold font-sans mr-14'>
